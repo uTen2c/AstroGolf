@@ -1,0 +1,14 @@
+{
+  "dependencies": [
+    "fmt",
+    "spdlog",
+    {
+      "name": "imgui",
+      "default-features": false,
+      "features": [
+        "dx11-binding",
+        "win32-binding"
+      ]
+    }
+  ]
+}

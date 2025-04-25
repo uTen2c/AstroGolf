@@ -9,6 +9,5 @@ class Game
 
 public:
     Game();
-    ~Game() = default;
     [[nodiscard]] World& GetWorld() const;
 };

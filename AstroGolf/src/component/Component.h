@@ -1,26 +1,28 @@
 #pragma once
 #include "../math/DrawStack.h"
-#include "../math/Pos.h"
+#include "../math/Transform.h"
 
 class Component
 {
     int id_;
-    Pos pos_;
 
 public:
-    Component(const int id, const Pos& pos)
-        : id_(id),
-          pos_(pos)
+    Transform transform;
+
+    explicit Component(const int id): id_(id)
     {
     }
 
     virtual ~Component() = default;
-    virtual void Update(double delta);
+
+    // デフォルト実装を使用
+    Component(const Component&) = default;
+    Component& operator=(const Component&) = default;
+    Component(Component&&) noexcept = default;
+    Component& operator=(Component&&) noexcept = default;
+
+    virtual void Update(float delta);
     virtual void Draw(DrawStack* stack) const;
 
     [[nodiscard]] int GetId() const;
-
-    [[nodiscard]] Pos GetPos() const;
-
-    void SetPos(const Pos& pos);
 };

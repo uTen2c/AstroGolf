@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\AstroGolf.cpp" />
     <ClCompile Include="src\camera\GameCamera.cpp" />
+    <ClCompile Include="src\component\BoxComponent.cpp" />
     <ClCompile Include="src\component\Component.cpp" />
     <ClCompile Include="src\component\PhysicsComponent.cpp" />
     <ClCompile Include="src\component\SimpleSquareComponent.cpp" />
@@ -30,12 +31,14 @@
     <ClCompile Include="src\math\CircleCollider.cpp" />
     <ClCompile Include="src\math\Collider.cpp" />
     <ClCompile Include="src\math\DrawStack.cpp" />
-    <ClCompile Include="src\math\Pos.cpp" />
-    <ClCompile Include="src\math\Vector2d.cpp" />
+    <ClCompile Include="src\math\NullCollider.cpp" />
+    <ClCompile Include="src\math\Transform.cpp" />
+    <ClCompile Include="src\math\Vec2.cpp" />
     <ClCompile Include="src\world\World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera\GameCamera.h" />
+    <ClInclude Include="src\component\BoxComponent.h" />
     <ClInclude Include="src\component\Component.h" />
     <ClInclude Include="src\component\PhysicsComponent.h" />
     <ClInclude Include="src\component\SimpleSquareComponent.h" />
@@ -45,8 +48,9 @@
     <ClInclude Include="src\math\CircleCollider.h" />
     <ClInclude Include="src\math\Collider.h" />
     <ClInclude Include="src\math\DrawStack.h" />
-    <ClInclude Include="src\math\Pos.h" />
-    <ClInclude Include="src\math\Vector2d.h" />
+    <ClInclude Include="src\math\NullCollider.h" />
+    <ClInclude Include="src\math\Transform.h" />
+    <ClInclude Include="src\math\Vec2.h" />
     <ClInclude Include="src\world\World.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -61,14 +65,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -101,6 +105,18 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <CopyLocalDebugSymbols>true</CopyLocalDebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <CopyLocalDebugSymbols>true</CopyLocalDebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <CopyLocalDebugSymbols>true</CopyLocalDebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <CopyLocalDebugSymbols>true</CopyLocalDebugSymbols>
+  </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
     <VcpkgEnableManifest>true</VcpkgEnableManifest>
   </PropertyGroup>
@@ -110,10 +126,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>;$(projectDir)\lib\dxlib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>;$(projectDir)\lib\dxlib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);msvcrtd.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -124,6 +145,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,15 +162,15 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(projectDir)lib\;$(projectDir)lib\dxlib\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(projectDir)lib\;$(projectDir)lib\dxlib\;%(AdditionalIncludeDirectories);$(projectDir)\lib\dxlib</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(projectDir)lib\;$(projectDir)lib\dxlib\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>msvcrtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(projectDir)lib\;$(projectDir)lib\dxlib\;$(projectDir)\lib\dxlib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>msvcrtd.lib;%(AdditionalDependencies);msvcrtd.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

@@ -1,65 +1,35 @@
 #include "BoundingBox.h"
 
-BoundingBox::BoundingBox(const Vector2d& position, const double width, const double height)
-    : position_(position),
-      width_(width),
-      height_(height)
+BoundingBox::BoundingBox(const Vec2& position, const float width, const float height)
+    : position(position),
+      width(width),
+      height(height)
 {
 }
 
-Vector2d BoundingBox::GetPosition() const
+float BoundingBox::GetLeft() const
 {
-    return position_;
+    return position.x;
 }
 
-double BoundingBox::GetWidth() const
+float BoundingBox::GetRight() const
 {
-    return width_;
+    return position.x + width;
 }
 
-double BoundingBox::GetHeight() const
+float BoundingBox::GetTop() const
 {
-    return height_;
+    return position.y;
 }
 
-BoundingBox BoundingBox::SetPosition(const Vector2d& position) const
+float BoundingBox::GetBottom() const
 {
-    return {position, width_, height_};
+    return position.y + height;
 }
 
-BoundingBox BoundingBox::SetWidth(const double width) const
+Vec2 BoundingBox::GetCenter() const
 {
-    return {position_, width, height_};
-}
-
-BoundingBox BoundingBox::SetHeight(const double height) const
-{
-    return {position_, width_, height};
-}
-
-double BoundingBox::GetLeft() const
-{
-    return position_.GetX();
-}
-
-double BoundingBox::GetRight() const
-{
-    return position_.GetX() + width_;
-}
-
-double BoundingBox::GetTop() const
-{
-    return position_.GetY();
-}
-
-double BoundingBox::GetBottom() const
-{
-    return position_.GetY() + height_;
-}
-
-Vector2d BoundingBox::GetCenter() const
-{
-    return Vector2d{position_.GetX() + width_ / 2, position_.GetY() + height_ / 2};
+    return Vec2{position.x + width / 2, position.y + height / 2};
 }
 
 bool BoundingBox::Intersects(const Collider& other) const
@@ -74,9 +44,9 @@ bool BoundingBox::Intersects(const Collider& other) const
     return false;
 }
 
-bool BoundingBox::Contains(const Vector2d& point) const
+bool BoundingBox::Contains(const Vec2& point) const
 {
-    const double x = point.GetX();
-    const double y = point.GetY();
+    const auto x = point.x;
+    const auto y = point.y;
     return x >= GetLeft() && x <= GetRight() && y >= GetTop() && y <= GetBottom();
 }

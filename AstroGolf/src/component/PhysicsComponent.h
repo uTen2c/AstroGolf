@@ -2,25 +2,21 @@
 #include "Component.h"
 #include "../math/Collider.h"
 
-class PhysicsComponent : Component
+class PhysicsComponent : public Component
 {
-    Vector2d velocity_;
-    double mass_;
+    Collider collider_;
 
 public:
-    ~PhysicsComponent() override;
+    Vec2 velocity = {0, 0};
+    float mass = 1;
 
-    void Update(double delta) override;
+    explicit PhysicsComponent(int id);
+
+    void Update(float delta) override;
 
     void Draw(DrawStack* stack) const override;
 
-    Collider GetCollider() const;
+    [[nodiscard]] Collider GetCollider() const;
 
-    void SetVelocity(const Vector2d& velocity);
-
-    void AddVelocity(const Vector2d& velocity);
-
-    double GetMass() const;
-
-    void SetMass(const double& mass);
+    void SetCollider(const Collider& collider);
 };

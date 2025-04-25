@@ -1,10 +1,13 @@
 #include "PhysicsComponent.h"
 
-PhysicsComponent::~PhysicsComponent()
+#include "../math/NullCollider.h"
+
+PhysicsComponent::PhysicsComponent(const int id): Component(id)
 {
+    SetCollider(Collider(NullCollider()));
 }
 
-void PhysicsComponent::Update(double delta)
+void PhysicsComponent::Update(const float delta)
 {
     Component::Update(delta);
 }
@@ -16,21 +19,10 @@ void PhysicsComponent::Draw(DrawStack* stack) const
 
 Collider PhysicsComponent::GetCollider() const
 {
-    
+    return collider_;
 }
 
-void PhysicsComponent::SetVelocity(const Vector2d& velocity)
+void PhysicsComponent::SetCollider(const Collider& collider)
 {
-}
-
-void PhysicsComponent::AddVelocity(const Vector2d& velocity)
-{
-}
-
-double PhysicsComponent::GetMass() const
-{
-}
-
-void PhysicsComponent::SetMass(const double& mass)
-{
+    collider_ = collider;
 }

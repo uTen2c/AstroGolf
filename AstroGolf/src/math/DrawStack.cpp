@@ -15,26 +15,27 @@ void DrawStack::Pop()
     vec_stack_.pop();
 }
 
-void DrawStack::Translate(const Vector2d vector2d)
+void DrawStack::Translate(const Vec2 vector2d)
 {
-    const auto current = vec_stack_.top();
+    auto current = vec_stack_.top();
     Pop();
-    vec_stack_.push(current.Add(vector2d));
+    current.Add(vector2d);
+    vec_stack_.push(current);
 }
 
-Vector2d DrawStack::GetScreenPos() const
+Vec2 DrawStack::GetScreenPos() const
 {
-    Vector2d vec = {0, 0};
+    Vec2 vec;
     auto copied = vec_stack_;
     while (!copied.empty())
     {
-        vec = vec.Add(copied.top());
+        vec.Add(copied.top());
         copied.pop();
     }
     return vec;
 }
 
-Vector2d DrawStack::GetRelativePos() const
+Vec2 DrawStack::GetRelativePos() const
 {
     return vec_stack_.top();
 }

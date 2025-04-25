@@ -1,6 +1,3 @@
-// DxLibがShift-JISなので警告が出る
-#pragma warning(disable : 4828)
-
 #include "spdlog/spdlog.h"
 
 #include "DxLib.h"
@@ -9,16 +6,18 @@
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
+#include "component/BoxComponent.h"
 
 namespace
 {
     const auto game = Game();
 }
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+// ReSharper disable once CppInconsistentNaming
+LRESULT CALLBACK WndProc(const HWND hwnd, const UINT msg, const WPARAM w_param, const LPARAM l_param)
 {
-    extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-    if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
+    extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM w_param, LPARAM l_param);
+    if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, w_param, l_param))
         return true;
     return 0;
 }
@@ -45,12 +44,22 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 
     ImGui_ImplWin32_Init(GetMainWindowHandle());
-    ImGui_ImplDX11_Init((ID3D11Device*)GetUseDirect3D11Device(), (ID3D11DeviceContext*)GetUseDirect3D11DeviceContext());
 
-    const auto demo1 = std::make_shared<SimpleSquareComponent>(game.GetWorld().NextComponentId(), Pos({100, 300}, 0));
-    const auto demo2 = std::make_shared<SimpleSquareComponent>(game.GetWorld().NextComponentId(), Pos({150, 300}, 0));
+    // ReSharper disable once CppCStyleCast
+    ImGui_ImplDX11_Init((ID3D11Device*)GetUseDirect3D11Device(), (ID3D11DeviceContext*)GetUseDirect3D11DeviceContext()); // NOLINT(clang-diagnostic-cast-qual)
+
+    const auto demo1 = std::make_shared<SimpleSquareComponent>(game.GetWorld().NextComponentId());
+    demo1->transform.translate = {100, 300};
+
+    const auto demo2 = std::make_shared<SimpleSquareComponent>(game.GetWorld().NextComponentId());
+    demo2->transform.translate = {150, 300};
+
+    const auto box = std::make_shared<BoxComponent>(game.GetWorld().NextComponentId(), 200, 20);
+    box->transform.translate = {500, 500};
+
     game.GetWorld().AddComponent(demo1);
     game.GetWorld().AddComponent(demo2);
+    game.GetWorld().AddComponent(box);
 
     while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
     {
@@ -63,22 +72,22 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         ImGui::NewFrame();
         ImGui::ShowDemoWindow();
 
-        auto move = Vector2d(0, 0);
+        auto move = Vec2(0, 0);
         if (CheckHitKey(KEY_INPUT_A))
         {
             spdlog::info("A");
-            move = move.AddX(-1);
+            move.x -= 1;
         }
         if (CheckHitKey(KEY_INPUT_D))
         {
             spdlog::info("D");
-            move = move.AddX(1);
+            move.x += 1;
         }
 
         const auto camera = &game.GetWorld().GetCamera();
-        camera->SetPos(camera->GetPos().SetPoint(camera->GetPos().GetPoint().Add(move)));
+        camera->translate.x += move.x;
         ImGui::Begin("Pos");
-        ImGui::Text("%f, %f", camera->GetPos().GetPoint().GetX(), camera->GetPos().GetPoint().GetY());
+        ImGui::Text("%f, %f", camera->translate.x, camera->translate.y);
         ImGui::End();
 
         game.GetWorld().Draw();

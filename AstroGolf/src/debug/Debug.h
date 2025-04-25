@@ -3,7 +3,7 @@
 class Debug
 {
 public:
-    static bool show_collisions;
+    inline static bool show_collisions = false;
 
     static void DrawDebugMenu();
 };

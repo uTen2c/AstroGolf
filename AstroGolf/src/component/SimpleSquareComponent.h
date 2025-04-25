@@ -4,8 +4,8 @@
 class SimpleSquareComponent final : public Component
 {
 public:
-    SimpleSquareComponent(const int id, const Pos& pos)
-        : Component(id, pos)
+    explicit SimpleSquareComponent(const int id)
+        : Component(id)
     {
     }
 

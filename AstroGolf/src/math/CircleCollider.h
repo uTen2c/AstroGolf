@@ -1,24 +1,24 @@
 #pragma once
 
 #include "Collider.h"
-#include "Vector2d.h"
+#include "Vec2.h"
 
-class CircleCollider : public Collider
+class CircleCollider final : public Collider
 {
-    Vector2d center_; // 円の中心座標
-    double radius_;   // 円の半径
+    Vec2 center_; // 円の中心座標
+    float radius_; // 円の半径
 
 public:
-    CircleCollider(const Vector2d& center, double radius);
+    CircleCollider(const Vec2& center, float radius);
 
     // ゲッター
-    Vector2d GetCenter() const;
-    double GetRadius() const;
+    [[nodiscard]] Vec2 GetCenter() const;
+    [[nodiscard]] float GetRadius() const;
 
     // セッター（イミュータブルなので新しいインスタンスを返す）
-    CircleCollider SetCenter(const Vector2d& center) const;
-    CircleCollider SetRadius(double radius) const;
+    [[nodiscard]] CircleCollider SetCenter(const Vec2& center) const;
+    [[nodiscard]] CircleCollider SetRadius(float radius) const;
 
-    bool Intersects(const Collider& other) const override;
-    bool Contains(const Vector2d& point) const override;
+    [[nodiscard]] bool Intersects(const Collider& other) const override;
+    [[nodiscard]] bool Contains(const Vec2& point) const override;
 };

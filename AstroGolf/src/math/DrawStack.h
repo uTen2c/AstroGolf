@@ -5,8 +5,8 @@
 
 class DrawStack
 {
-    std::stack<Vector2d> vec_stack_ = {};
-    Vector2d vector2d_ = {0, 0};
+    std::stack<Vec2> vec_stack_ = {};
+    Vec2 vector2d_ = {0, 0};
 
 public:
     DrawStack();
@@ -14,9 +14,9 @@ public:
     void Push();
     void Pop();
 
-    void Translate(Vector2d vector2d);
+    void Translate(Vec2 vector2d);
 
-    Vector2d GetScreenPos() const;
+    [[nodiscard]] Vec2 GetScreenPos() const;
 
-    Vector2d GetRelativePos() const;
+    [[nodiscard]] Vec2 GetRelativePos() const;
 };

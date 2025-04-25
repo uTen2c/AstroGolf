@@ -12,7 +12,9 @@ void World::Draw()
     auto stack = DrawStack();
 
     // カメラの位置を補正する
-    stack.Translate(camera_->GetPos().GetPoint().Multiply(-1));
+    auto trans = camera_->translate;
+    trans.Multiply(-1);
+    stack.Translate(trans);
 
     for (const auto& component : GetComponents())
     {

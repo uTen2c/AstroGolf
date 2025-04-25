@@ -1,11 +1,11 @@
 #pragma once
-#include "../math/Pos.h"
+#include "../math/Vec2.h"
 
 class GameCamera
 {
-    Pos pos_ = {{0, 0}, 0.0};
-
 public:
+    Vec2 translate = {0, 0};
+
     GameCamera() = default;
     GameCamera(const GameCamera&) = delete;
     GameCamera& operator=(const GameCamera&) = delete;
@@ -13,8 +13,4 @@ public:
     GameCamera& operator=(GameCamera&&) = delete;
 
     ~GameCamera() = default;
-
-
-    [[nodiscard]] Pos GetPos() const;
-    void SetPos(const Pos& pos);
 };

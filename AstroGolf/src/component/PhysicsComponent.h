@@ -19,4 +19,9 @@ public:
     [[nodiscard]] Collider GetCollider() const;
 
     void SetCollider(const Collider& collider);
+
+    void Move(const Vec2& delta);
+
+private:
+    void CheckCollision();
 };

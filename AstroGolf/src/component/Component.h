@@ -8,6 +8,7 @@ class Component
 
 public:
     Transform transform;
+    Vec2 velocity;
 
     explicit Component(const int id): id_(id)
     {

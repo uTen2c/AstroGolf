@@ -1,7 +1,7 @@
 #pragma once
 #include <stack>
 
-#include "Pos.h"
+#include "Vec2.h"
 
 class DrawStack
 {

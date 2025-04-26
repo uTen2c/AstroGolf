@@ -26,3 +26,13 @@ void PhysicsComponent::SetCollider(const Collider& collider)
 {
     collider_ = collider;
 }
+
+void PhysicsComponent::Move(const Vec2& delta)
+{
+    transform.translate.Add(delta);
+}
+
+void PhysicsComponent::CheckCollision()
+{
+    
+}

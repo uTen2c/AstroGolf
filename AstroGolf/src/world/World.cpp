@@ -22,6 +22,14 @@ void World::Draw()
     }
 }
 
+void World::Update(const float& deltaTime)
+{
+    for (const auto component : GetComponents())
+    {
+        component->Update(deltaTime);
+    }
+}
+
 int World::NextComponentId()
 {
     spdlog::info("{}", next_id_);
@@ -50,18 +58,18 @@ bool World::RemoveComponent(const int id)
     return true;
 }
 
-std::vector<const Component*> World::GetComponents()
+std::vector<Component*> World::GetComponents()
 {
-    std::vector<const Component*> components;
+    std::vector<Component*> components;
     components.reserve(component_map_.size());
-    std::ranges::transform(component_map_, std::back_inserter(components), [](const auto& pair)
+    std::ranges::transform(component_map_, std::back_inserter(components), [](auto& pair)
     {
         return pair.second.get();
     });
     return components;
 }
 
-const Component* World::GetComponent(const int id)
+Component* World::GetComponent(const int id)
 {
     const auto found = component_map_.find(id);
     if (found == component_map_.end())

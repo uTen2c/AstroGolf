@@ -7,6 +7,7 @@
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
 #include "component/BoxComponent.h"
+#include "component/PlayerComponent.h"
 
 namespace
 {
@@ -30,6 +31,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     SetMainWindowText(_T("Astro Golf"));
     ChangeWindowMode(true);
     SetHookWinProc(WndProc);
+    SetWaitVSyncFlag(false);
 
     if (DxLib_Init() == -1)
     {
@@ -54,38 +56,60 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     const auto demo2 = std::make_shared<SimpleSquareComponent>(game.GetWorld().NextComponentId());
     demo2->transform.translate = {150, 300};
 
-    const auto box = std::make_shared<BoxComponent>(game.GetWorld().NextComponentId(), 200, 20);
-    box->transform.translate = {500, 500};
+    const auto box = std::make_shared<BoxComponent>(game.GetWorld().NextComponentId(), 500, 50);
+    box->transform.translate = {250, 500};
+
+    const auto player = std::make_shared<PlayerComponent>(game.GetWorld().NextComponentId());
+    player->transform.translate = {250, 400};
 
     game.GetWorld().AddComponent(demo1);
     game.GetWorld().AddComponent(demo2);
     game.GetWorld().AddComponent(box);
+    game.GetWorld().AddComponent(player);
+
+    // FPS計測関係の初期化
+    auto fpsCheckTime = GetNowHiPerformanceCount();
+    auto fpsCounter = 0;
+    auto time = GetNowHiPerformanceCount();
 
     while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
     {
-        SetDrawScreen(DX_SCREEN_BACK);
-        SetDrawAreaFull();
-        ClearDrawScreen();
-
         ImGui_ImplDX11_NewFrame();
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
         ImGui::ShowDemoWindow();
+        
+        ScreenFlip();
+
+        WaitTimer(1000 / 144); // 144FPS付近に固定する
+
+        // 現在のシステム時間を取得
+        const long long nowTime = GetNowHiPerformanceCount();
+
+        // 前回取得した時間からの経過時間を秒に変換してセット
+        // ( GetNowHiPerformanceCount で取得できる値はマイクロ秒単位なので 1000000 で割ることで秒単位になる )
+        Game::deltaTime = (nowTime - time) / 1000000.0f;
+
+        game.GetWorld().Update(Game::deltaTime);
+
+        SetDrawScreen(DX_SCREEN_BACK);
+        SetDrawAreaFull();
+        ClearDrawScreen();
 
         auto move = Vec2(0, 0);
         if (CheckHitKey(KEY_INPUT_A))
         {
             spdlog::info("A");
-            move.x -= 1;
+            move.x -= 100;
         }
         if (CheckHitKey(KEY_INPUT_D))
         {
             spdlog::info("D");
-            move.x += 1;
+            move.x += 100;
         }
 
         const auto camera = &game.GetWorld().GetCamera();
-        camera->translate.x += move.x;
+        camera->translate.x += move.x * Game::deltaTime;
         ImGui::Begin("Pos");
         ImGui::Text("%f, %f", camera->translate.x, camera->translate.y);
         ImGui::End();
@@ -95,7 +119,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         ImGui::Render();
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
-        ScreenFlip();
+        DrawFormatString(0, 0, GetColor(255, 255, 255), "FPS:%d", Game::fps);
+
+        // 今回取得した時間を保存
+        time = nowTime;
+
+        // FPS関係の処理( 1秒経過する間に実行されたメインループの回数を FPS とする )
+        fpsCounter++;
+        if (nowTime - fpsCheckTime > 1000000)
+        {
+            Game::fps = fpsCounter;
+            fpsCounter = 0;
+            fpsCheckTime = nowTime;
+        }
     }
 
     ImGui_ImplDX11_Shutdown();

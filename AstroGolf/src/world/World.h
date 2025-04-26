@@ -18,6 +18,7 @@ public:
     ~World() = default;
 
     void Draw();
+    void Update(const float& deltaTime);
 
     /**
      * ワールド内で一意なIDを生成する
@@ -43,9 +44,9 @@ public:
      * ワールド内のすべてのコンポーネントを取得する
      * @return 
      */
-    std::vector<const Component*> GetComponents();
+    std::vector<Component*> GetComponents();
 
-    const Component* GetComponent(int id);
+    Component* GetComponent(int id);
 
     [[nodiscard]] GameCamera& GetCamera() const;
 };

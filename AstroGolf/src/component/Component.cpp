@@ -4,7 +4,7 @@ void Component::Update(float delta)
 {
 }
 
-void Component::Draw(DrawStack* stack) const
+void Component::Draw(DrawStack* stack)
 {
 }
 

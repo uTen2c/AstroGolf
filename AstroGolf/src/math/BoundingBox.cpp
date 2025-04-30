@@ -1,52 +1,63 @@
 #include "BoundingBox.h"
 
-BoundingBox::BoundingBox(const Vec2& position, const float width, const float height)
-    : position(position),
-      width(width),
-      height(height)
-{
-}
+#include "CircleCollider.h"
 
 float BoundingBox::GetLeft() const
 {
-    return position.x;
+    return width * -0.5f;
 }
 
 float BoundingBox::GetRight() const
 {
-    return position.x + width;
+    return width * 0.5f;
 }
 
 float BoundingBox::GetTop() const
 {
-    return position.y;
+    return height * -0.5f;
 }
 
 float BoundingBox::GetBottom() const
 {
-    return position.y + height;
+    return height * 0.5f;
 }
 
-Vec2 BoundingBox::GetCenter() const
+bool BoundingBox::Intersects(const Vec2& origin, const Vec2& otherOrigin, const Collider& otherCollider) const
 {
-    return Vec2{position.x + width / 2, position.y + height / 2};
-}
-
-bool BoundingBox::Intersects(const Collider& other) const
-{
-    if (const auto* bb = dynamic_cast<const BoundingBox*>(&other))
+    if (const auto* bb = dynamic_cast<const BoundingBox*>(&otherCollider))
     {
-        return !(GetRight() < bb->GetLeft() ||
-            GetLeft() > bb->GetRight() ||
-            GetBottom() < bb->GetTop() ||
-            GetTop() > bb->GetBottom());
+        const auto selfLeft = origin.x + GetLeft();
+        const auto selfRight = origin.x + GetRight();
+        const auto selfTop = origin.y + GetTop();
+        const auto selfBottom = origin.y + GetBottom();
+        const auto otherLeft = otherOrigin.x + bb->GetLeft();
+        const auto otherRight = otherOrigin.x + bb->GetRight();
+        const auto otherTop = otherOrigin.y + bb->GetTop();
+        const auto otherBottom = otherOrigin.y + bb->GetBottom();
+        return !(selfRight < otherLeft ||
+            selfLeft > otherRight ||
+            selfBottom < otherTop ||
+            selfTop > otherBottom);
+    }
+    if (const auto* cc = dynamic_cast<const CircleCollider*>(&otherCollider))
+    {
+        return origin.Distance(otherOrigin) <= cc->radius;
     }
     return false;
 }
 
-bool BoundingBox::Contains(const Vec2& point) const
+bool BoundingBox::Contains(const Vec2& origin, const Vec2& point) const
 {
     const auto x = point.x;
     const auto y = point.y;
-    return x >= GetLeft() && x <= GetRight() && y >= GetTop() && y <= GetBottom();
+    const auto left = origin.x + GetLeft();
+    const auto right = origin.x + GetRight();
+    const auto top = origin.y + GetTop();
+    const auto bottom = origin.y + GetBottom();
+    return x >= left && x <= right && y >= top && y <= bottom;
+}
+
+float BoundingBox::GetSize()
+{
+    return std::max(width, height);
 }

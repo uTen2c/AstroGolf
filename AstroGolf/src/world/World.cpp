@@ -1,10 +1,14 @@
 #include "World.h"
 
+#include <ranges>
 #include <spdlog/spdlog.h>
 
 World::World()
 {
     spdlog::info("World init");
+
+    camera_ = std::make_shared<CameraComponent>(NextComponentId());
+    AddComponent(camera_);
 }
 
 void World::Draw()
@@ -12,8 +16,8 @@ void World::Draw()
     auto stack = DrawStack();
 
     // カメラの位置を補正する
-    auto trans = camera_->translate;
-    trans.Multiply(-1);
+    auto trans = camera_->transform.translate;
+    trans.Mul(-1);
     stack.Translate(trans);
 
     for (const auto& component : GetComponents())
@@ -43,6 +47,7 @@ bool World::AddComponent(const std::shared_ptr<Component>& component)
         spdlog::warn("Failed to add component. ID {} already exists", component->GetId());
         return false;
     }
+    component->world = this;
     component_map_.insert(std::make_pair(component->GetId(), component));
     return true;
 }
@@ -79,7 +84,30 @@ Component* World::GetComponent(const int id)
     return found->second.get();
 }
 
-GameCamera& World::GetCamera() const
+CameraComponent& World::GetCamera() const
 {
     return *camera_;
+}
+
+std::vector<PhysicsComponent*> World::GetNearbyPhysicsComponents(const Vec2& origin, const float radius) const
+{
+    std::vector<PhysicsComponent*> nearbyComponents;
+
+    if (radius <= 0)
+    {
+        return nearbyComponents;
+    }
+
+    for (const auto& component : component_map_ | std::views::values)
+    {
+        const auto componentPosition = component->transform.translate;
+        const auto distance = componentPosition.Distance(origin);
+        const auto physCompPtr = dynamic_cast<PhysicsComponent*>(component.get());
+        if (distance <= radius && physCompPtr)
+        {
+            nearbyComponents.push_back(physCompPtr);
+        }
+    }
+
+    return nearbyComponents;
 }

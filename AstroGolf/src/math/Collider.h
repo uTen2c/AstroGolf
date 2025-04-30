@@ -13,8 +13,11 @@ public:
     Collider& operator=(Collider&&) noexcept = default;
 
     // 衝突判定
-    [[nodiscard]] virtual bool Intersects(const Collider& other) const;
+    [[nodiscard]] virtual bool Intersects(const Vec2& origin, const Vec2& otherOrigin, const Collider& otherCollider) const;
 
     // 点が内部にあるかどうかの判定
-    [[nodiscard]] virtual bool Contains(const Vec2& point) const;
+    [[nodiscard]] virtual bool Contains(const Vec2& origin, const Vec2& point) const;
+
+    // 大まかな当たり判定のサイズ
+    [[nodiscard]] virtual float GetSize();
 };

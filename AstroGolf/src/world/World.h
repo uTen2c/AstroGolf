@@ -3,15 +3,16 @@
 #include <memory>
 #include <vector>
 
-#include "../camera/GameCamera.h"
+#include "../component/CameraComponent.h"
 #include "../component/Component.h"
+#include "../component/PhysicsComponent.h"
 
 class World
 {
     int next_id_ = 0;
     std::map<int, std::shared_ptr<Component>> component_map_ = {};
 
-    std::unique_ptr<GameCamera> camera_ = std::make_unique<GameCamera>();
+    std::shared_ptr<CameraComponent> camera_;
 
 public:
     World();
@@ -48,5 +49,7 @@ public:
 
     Component* GetComponent(int id);
 
-    [[nodiscard]] GameCamera& GetCamera() const;
+    [[nodiscard]] CameraComponent& GetCamera() const;
+
+    std::vector<PhysicsComponent*> GetNearbyPhysicsComponents(const Vec2& origin, float radius) const;
 };

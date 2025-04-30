@@ -7,6 +7,7 @@
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
 #include "component/BoxComponent.h"
+#include "component/CircleComponent.h"
 #include "component/PlayerComponent.h"
 
 namespace
@@ -56,15 +57,27 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     const auto demo2 = std::make_shared<SimpleSquareComponent>(game.GetWorld().NextComponentId());
     demo2->transform.translate = {150, 300};
 
-    const auto box = std::make_shared<BoxComponent>(game.GetWorld().NextComponentId(), 500, 50);
-    box->transform.translate = {250, 500};
+    const auto box1 = std::make_shared<BoxComponent>(game.GetWorld().NextComponentId(), 500, 50);
+    box1->transform.translate = {250, 500};
+
+    const auto box2 = std::make_shared<BoxComponent>(game.GetWorld().NextComponentId(), 50, 500);
+    box2->transform.translate = {550, 400};
+
+    const auto box3 = std::make_shared<BoxComponent>(game.GetWorld().NextComponentId(), 50, 500);
+    box3->transform.translate = {-100, 400};
+
+    const auto circle = std::make_shared<CircleComponent>(game.GetWorld().NextComponentId(), 64);
+    circle->transform.translate = {300, 0};
 
     const auto player = std::make_shared<PlayerComponent>(game.GetWorld().NextComponentId());
     player->transform.translate = {250, 400};
 
     game.GetWorld().AddComponent(demo1);
     game.GetWorld().AddComponent(demo2);
-    game.GetWorld().AddComponent(box);
+    game.GetWorld().AddComponent(box1);
+    game.GetWorld().AddComponent(box2);
+    game.GetWorld().AddComponent(box3);
+    game.GetWorld().AddComponent(circle);
     game.GetWorld().AddComponent(player);
 
     // FPS計測関係の初期化
@@ -78,10 +91,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
         ImGui::ShowDemoWindow();
-        
+
         ScreenFlip();
 
-        WaitTimer(1000 / 144); // 144FPS付近に固定する
+        WaitTimer(1000 / 200); // 144FPS付近に固定する
 
         // 現在のシステム時間を取得
         const long long nowTime = GetNowHiPerformanceCount();
@@ -95,24 +108,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         SetDrawScreen(DX_SCREEN_BACK);
         SetDrawAreaFull();
         ClearDrawScreen();
-
-        auto move = Vec2(0, 0);
-        if (CheckHitKey(KEY_INPUT_A))
-        {
-            spdlog::info("A");
-            move.x -= 100;
-        }
-        if (CheckHitKey(KEY_INPUT_D))
-        {
-            spdlog::info("D");
-            move.x += 100;
-        }
-
-        const auto camera = &game.GetWorld().GetCamera();
-        camera->translate.x += move.x * Game::deltaTime;
-        ImGui::Begin("Pos");
-        ImGui::Text("%f, %f", camera->translate.x, camera->translate.y);
-        ImGui::End();
 
         game.GetWorld().Draw();
 

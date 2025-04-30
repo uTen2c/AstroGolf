@@ -2,7 +2,7 @@
 
 #include <DxLib.h>
 
-void SimpleSquareComponent::Draw(DrawStack* stack) const
+void SimpleSquareComponent::Draw(DrawStack* stack)
 {
     stack->Push();
     transform.ApplyDrawStack(stack);

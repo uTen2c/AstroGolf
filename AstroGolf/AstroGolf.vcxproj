@@ -20,8 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AstroGolf.cpp" />
-    <ClCompile Include="src\camera\GameCamera.cpp" />
     <ClCompile Include="src\component\BoxComponent.cpp" />
+    <ClCompile Include="src\component\CameraComponent.cpp" />
+    <ClCompile Include="src\component\CircleComponent.cpp" />
     <ClCompile Include="src\component\Component.cpp" />
     <ClCompile Include="src\component\PhysicsComponent.cpp" />
     <ClCompile Include="src\component\PlayerComponent.cpp" />
@@ -38,8 +39,9 @@
     <ClCompile Include="src\world\World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\camera\GameCamera.h" />
     <ClInclude Include="src\component\BoxComponent.h" />
+    <ClInclude Include="src\component\CameraComponent.h" />
+    <ClInclude Include="src\component\CircleComponent.h" />
     <ClInclude Include="src\component\Component.h" />
     <ClInclude Include="src\component\PhysicsComponent.h" />
     <ClInclude Include="src\component\PlayerComponent.h" />

@@ -17,15 +17,36 @@ struct Vec2
     {
     }
 
-    void SetX(const std::function<float(float)>& setter);
+    [[nodiscard]] Vec2 Copy() const;
 
-    void SetY(const std::function<float(float)>& setter);
+    Vec2 WithX(const float& newX);
 
-    void Add(Vec2 vec2);
+    Vec2 WithX(const std::function<float(float)>& setter);
 
-    void Multiply(float factor);
+    Vec2 WithY(const float& newY);
+
+    Vec2 WithY(const std::function<float(float)>& setter);
+
+    Vec2 Add(Vec2 vec2);
+
+    Vec2 Sub(Vec2 vec2);
+
+    Vec2 Mul(float factor);
+
+    Vec2 Neg();
 
     [[nodiscard]] float Dot(const Vec2& other) const;
 
     [[nodiscard]] float Distance(const Vec2& other) const;
+
+    // ベクトルの長さを計算する
+    [[nodiscard]] float Length() const;
+
+    // ベクトルを正規化（単位ベクトル化）する
+    void Normalize();
+
+    // 正規化されたベクトルを返す
+    [[nodiscard]] Vec2 Normalized() const;
+
+    [[nodiscard]] float Angle(const Vec2& other) const;
 };

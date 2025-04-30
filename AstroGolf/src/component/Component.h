@@ -2,13 +2,15 @@
 #include "../math/DrawStack.h"
 #include "../math/Transform.h"
 
+class World;
+
 class Component
 {
     int id_;
 
 public:
     Transform transform;
-    Vec2 velocity;
+    World* world = nullptr;
 
     explicit Component(const int id): id_(id)
     {
@@ -23,7 +25,7 @@ public:
     Component& operator=(Component&&) noexcept = default;
 
     virtual void Update(float delta);
-    virtual void Draw(DrawStack* stack) const;
+    virtual void Draw(DrawStack* stack);
 
     [[nodiscard]] int GetId() const;
 };

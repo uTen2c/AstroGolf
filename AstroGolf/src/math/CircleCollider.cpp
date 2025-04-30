@@ -1,79 +1,70 @@
 #include "CircleCollider.h"
 #include "BoundingBox.h"
-#include <cmath>
 
-CircleCollider::CircleCollider(const Vec2& center, const float radius)
-    : center_(center),
-      radius_(radius)
-{
-}
-
-Vec2 CircleCollider::GetCenter() const
-{
-    return center_;
-}
-
-float CircleCollider::GetRadius() const
-{
-    return radius_;
-}
-
-CircleCollider CircleCollider::SetCenter(const Vec2& center) const
-{
-    return {center, radius_};
-}
-
-CircleCollider CircleCollider::SetRadius(const float radius) const
-{
-    return {center_, radius};
-}
-
-bool CircleCollider::Intersects(const Collider& other) const
+bool CircleCollider::Intersects(const Vec2& origin, const Vec2& otherOrigin, const Collider& otherCollider) const
 {
     // 円と円の衝突判定
-    if (const auto* circle = dynamic_cast<const CircleCollider*>(&other))
+    if (const auto* cc = dynamic_cast<const CircleCollider*>(&otherCollider))
     {
-        const auto dx = center_.x - circle->center_.x;
-        const auto dy = center_.y - circle->center_.y;
-        const auto distance = std::sqrt(dx * dx + dy * dy);
-
-        return distance <= (radius_ + circle->radius_);
+        const auto distance = origin.Distance(otherOrigin);
+        return distance <= radius + cc->radius;
     }
 
     // 円と矩形の衝突判定
-    if (const auto* box = dynamic_cast<const BoundingBox*>(&other))
+    if (const auto* box = dynamic_cast<const BoundingBox*>(&otherCollider))
     {
         // 矩形の中心と円の中心との距離を計算
-        const auto box_center = box->GetCenter();
-        const auto dx = std::abs(center_.x - box_center.x);
-        const auto dy = std::abs(center_.y - box_center.y);
+        const auto dx = std::max(origin.x, otherOrigin.x) - std::min(origin.x, otherOrigin.x);
+        const auto dy = std::max(origin.y, otherOrigin.y) - std::min(origin.y, otherOrigin.y);
 
-        // 矩形のハーフサイズ
-        const auto half_width = box->width / 2.0;
-        const auto half_height = box->height / 2.0;
+        const auto x1 = otherOrigin.x + box->GetLeft();
+        const auto y1 = otherOrigin.y + box->GetTop();
+        const auto x2 = otherOrigin.x + box->GetRight();
+        const auto y2 = otherOrigin.y + box->GetBottom();
 
-        // 円の中心から矩形までの最短距離を計算
-        if (dx > half_width + radius_) return false;
-        if (dy > half_height + radius_) return false;
+        if (origin.x > x1 && origin.x < x2 && origin.y > y1 - radius && origin.y < y2 + radius)
+        {
+            return true;
+        }
+        if (origin.x > x1 - radius && origin.x < x2 + radius && origin.y > y1 && origin.y < y2)
+        {
+            return true;
+        }
 
-        if (dx <= half_width) return true;
-        if (dy <= half_height) return true;
+        const auto r2 = radius * radius;
+        if (pow(x1 - origin.x, 2) + pow(y1 - origin.y, 2) < r2)
+        {
+            return true;
+        }
 
-        // 矩形の角と円の中心との距離を計算
-        const auto corner_distance_sq =
-            std::pow(dx - half_width, 2) +
-            std::pow(dy - half_height, 2);
+        if (pow(x2 - origin.x, 2) + pow(y1 - origin.y, 2) < r2)
+        {
+            return true;
+        }
 
-        return corner_distance_sq <= (radius_ * radius_);
+        if (pow(x2 - origin.x, 2) + pow(y2 - origin.y, 2) < r2)
+        {
+            return true;
+        }
+
+        if (pow(x1 - origin.x, 2) + pow(y2 - origin.y, 2) < r2)
+        {
+            return true;
+        }
     }
 
     return false;
 }
 
-bool CircleCollider::Contains(const Vec2& point) const
+bool CircleCollider::Contains(const Vec2& origin, const Vec2& point) const
 {
-    const auto dx = center_.x - point.x;
-    const auto dy = center_.y - point.y;
-    const auto distance_squared = dx * dx + dy * dy;
-    return distance_squared <= (radius_ * radius_);
+    const auto dx = origin.x - point.x;
+    const auto dy = origin.y - point.y;
+    const auto distanceSquared = dx * dx + dy * dy;
+    return distanceSquared <= radius * radius;
+}
+
+float CircleCollider::GetSize()
+{
+    return radius;
 }

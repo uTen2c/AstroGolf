@@ -9,5 +9,5 @@ public:
     {
     }
 
-    void Draw(DrawStack* stack) const override;
+    void Draw(DrawStack* stack) override;
 };

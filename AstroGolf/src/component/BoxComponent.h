@@ -7,8 +7,7 @@ public:
     float width;
     float height;
 
-    explicit BoxComponent(const int id, const float width, const float height);
+    explicit BoxComponent(int id, float width, float height);
 
-    void Update(float delta) override;
-    void Draw(DrawStack* stack) const override;
+    void Draw(DrawStack* stack) override;
 };

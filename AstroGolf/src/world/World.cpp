@@ -8,7 +8,12 @@ World::World()
     spdlog::info("World init");
 
     camera_ = std::make_shared<CameraComponent>(NextComponentId());
+    
+    player_ = std::make_shared<PlayerComponent>(NextComponentId());
+    player_->transform.translate = {250, 400};
+
     AddComponent(camera_);
+    AddComponent(player_);
 }
 
 void World::Draw()
@@ -87,6 +92,11 @@ Component* World::GetComponent(const int id)
 CameraComponent& World::GetCamera() const
 {
     return *camera_;
+}
+
+PlayerComponent& World::GetPlayer() const
+{
+    return *player_;
 }
 
 std::vector<PhysicsComponent*> World::GetNearbyPhysicsComponents(const Vec2& origin, const float radius) const

@@ -103,3 +103,28 @@ float Vec2::Angle(const Vec2& other) const
     }
     return std::acos(dot / length);
 }
+
+Vec2 Vec2::Rotate(const float radians)
+{
+    const float cosRad = std::cos(radians);
+    const float sinRad = std::sin(radians);
+    const float newX = x * cosRad - y * sinRad;
+    const float newY = x * sinRad + y * cosRad;
+
+    x = newX;
+    y = newY;
+
+    return *this;
+}
+
+Vec2 Vec2::Rotated(const float radians) const
+{
+    Vec2 result;
+    const float cosRad = std::cos(radians);
+    const float sinRad = std::sin(radians);
+
+    result.x = x * cosRad - y * sinRad;
+    result.y = x * sinRad + y * cosRad;
+
+    return result;
+}

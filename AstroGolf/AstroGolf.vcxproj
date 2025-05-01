@@ -33,6 +33,7 @@
     <ClCompile Include="src\math\CircleCollider.cpp" />
     <ClCompile Include="src\math\Collider.cpp" />
     <ClCompile Include="src\math\DrawStack.cpp" />
+    <ClCompile Include="src\math\Math.cpp" />
     <ClCompile Include="src\math\NullCollider.cpp" />
     <ClCompile Include="src\math\Transform.cpp" />
     <ClCompile Include="src\math\Vec2.cpp" />
@@ -52,6 +53,7 @@
     <ClInclude Include="src\math\CircleCollider.h" />
     <ClInclude Include="src\math\Collider.h" />
     <ClInclude Include="src\math\DrawStack.h" />
+    <ClInclude Include="src\math\Math.h" />
     <ClInclude Include="src\math\NullCollider.h" />
     <ClInclude Include="src\math\Transform.h" />
     <ClInclude Include="src\math\Vec2.h" />

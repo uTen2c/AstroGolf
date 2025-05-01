@@ -4,6 +4,8 @@
 class PlayerComponent final : public PhysicsComponent
 {
 public:
+    Vec2 intersectingNormal;
+    
     explicit PlayerComponent(int id);
 
     void Update(float deltaTime) override;

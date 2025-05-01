@@ -9,6 +9,7 @@
 #include "component/BoxComponent.h"
 #include "component/CircleComponent.h"
 #include "component/PlayerComponent.h"
+#include "math/Math.h"
 
 namespace
 {
@@ -66,19 +67,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     const auto box3 = std::make_shared<BoxComponent>(game.GetWorld().NextComponentId(), 50, 500);
     box3->transform.translate = {-100, 400};
 
+    const auto box4 = std::make_shared<BoxComponent>(game.GetWorld().NextComponentId(), 50, 500);
+    box4->transform.translate = {500, 400};
+    box4->transform.rotation = 30 * Math::deg_to_rad;
+
     const auto circle = std::make_shared<CircleComponent>(game.GetWorld().NextComponentId(), 64);
     circle->transform.translate = {300, 0};
-
-    const auto player = std::make_shared<PlayerComponent>(game.GetWorld().NextComponentId());
-    player->transform.translate = {250, 400};
 
     game.GetWorld().AddComponent(demo1);
     game.GetWorld().AddComponent(demo2);
     game.GetWorld().AddComponent(box1);
     game.GetWorld().AddComponent(box2);
     game.GetWorld().AddComponent(box3);
+    game.GetWorld().AddComponent(box4);
     game.GetWorld().AddComponent(circle);
-    game.GetWorld().AddComponent(player);
 
     // FPS計測関係の初期化
     auto fpsCheckTime = GetNowHiPerformanceCount();

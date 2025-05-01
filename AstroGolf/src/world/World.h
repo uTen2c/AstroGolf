@@ -6,6 +6,7 @@
 #include "../component/CameraComponent.h"
 #include "../component/Component.h"
 #include "../component/PhysicsComponent.h"
+#include "../component/PlayerComponent.h"
 
 class World
 {
@@ -13,6 +14,7 @@ class World
     std::map<int, std::shared_ptr<Component>> component_map_ = {};
 
     std::shared_ptr<CameraComponent> camera_;
+    std::shared_ptr<PlayerComponent> player_;
 
 public:
     World();
@@ -50,6 +52,8 @@ public:
     Component* GetComponent(int id);
 
     [[nodiscard]] CameraComponent& GetCamera() const;
+    
+    [[nodiscard]] PlayerComponent& GetPlayer() const;
 
     std::vector<PhysicsComponent*> GetNearbyPhysicsComponents(const Vec2& origin, float radius) const;
 };

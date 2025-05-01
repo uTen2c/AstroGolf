@@ -49,4 +49,10 @@ struct Vec2
     [[nodiscard]] Vec2 Normalized() const;
 
     [[nodiscard]] float Angle(const Vec2& other) const;
+
+    // ベクトルをラジアン角度で回転させる
+    Vec2 Rotate(float radians);
+    
+    // ラジアン角度で回転した新しいベクトルを返す
+    [[nodiscard]] Vec2 Rotated(float radians) const;
 };

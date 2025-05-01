@@ -9,7 +9,7 @@
 PlayerComponent::PlayerComponent(const int id): PhysicsComponent(id)
 {
     collider = std::make_unique<CircleCollider>(32);
-    gravity = 98.0f * 3;
+    gravity = 9.8f * 100;
     gravityVelocity = {0, gravity};
 }
 
@@ -46,23 +46,13 @@ void PlayerComponent::Update(const float deltaTime)
 
     if (CheckHitKey(KEY_INPUT_LSHIFT))
     {
-        move.Mul(60);
+        move.Mul(200);
     }
     else
     {
         move.Mul(10);
     }
 
-    // if (move.y < 0)
-    // {
-    //     gravityVelocity.y = 0;
-    // }
-    // else
-    // {
-    // }
-    //     gravityVelocity.y = gravity;
-
-    // move.Multiply(deltaTime);
     if (move.Length() > 0)
     {
         velocity.Add(move);
@@ -71,14 +61,13 @@ void PlayerComponent::Update(const float deltaTime)
     {
         if (intersecting_)
         {
-            velocity.Mul(0.9f);
+            velocity.Mul(0.99f);
         }
         else
         {
-            velocity.Mul(0.99f);
+            velocity.Mul(0.999f);
         }
     }
-    // Move(move);
 
     int x;
     int y;
@@ -111,11 +100,40 @@ void PlayerComponent::Draw(DrawStack* stack)
         DrawCircleAA(screenPos.x, screenPos.y, 1, 4, GetColor(0, 255, 0), false);
         DrawCircleAA(screenPos.x, screenPos.y, circleCollider->radius, 16, GetColor(0, 255, 0), false);
 
-        auto copied = screenPos;
-        auto vec = velocity;
-        vec.Mul(1.0f);
-        copied.Add(vec);
-        DrawLineAA(screenPos.x, screenPos.y, copied.x, copied.y, GetColor(255, 0, 0), 2);
+        // Gravity
+        {
+            auto copied = screenPos;
+            copied.Add(gravityVelocity);
+            DrawLineAA(screenPos.x, screenPos.y, copied.x, copied.y, GetColor(255, 255, 0), 2);
+        }
+        
+        // Gravity + Velocity
+        {
+            auto copied = screenPos;
+            auto vec = velocity;
+            vec.Add(gravityVelocity);
+            vec.Mul(1.0f);
+            copied.Add(vec);
+            DrawLineAA(screenPos.x, screenPos.y, copied.x, copied.y, GetColor(0, 255, 0), 2);
+        }
+
+        // Velocity
+        {
+            auto copied = screenPos;
+            auto vec = velocity;
+            vec.Mul(1.0f);
+            copied.Add(vec);
+            DrawLineAA(screenPos.x, screenPos.y, copied.x, copied.y, GetColor(255, 0, 0), 2);
+        }
+
+        // Normal
+        {
+            auto copied = screenPos;
+            auto n = intersectingNormal;
+            n.Mul(30.0f);
+            copied.Add(n);
+            DrawLineAA(screenPos.x, screenPos.y, copied.x, copied.y, GetColor(0, 0, 255), 2);
+        }
     }
 
     stack->Pop();

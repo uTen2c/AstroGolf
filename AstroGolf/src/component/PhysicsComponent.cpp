@@ -59,11 +59,12 @@ void PhysicsComponent::Update(const float deltaTime)
 
     // if (gravity > 0 && !intersecting_)
     // {
-        // velocity.y += gravity * Game::deltaTime;
+    // velocity.y += gravity * Game::deltaTime;
     // }
 
     Move(copied);
-    // }
+
+    velocity.Add(gravityVelocity.Copy().Mul(deltaTime));
 }
 
 void PhysicsComponent::Draw(DrawStack* stack)
@@ -111,6 +112,8 @@ void PhysicsComponent::Move(const Vec2& delta)
                 negVec.Mul(diff);
 
                 moved.Add(negVec);
+
+                normal = negVec.Normalized();
             }
             if (const auto bb = dynamic_cast<BoundingBox*>(nearbyComponent->collider.get()))
             {
@@ -125,14 +128,14 @@ void PhysicsComponent::Move(const Vec2& delta)
                 if (moved.x > x1 && moved.x < x2 && moved.y + r >= y1 && moved.y < y2)
                 {
                     moved.y = y1 - r;
-                    normal = {0, 1};
+                    normal = {0, -1};
                     continue;
                 }
                 // Bottom floor
                 if (moved.x > x1 && moved.x < x2 && moved.y > y1 && moved.y - r <= y2)
                 {
                     moved.y = y2 + r;
-                    normal = {0, -1};
+                    normal = {0, 1};
                     continue;
                 }
                 // Left wall
@@ -181,6 +184,8 @@ void PhysicsComponent::Move(const Vec2& delta)
                 auto negVec = moved;
                 negVec.Sub(hitCorner);
                 negVec.Normalize();
+
+                normal = negVec;
 
                 const auto diff = selfCc->radius - hitCorner.Distance(moved);
                 negVec.Mul(diff);
@@ -267,52 +272,27 @@ void PhysicsComponent::Move(const Vec2& delta)
         }
     }
 
+
     intersecting_ = normal.Length() > 0;
+    if (const auto player = dynamic_cast<PlayerComponent*>(this))
+    {
+        player->intersectingNormal = normal;
+    }
 
     ImGui::Begin("intersecting_");
     ImGui::Text(intersecting_ ? "TRUE" : "FALSE");
     ImGui::End();
 
-    // if (normal.Length() > 0)
-    // {
-    //     float separatingVelocity = velocity.Dot(normal);
-    //     if (separatingVelocity < 0)
-    //     {
-    //         // 反発係数を考慮した反発後の速度成分を計算
-    //         // e = -(v_after) / (v_before) => v_after = -e * v_before
-    //         //  impulse = normal * mass * (-(1 + e) * separatingVelocity) / (mass) // 相手が静的な場合
-    //         Vec2 impulse = normal;
-    //         auto restitution = 0.2f;
-    //         impulse.Mul(-(1.0f + restitution) * separatingVelocity);
-    //
-    //         // 地面との衝突の場合、水平方向の速度への影響を減らす (オプション)
-    //         if (intersecting_ && std::abs(normal.y) > 0.7f) // 地面法線に近い場合
-    //         {
-    //             // 垂直方向のインパルスのみ適用する、など
-    //             velocity.y += impulse.y;
-    //             // 水平方向は摩擦で処理するため、ここでは変更しないか、影響を小さくする
-    //             // velocity.x += impulse.x * 0.1f; // 例: 水平インパルスの影響を減らす
-    //         }
-    //         else // 壁などとの衝突
-    //         {
-    //             velocity.Add(impulse); // 計算されたインパルスを速度に加える
-    //         }
-    //
-    //         // 閾値以下の速度なら停止（微小な振動を防ぐ）
-    //         // 特に地面での静止状態を実現するために重要
-    //         if (intersecting_ && velocity.Length() < 0.1f
-    //         )
-    //         {
-    //             velocity = {0, 0};
-    //         }
-    //         // 地面で、かつ垂直方向の速度が非常に小さい場合、垂直速度を0にする
-    //         if (intersecting_ && std::abs(velocity.y) < 0.5f)
-    //         {
-    //             velocity.y = 0;
-    //         }
-    //     }
-    // }
+    if (intersecting_)
+    {
+        const auto e = 0.75f;
+        const auto mergedVec = velocity.Copy().Add(gravityVelocity);
+        const auto a = mergedVec.Copy().Neg().Dot(normal);
+        auto r = mergedVec.Copy().Add(normal.Copy().Mul(a * 2).Mul(e));
+        r.Sub(gravityVelocity);
+        velocity = r;
+    }
 
-    spdlog::info("{}", velocity.y);
+    // spdlog::info("{}", velocity.y);
     transform.translate = moved;
 }

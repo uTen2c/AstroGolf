@@ -8,13 +8,8 @@
 #include "imgui_impl_dx11.h"
 #include "component/BoxComponent.h"
 #include "component/CircleComponent.h"
-#include "component/PlayerComponent.h"
+#include "component/RotatableBoxComponent.h"
 #include "math/Math.h"
-
-namespace
-{
-    const auto game = Game();
-}
 
 // ReSharper disable once CppInconsistentNaming
 LRESULT CALLBACK WndProc(const HWND hwnd, const UINT msg, const WPARAM w_param, const LPARAM l_param)
@@ -52,35 +47,35 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     // ReSharper disable once CppCStyleCast
     ImGui_ImplDX11_Init((ID3D11Device*)GetUseDirect3D11Device(), (ID3D11DeviceContext*)GetUseDirect3D11DeviceContext()); // NOLINT(clang-diagnostic-cast-qual)
 
-    const auto demo1 = std::make_shared<SimpleSquareComponent>(game.GetWorld().NextComponentId());
+    const auto demo1 = std::make_shared<SimpleSquareComponent>(game->GetWorld().NextComponentId());
     demo1->transform.translate = {100, 300};
 
-    const auto demo2 = std::make_shared<SimpleSquareComponent>(game.GetWorld().NextComponentId());
+    const auto demo2 = std::make_shared<SimpleSquareComponent>(game->GetWorld().NextComponentId());
     demo2->transform.translate = {150, 300};
 
-    const auto box1 = std::make_shared<BoxComponent>(game.GetWorld().NextComponentId(), 500, 50);
+    const auto box1 = std::make_shared<BoxComponent>(game->GetWorld().NextComponentId(), 500, 50);
     box1->transform.translate = {250, 500};
 
-    const auto box2 = std::make_shared<BoxComponent>(game.GetWorld().NextComponentId(), 50, 500);
+    const auto box2 = std::make_shared<BoxComponent>(game->GetWorld().NextComponentId(), 50, 500);
     box2->transform.translate = {550, 400};
 
-    const auto box3 = std::make_shared<BoxComponent>(game.GetWorld().NextComponentId(), 50, 500);
+    const auto box3 = std::make_shared<BoxComponent>(game->GetWorld().NextComponentId(), 50, 500);
     box3->transform.translate = {-100, 400};
 
-    const auto box4 = std::make_shared<BoxComponent>(game.GetWorld().NextComponentId(), 50, 500);
+    const auto box4 = std::make_shared<RotatableBoxComponent>(game->GetWorld().NextComponentId(), 50, 500);
     box4->transform.translate = {500, 400};
     box4->transform.rotation = 30 * Math::deg_to_rad;
 
-    const auto circle = std::make_shared<CircleComponent>(game.GetWorld().NextComponentId(), 64);
+    const auto circle = std::make_shared<CircleComponent>(game->GetWorld().NextComponentId(), 64);
     circle->transform.translate = {300, 0};
 
-    game.GetWorld().AddComponent(demo1);
-    game.GetWorld().AddComponent(demo2);
-    game.GetWorld().AddComponent(box1);
-    game.GetWorld().AddComponent(box2);
-    game.GetWorld().AddComponent(box3);
-    game.GetWorld().AddComponent(box4);
-    game.GetWorld().AddComponent(circle);
+    game->GetWorld().AddComponent(demo1);
+    game->GetWorld().AddComponent(demo2);
+    game->GetWorld().AddComponent(box1);
+    game->GetWorld().AddComponent(box2);
+    game->GetWorld().AddComponent(box3);
+    game->GetWorld().AddComponent(box4);
+    game->GetWorld().AddComponent(circle);
 
     // FPS計測関係の初期化
     auto fpsCheckTime = GetNowHiPerformanceCount();
@@ -98,6 +93,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
         WaitTimer(1000 / 200); // 144FPS付近に固定する
 
+        SetDrawScreen(DX_SCREEN_BACK);
+        SetDrawAreaFull();
+        ClearDrawScreen();
+
         // 現在のシステム時間を取得
         const long long nowTime = GetNowHiPerformanceCount();
 
@@ -105,13 +104,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         // ( GetNowHiPerformanceCount で取得できる値はマイクロ秒単位なので 1000000 で割ることで秒単位になる )
         Game::deltaTime = (nowTime - time) / 1000000.0f;
 
-        game.GetWorld().Update(Game::deltaTime);
+        game->GetWorld().Update(Game::deltaTime);
 
-        SetDrawScreen(DX_SCREEN_BACK);
-        SetDrawAreaFull();
-        ClearDrawScreen();
-
-        game.GetWorld().Draw();
+        game->GetWorld().Draw();
 
         ImGui::Render();
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());

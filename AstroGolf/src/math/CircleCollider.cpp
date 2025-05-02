@@ -1,5 +1,7 @@
 #include "CircleCollider.h"
+
 #include "BoundingBox.h"
+#include "RotatableBoxCollider.h"
 
 bool CircleCollider::Intersects(const Vec2& origin, const Vec2& otherOrigin, const Collider& otherCollider) const
 {
@@ -13,10 +15,6 @@ bool CircleCollider::Intersects(const Vec2& origin, const Vec2& otherOrigin, con
     // 円と矩形の衝突判定
     if (const auto* box = dynamic_cast<const BoundingBox*>(&otherCollider))
     {
-        // 矩形の中心と円の中心との距離を計算
-        const auto dx = std::max(origin.x, otherOrigin.x) - std::min(origin.x, otherOrigin.x);
-        const auto dy = std::max(origin.y, otherOrigin.y) - std::min(origin.y, otherOrigin.y);
-
         const auto x1 = otherOrigin.x + box->GetLeft();
         const auto y1 = otherOrigin.y + box->GetTop();
         const auto x2 = otherOrigin.x + box->GetRight();
@@ -51,6 +49,12 @@ bool CircleCollider::Intersects(const Vec2& origin, const Vec2& otherOrigin, con
         {
             return true;
         }
+    }
+
+    // 円と回転可能な短形の衝突
+    if (const auto* rbc = dynamic_cast<const RotatableBoxCollider*>(&otherCollider))
+    {
+        return rbc->Intersects(otherOrigin, origin, *this); // NOLINT(readability-suspicious-call-argument)
     }
 
     return false;

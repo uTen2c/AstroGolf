@@ -8,6 +8,7 @@
 #include "../math/BoundingBox.h"
 #include "../math/CircleCollider.h"
 #include "../math/NullCollider.h"
+#include "../math/RotatableBoxCollider.h"
 #include "../world/World.h"
 
 namespace
@@ -195,6 +196,12 @@ void PhysicsComponent::Move(const Vec2& delta)
                 auto negDelta = delta;
                 negDelta.Mul(-1);
                 negDelta.Mul(10);
+            }
+            if (const auto rbc = dynamic_cast<RotatableBoxCollider*>(nearbyComponent->collider.get()))
+            {
+                const auto intersecting = collider->Intersects(transform.translate,
+                                                               nearbyComponent->transform.translate, *rbc);
+                spdlog::info("intersecting: {} {}", GetId(), intersecting);
             }
         }
     }

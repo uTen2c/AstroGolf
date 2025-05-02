@@ -7,6 +7,6 @@
 class Math
 {
 public:
-    static constexpr auto pi = std::numbers::pi;
-    static constexpr auto deg_to_rad = pi / 180.0f;
+    static constexpr float pi = std::numbers::pi_v<float>;
+    static constexpr float deg_to_rad = pi / 180.0f;
 };

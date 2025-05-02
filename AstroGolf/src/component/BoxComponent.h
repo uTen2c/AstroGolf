@@ -3,8 +3,6 @@
 
 class BoxComponent final : public PhysicsComponent
 {
-    int ps_handle_;
-    
 public:
     float width;
     float height;

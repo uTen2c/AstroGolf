@@ -61,6 +61,11 @@ float Vec2::Dot(const Vec2& other) const
     return x * other.x + y * other.y;
 }
 
+float Vec2::Cross(const Vec2& other) const
+{
+    return x * other.y - y * other.x;
+}
+
 float Vec2::Distance(const Vec2& other) const
 {
     const float dx = x - other.x;
@@ -73,13 +78,14 @@ float Vec2::Length() const
     return std::sqrt(x * x + y * y);
 }
 
-void Vec2::Normalize()
+Vec2 Vec2::Normalize()
 {
     if (const float length = Length(); length > 0)
     {
         x /= length;
         y /= length;
     }
+    return *this;
 }
 
 Vec2 Vec2::Normalized() const

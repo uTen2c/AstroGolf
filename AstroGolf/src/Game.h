@@ -14,3 +14,6 @@ public:
     Game();
     [[nodiscard]] World& GetWorld() const;
 };
+
+
+const auto game = std::make_unique<Game>();

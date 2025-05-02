@@ -37,13 +37,16 @@ struct Vec2
 
     [[nodiscard]] float Dot(const Vec2& other) const;
 
+    // 2次元ベクトルの外積を計算する（z成分を返す）
+    [[nodiscard]] float Cross(const Vec2& other) const;
+    
     [[nodiscard]] float Distance(const Vec2& other) const;
 
     // ベクトルの長さを計算する
     [[nodiscard]] float Length() const;
 
     // ベクトルを正規化（単位ベクトル化）する
-    void Normalize();
+    Vec2 Normalize();
 
     // 正規化されたベクトルを返す
     [[nodiscard]] Vec2 Normalized() const;

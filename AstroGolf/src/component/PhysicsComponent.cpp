@@ -1,10 +1,7 @@
 #include "PhysicsComponent.h"
 
-#include <DxLib.h>
-#include <imgui.h>
 #include <spdlog/spdlog.h>
 
-#include "../Game.h"
 #include "../math/BoundingBox.h"
 #include "../math/CircleCollider.h"
 #include "../math/NullCollider.h"
@@ -192,16 +189,24 @@ void PhysicsComponent::Move(const Vec2& delta)
                 negVec.Mul(diff);
 
                 moved.Add(negVec);
-
-                auto negDelta = delta;
-                negDelta.Mul(-1);
-                negDelta.Mul(10);
             }
             if (const auto rbc = dynamic_cast<RotatableBoxCollider*>(nearbyComponent->collider.get()))
             {
-                const auto intersecting = collider->Intersects(transform.translate,
-                                                               nearbyComponent->transform.translate, *rbc);
-                spdlog::info("intersecting: {} {}", GetId(), intersecting);
+                // ReSharper disable once CppUseStructuredBinding
+                const auto result = collider->Intersects(transform.translate,
+                                                         nearbyComponent->transform.translate, *rbc);
+                if (!result.intersected)
+                {
+                    continue;
+                }
+
+                normal = result.normal;
+
+                const auto& origin = transform.translate;
+                const auto diff = selfCc->radius - origin.Distance(result.point);
+                auto negVec = result.normal;
+                negVec.Mul(diff);
+                moved.Add(negVec);
             }
         }
     }
@@ -222,7 +227,7 @@ void PhysicsComponent::Move(const Vec2& delta)
                 const auto& otherCollider = nearbyComponent->collider;
                 if (const BoundingBox* bb = dynamic_cast<BoundingBox*>(otherCollider.get()))
                 {
-                    if (collider->Intersects(moved, nearbyComponent->transform.translate, *bb))
+                    if (collider->Intersects(moved, nearbyComponent->transform.translate, *bb).intersected)
                     {
                         if (delta.x > 0)
                         {
@@ -257,7 +262,7 @@ void PhysicsComponent::Move(const Vec2& delta)
                 const auto& otherCollider = nearbyComponent->collider;
                 if (const BoundingBox* bb = dynamic_cast<BoundingBox*>(otherCollider.get()))
                 {
-                    if (collider->Intersects(moved, nearbyComponent->transform.translate, *bb))
+                    if (collider->Intersects(moved, nearbyComponent->transform.translate, *bb).intersected)
                     {
                         if (delta.y > 0)
                         {
@@ -285,10 +290,6 @@ void PhysicsComponent::Move(const Vec2& delta)
     {
         player->intersectingNormal = normal;
     }
-
-    ImGui::Begin("intersecting_");
-    ImGui::Text(intersecting_ ? "TRUE" : "FALSE");
-    ImGui::End();
 
     if (intersecting_)
     {

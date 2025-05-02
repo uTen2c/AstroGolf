@@ -47,12 +47,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     // ReSharper disable once CppCStyleCast
     ImGui_ImplDX11_Init((ID3D11Device*)GetUseDirect3D11Device(), (ID3D11DeviceContext*)GetUseDirect3D11DeviceContext()); // NOLINT(clang-diagnostic-cast-qual)
 
-    const auto demo1 = std::make_shared<SimpleSquareComponent>(game->GetWorld().NextComponentId());
-    demo1->transform.translate = {100, 300};
-
-    const auto demo2 = std::make_shared<SimpleSquareComponent>(game->GetWorld().NextComponentId());
-    demo2->transform.translate = {150, 300};
-
     const auto box1 = std::make_shared<BoxComponent>(game->GetWorld().NextComponentId(), 500, 50);
     box1->transform.translate = {250, 500};
 
@@ -68,9 +62,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     const auto circle = std::make_shared<CircleComponent>(game->GetWorld().NextComponentId(), 64);
     circle->transform.translate = {300, 0};
-
-    game->GetWorld().AddComponent(demo1);
-    game->GetWorld().AddComponent(demo2);
+    
     game->GetWorld().AddComponent(box1);
     game->GetWorld().AddComponent(box2);
     game->GetWorld().AddComponent(box3);

@@ -87,8 +87,8 @@ void RotatableBoxComponent::Draw(DrawStack* stack)
         GetColor(127, 127, 127)
     );
 
-    DrawCircleAA(vec.x + start.x, vec.y + start.y, 4, 8, GetColor(0, 255, 0), true);
-    DrawCircleAA(vec.x + end.x, vec.y + end.y, 4, 8, GetColor(255, 255, 0), true);
+    // DrawCircleAA(vec.x + start.x, vec.y + start.y, 4, 8, GetColor(0, 255, 0), true);
+    // DrawCircleAA(vec.x + end.x, vec.y + end.y, 4, 8, GetColor(255, 255, 0), true);
 
     DrawCircleAA(vec.x, vec.y, 2, 8, GetColor(255, 0, 0), true);
 

@@ -80,8 +80,8 @@ void BoxComponent::Draw(DrawStack* stack)
         GetColor(127, 127, 127)
     );
 
-    DrawCircleAA(vec.x + start.x, vec.y + start.y, 4, 8, GetColor(0, 255, 0), true);
-    DrawCircleAA(vec.x + end.x, vec.y + end.y, 4, 8, GetColor(255, 255, 0), true);
+    // DrawCircleAA(vec.x + start.x, vec.y + start.y, 4, 8, GetColor(0, 255, 0), true);
+    // DrawCircleAA(vec.x + end.x, vec.y + end.y, 4, 8, GetColor(255, 255, 0), true);
 
     // DrawLineAA(vec.x + top.x, vec.y + top.y, vec.x + bottom.x, vec.y + bottom.y, GetColor(255, 0, 0), 1.0f);
 

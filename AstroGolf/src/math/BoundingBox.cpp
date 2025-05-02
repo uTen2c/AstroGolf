@@ -22,7 +22,8 @@ float BoundingBox::GetBottom() const
     return height * 0.5f;
 }
 
-bool BoundingBox::Intersects(const Vec2& origin, const Vec2& otherOrigin, const Collider& otherCollider) const
+IntersectingResult BoundingBox::Intersects(const Vec2& origin, const Vec2& otherOrigin,
+                                           const Collider& otherCollider) const
 {
     if (const auto* bb = dynamic_cast<const BoundingBox*>(&otherCollider))
     {
@@ -34,16 +35,21 @@ bool BoundingBox::Intersects(const Vec2& origin, const Vec2& otherOrigin, const 
         const auto otherRight = otherOrigin.x + bb->GetRight();
         const auto otherTop = otherOrigin.y + bb->GetTop();
         const auto otherBottom = otherOrigin.y + bb->GetBottom();
-        return !(selfRight < otherLeft ||
+
+        const auto intersected = !(selfRight < otherLeft ||
             selfLeft > otherRight ||
             selfBottom < otherTop ||
             selfTop > otherBottom);
+        if (intersected)
+        {
+            return {.intersected = true, .normal = {}};
+        }
     }
     if (const auto* cc = dynamic_cast<const CircleCollider*>(&otherCollider))
     {
-        return origin.Distance(otherOrigin) <= cc->radius;
+        return {.intersected = origin.Distance(otherOrigin) <= cc->radius, .normal = {}};
     }
-    return false;
+    return NO_INTERSECTED;
 }
 
 bool BoundingBox::Contains(const Vec2& origin, const Vec2& point) const

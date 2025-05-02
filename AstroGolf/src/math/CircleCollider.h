@@ -11,7 +11,7 @@ public:
 
     explicit CircleCollider(const float radius) : radius(radius) {}
 
-    [[nodiscard]] bool
+    [[nodiscard]] IntersectingResult
     Intersects(const Vec2& origin, const Vec2& otherOrigin, const Collider& otherCollider) const override;
     [[nodiscard]] bool Contains(const Vec2& origin, const Vec2& point) const override;
     [[nodiscard]] float GetSize() override;

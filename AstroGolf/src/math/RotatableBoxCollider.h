@@ -1,4 +1,5 @@
 #pragma once
+#include "CircleCollider.h"
 #include "Collider.h"
 
 class RotatableBoxCollider final : public Collider
@@ -18,8 +19,8 @@ public:
     [[nodiscard]] Vec2 GetStartPos() const;
     [[nodiscard]] Vec2 GetEndPos() const;
 
-    [[nodiscard]] bool
-    Intersects(const Vec2& origin, const Vec2& otherOrigin, const Collider& otherCollider) const override;
+    [[nodiscard]] IntersectingResult Intersects(const Vec2& origin, const Vec2& otherOrigin,
+                                                const Collider& otherCollider) const override;
     [[nodiscard]] bool Contains(const Vec2& origin, const Vec2& point) const override;
     [[nodiscard]] float GetSize() override;
 };

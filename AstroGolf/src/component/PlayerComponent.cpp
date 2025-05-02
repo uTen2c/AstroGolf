@@ -75,6 +75,7 @@ void PlayerComponent::Update(const float deltaTime)
     if ((GetMouseInput() & MOUSE_INPUT_RIGHT) != 0)
     {
         const auto translate = world->GetCamera().transform.translate;
+        velocity = {0, 0};
         transform.translate = Vec2(translate.x + static_cast<float>(x), translate.y + static_cast<float>(y));
     }
 }
@@ -101,30 +102,30 @@ void PlayerComponent::Draw(DrawStack* stack)
         DrawCircleAA(screenPos.x, screenPos.y, circleCollider->radius, 16, GetColor(0, 255, 0), false);
 
         // Gravity
-        {
-            auto copied = screenPos;
-            copied.Add(gravityVelocity);
-            DrawLineAA(screenPos.x, screenPos.y, copied.x, copied.y, GetColor(255, 255, 0), 2);
-        }
-        
+        // {
+        //     auto copied = screenPos;
+        //     copied.Add(gravityVelocity);
+        //     DrawLineAA(screenPos.x, screenPos.y, copied.x, copied.y, GetColor(255, 255, 0), 2);
+        // }
+
         // Gravity + Velocity
         {
             auto copied = screenPos;
             auto vec = velocity;
             vec.Add(gravityVelocity);
-            vec.Mul(1.0f);
+            vec.Mul(0.5f);
             copied.Add(vec);
             DrawLineAA(screenPos.x, screenPos.y, copied.x, copied.y, GetColor(0, 255, 0), 2);
         }
 
         // Velocity
-        {
-            auto copied = screenPos;
-            auto vec = velocity;
-            vec.Mul(1.0f);
-            copied.Add(vec);
-            DrawLineAA(screenPos.x, screenPos.y, copied.x, copied.y, GetColor(255, 0, 0), 2);
-        }
+        // {
+        //     auto copied = screenPos;
+        //     auto vec = velocity;
+        //     vec.Mul(1.0f);
+        //     copied.Add(vec);
+        //     DrawLineAA(screenPos.x, screenPos.y, copied.x, copied.y, GetColor(255, 0, 0), 2);
+        // }
 
         // Normal
         {

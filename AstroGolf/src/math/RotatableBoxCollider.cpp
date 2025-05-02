@@ -1,11 +1,15 @@
 #include "RotatableBoxCollider.h"
 
-#include <DxLib.h>
-#include <imgui.h>
+#include <spdlog/spdlog.h>
 
 #include "CircleCollider.h"
 #include "DrawStack.h"
-#include "../Game.h"
+
+struct Edge
+{
+    Vec2 start;
+    Vec2 end;
+};
 
 namespace
 {
@@ -17,16 +21,23 @@ namespace
         return p1.Copy().Add(n.Copy().Mul(t));
     }
 
-    [[maybe_unused]] bool CheckEdge(const Vec2& p1, const Vec2& p2, const Vec2& center, const float& radius)
+    [[maybe_unused]] IntersectingResult CheckEdge(const Vec2& p1, const Vec2& p2, const Vec2& center,
+                                                  const float& radius)
     {
         const auto nearPoint = GetNearbyPoint(p1, p2, center);
 
         if (nearPoint.Copy().Sub(p1).Dot(nearPoint.Copy().Sub(p2)) > 0)
         {
-            return false;
+            return NO_INTERSECTED;
         }
 
-        return center.Distance(nearPoint) < radius;
+        if (center.Distance(nearPoint) < radius)
+        {
+            const auto normal = center.Copy().Sub(nearPoint).Normalize();
+            return {.intersected = true, .normal = normal, .point = nearPoint};
+        }
+
+        return NO_INTERSECTED;
     }
 }
 
@@ -44,7 +55,8 @@ Vec2 RotatableBoxCollider::GetEndPos() const
     return end;
 }
 
-bool RotatableBoxCollider::Intersects(const Vec2& origin, const Vec2& otherOrigin, const Collider& otherCollider) const
+IntersectingResult RotatableBoxCollider::Intersects(const Vec2& origin, const Vec2& otherOrigin,
+                                                    const Collider& otherCollider) const
 {
     const auto halfW = width / 2;
     const auto halfH = height / 2;
@@ -56,22 +68,70 @@ bool RotatableBoxCollider::Intersects(const Vec2& origin, const Vec2& otherOrigi
     // 円との衝突判定
     if (const auto* cc = dynamic_cast<const CircleCollider*>(&otherCollider))
     {
-        if (Contains(origin, otherOrigin))
+        const std::initializer_list<Edge> edges = {
+            {.start = p1, .end = p2},
+            {.start = p2, .end = p3},
+            {.start = p3, .end = p4},
+            {.start = p4, .end = p1}
+        };
+        for (const auto& [start, end] : edges)
         {
-            return true;
+            // ReSharper disable once CppTooWideScopeInitStatement
+            const auto result = CheckEdge(start, end, otherOrigin, cc->radius);
+            if (result.intersected)
+            {
+                return result;
+            }
         }
 
-        return cc->Contains(otherOrigin, p1)
-            || cc->Contains(otherOrigin, p2)
-            || cc->Contains(otherOrigin, p3)
-            || cc->Contains(otherOrigin, p4)
-            || CheckEdge(p1, p2, otherOrigin, cc->radius)
-            || CheckEdge(p2, p3, otherOrigin, cc->radius)
-            || CheckEdge(p3, p4, otherOrigin, cc->radius)
-            || CheckEdge(p4, p1, otherOrigin, cc->radius);
+        // 円の中に角が含まれていた場合
+        for (
+            const auto corners = {p1, p2, p3, p4};
+            const auto& corner : corners
+        )
+        {
+            if (cc->Contains(otherOrigin, corner))
+            {
+                const auto normal = otherOrigin.Copy().Sub(corner).Normalize();
+                return {.intersected = true, .normal = normal, .point = corner};
+            }
+        }
+
+        // 円の中心点を含んでいた場合
+        if (Contains(origin, otherOrigin))
+        {
+            const auto p12 = GetNearbyPoint(p1, p2, otherOrigin);
+            const auto p23 = GetNearbyPoint(p2, p3, otherOrigin);
+            const auto p34 = GetNearbyPoint(p3, p4, otherOrigin);
+            const auto p41 = GetNearbyPoint(p4, p1, otherOrigin);
+            const auto d23 = origin.Distance(p23);
+            const auto d34 = origin.Distance(p34);
+            const auto d41 = origin.Distance(p41);
+            auto nearbyPoint = p12;
+            auto distance = origin.Distance(nearbyPoint);
+
+            if (d23 < distance)
+            {
+                nearbyPoint = p23;
+                distance = d23;
+            }
+
+            if (d34 < distance)
+            {
+                nearbyPoint = p34;
+                distance = d34;
+            }
+
+            if (d41 < distance)
+            {
+                nearbyPoint = p41;
+            }
+            const auto normal = nearbyPoint.Sub(origin).Normalize();
+            return {.intersected = true, .normal = normal, .point = nearbyPoint};
+        }
     }
 
-    return false;
+    return NO_INTERSECTED;
 }
 
 bool RotatableBoxCollider::Contains(const Vec2& origin, const Vec2& point) const

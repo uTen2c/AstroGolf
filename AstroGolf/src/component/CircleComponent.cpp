@@ -14,7 +14,9 @@ void CircleComponent::Draw(DrawStack* stack)
     transform.ApplyDrawStack(stack);
 
     const auto pos = stack->GetScreenPos();
-    DrawCircleAA(pos.x, pos.y, radius, 16, 0xFFFFFFFF, true);
+    const auto scale = stack->GetScreenScale();
+    const auto posnum = max(16 * scale.x, 16);
+    DrawCircleAA(pos.x, pos.y, radius * scale.x, posnum, 0xFFFFFFFF, true);
 
     stack->Pop();
 }

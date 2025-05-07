@@ -3,5 +3,5 @@
 void Transform::ApplyDrawStack(DrawStack* stack) const
 {
     stack->Translate(translate);
-    // TODO scale
+    stack->Scale(scale);
 }

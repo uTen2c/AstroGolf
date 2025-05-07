@@ -30,12 +30,10 @@ void BoxComponent::Draw(DrawStack* stack)
     transform.ApplyDrawStack(stack);
 
     const auto vec = stack->GetScreenPos();
-    const auto halfW = width * 0.5f;
-    const auto halfH = height * 0.5f;
-
-    const auto start = Vec2(-halfW, -halfH).Rotated(transform.rotation);
-    const auto end = Vec2(halfW, halfH).Rotated(transform.rotation);
-
+    const auto scale = stack->GetScreenScale();
+    const auto halfW = width * 0.5f * scale.x;
+    const auto halfH = height * 0.5f * scale.y;
+    
     auto top = Vec2(0, -halfH);
     auto bottom = Vec2(0, halfH);
 

@@ -53,7 +53,7 @@ public:
 
     [[nodiscard]] CameraComponent& GetCamera() const;
     
-    [[nodiscard]] PlayerComponent& GetPlayer() const;
+    [[nodiscard]] PlayerComponent* GetPlayer() const;
 
     std::vector<PhysicsComponent*> GetNearbyPhysicsComponents(const Vec2& origin, float radius) const;
 };

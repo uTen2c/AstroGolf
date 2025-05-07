@@ -32,6 +32,10 @@ struct Vec2
     Vec2 Sub(Vec2 vec2);
 
     Vec2 Mul(float factor);
+    Vec2 Mul(const Vec2& vec2);
+
+    Vec2 Div(float factor);
+    Vec2 Div(const Vec2& vec2);
 
     Vec2 Neg();
 

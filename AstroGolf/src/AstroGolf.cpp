@@ -8,6 +8,7 @@
 #include "imgui_impl_dx11.h"
 #include "component/BoxComponent.h"
 #include "component/CircleComponent.h"
+#include "component/PlanetComponent.h"
 #include "component/RotatableBoxComponent.h"
 #include "math/Math.h"
 
@@ -27,8 +28,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     SetGraphMode(1280, 720, 32, 144);
     SetMainWindowText(_T("Astro Golf"));
     ChangeWindowMode(true);
+    SetWindowSizeChangeEnableFlag(true);
     SetHookWinProc(WndProc);
+    // SetWindowStyleMode(7);
     SetWaitVSyncFlag(false);
+    SetBackgroundColor(20, 29, 39);
 
     if (DxLib_Init() == -1)
     {
@@ -60,14 +64,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     box4->transform.translate = {500, 400};
     box4->transform.rotation = 30 * Math::deg_to_rad;
 
-    const auto circle = std::make_shared<CircleComponent>(game->GetWorld().NextComponentId(), 64);
-    circle->transform.translate = {300, 0};
+    // const auto circle = std::make_shared<CircleComponent>(game->GetWorld().NextComponentId(), 64);
+    // circle->transform.translate = {300, 0};
+
+    const auto planet1 = std::make_shared<PlanetComponent>(game->GetWorld().NextComponentId(), 128);
+    planet1->transform.translate = {300, 0};
     
     game->GetWorld().AddComponent(box1);
     game->GetWorld().AddComponent(box2);
     game->GetWorld().AddComponent(box3);
     game->GetWorld().AddComponent(box4);
-    game->GetWorld().AddComponent(circle);
+    game->GetWorld().AddComponent(planet1);
 
     // FPS計測関係の初期化
     auto fpsCheckTime = GetNowHiPerformanceCount();

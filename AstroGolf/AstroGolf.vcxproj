@@ -25,6 +25,7 @@
     <ClCompile Include="src\component\CircleComponent.cpp" />
     <ClCompile Include="src\component\Component.cpp" />
     <ClCompile Include="src\component\PhysicsComponent.cpp" />
+    <ClCompile Include="src\component\PlanetComponent.cpp" />
     <ClCompile Include="src\component\PlayerComponent.cpp" />
     <ClCompile Include="src\component\RotatableBoxComponent.cpp" />
     <ClCompile Include="src\component\SimpleSquareComponent.cpp" />
@@ -47,6 +48,7 @@
     <ClInclude Include="src\component\CircleComponent.h" />
     <ClInclude Include="src\component\Component.h" />
     <ClInclude Include="src\component\PhysicsComponent.h" />
+    <ClInclude Include="src\component\PlanetComponent.h" />
     <ClInclude Include="src\component\PlayerComponent.h" />
     <ClInclude Include="src\component\RotatableBoxComponent.h" />
     <ClInclude Include="src\component\SimpleSquareComponent.h" />

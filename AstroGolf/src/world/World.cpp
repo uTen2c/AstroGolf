@@ -1,5 +1,7 @@
 #include "World.h"
 
+#include <DxLib.h>
+#include <imgui.h>
 #include <ranges>
 #include <spdlog/spdlog.h>
 
@@ -8,7 +10,7 @@ World::World()
     spdlog::info("World init");
 
     camera_ = std::make_shared<CameraComponent>(NextComponentId());
-    
+
     player_ = std::make_shared<PlayerComponent>(NextComponentId());
     player_->transform.translate = {250, 400};
 
@@ -21,9 +23,20 @@ void World::Draw()
     auto stack = DrawStack();
 
     // カメラの位置を補正する
+    auto originOffset = Vec2(640, 360); // FIXME マジックナンバーをやめる
+    originOffset.Div(camera_->zoom);
+
     auto trans = camera_->transform.translate;
     trans.Mul(-1);
+    trans.Add(originOffset);
     stack.Translate(trans);
+    stack.Scale(camera_->zoom);
+
+    stack.Push();
+    const auto& pos = stack.GetScreenPos();
+    DrawLine(-2000, pos.y, 2000, pos.y, GetColor(255, 0, 0));
+    DrawLine(pos.x, -2000, pos.x, 2000, GetColor(0, 255, 0));
+    stack.Pop();
 
     for (const auto& component : GetComponents())
     {
@@ -94,9 +107,9 @@ CameraComponent& World::GetCamera() const
     return *camera_;
 }
 
-PlayerComponent& World::GetPlayer() const
+PlayerComponent* World::GetPlayer() const
 {
-    return *player_;
+    return player_.get();
 }
 
 std::vector<PhysicsComponent*> World::GetNearbyPhysicsComponents(const Vec2& origin, const float radius) const

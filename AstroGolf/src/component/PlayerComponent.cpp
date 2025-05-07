@@ -8,13 +8,18 @@
 
 PlayerComponent::PlayerComponent(const int id): PhysicsComponent(id)
 {
-    collider = std::make_unique<CircleCollider>(32);
+    collider = std::make_unique<CircleCollider>(radius);
     gravity = 9.8f * 100;
     gravityVelocity = {0, gravity};
 }
 
 void PlayerComponent::Update(const float deltaTime)
 {
+    if (const auto circleCollider = dynamic_cast<CircleCollider*>(collider.get()))
+    {
+        circleCollider->radius = radius;
+    }
+    
     PhysicsComponent::Update(deltaTime);
 
     auto move = Vec2(0, 0);
@@ -72,6 +77,8 @@ void PlayerComponent::Update(const float deltaTime)
     int x;
     int y;
     GetMousePoint(&x, &y);
+    x -= 640; // FIXME マジックナンバーをやめる
+    y -= 360; // FIXME マジックナンバーをやめる
     if ((GetMouseInput() & MOUSE_INPUT_RIGHT) != 0)
     {
         const auto translate = world->GetCamera().transform.translate;
@@ -95,11 +102,14 @@ void PlayerComponent::Draw(DrawStack* stack)
     if (const auto circleCollider = dynamic_cast<CircleCollider*>(collider.get()))
     {
         const auto& screenPos = stack->GetScreenPos();
+        const auto& screenScale = stack->GetScreenScale();
+        const auto radius = circleCollider->radius * screenScale.x;
+        const auto posnum = static_cast<int>(max(16 * screenScale.x, 16));
         // 本体描画
-        DrawCircleAA(screenPos.x, screenPos.y, circleCollider->radius, 16, GetColor(255, 255, 255), true);
+        DrawCircleAA(screenPos.x, screenPos.y, radius, posnum, GetColor(255, 255, 255), true);
         // コライダー描画
         DrawCircleAA(screenPos.x, screenPos.y, 1, 4, GetColor(0, 255, 0), false);
-        DrawCircleAA(screenPos.x, screenPos.y, circleCollider->radius, 16, GetColor(0, 255, 0), false);
+        DrawCircleAA(screenPos.x, screenPos.y, radius, posnum, GetColor(0, 255, 0), false);
 
         // Gravity
         // {

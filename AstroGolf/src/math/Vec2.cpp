@@ -51,6 +51,27 @@ Vec2 Vec2::Mul(const float factor)
     return *this;
 }
 
+Vec2 Vec2::Mul(const Vec2& vec2)
+{
+    x *= vec2.x;
+    y *= vec2.y;
+    return *this;
+}
+
+Vec2 Vec2::Div(const float factor)
+{
+    x /= factor;
+    y /= factor;
+    return *this;
+}
+
+Vec2 Vec2::Div(const Vec2& vec2)
+{
+    x /= vec2.x;
+    y /= vec2.y;
+    return *this;
+}
+
 Vec2 Vec2::Neg()
 {
     return Mul(-1);

@@ -12,16 +12,19 @@ protected:
 public:
     std::unique_ptr<Collider> collider;
     Vec2 velocity = {0, 0};
-    Vec2 gravityVelocity = {0, 0};
-    float gravity = 0.0f;
+    std::vector<Vec2> gravitySources;
     float mass = 1;
     bool isStatic = false;
 
     explicit PhysicsComponent(int id);
 
     void Update(float deltaTime) override;
+    virtual void UpdateMovement(float deltaTime);
+    void PostUpdate(float deltaTime) override;
 
     void Draw(DrawStack* stack) override;
 
     void Move(const Vec2& delta);
+
+    [[nodiscard]] Vec2 GetMergedGravityVelocity() const;
 };

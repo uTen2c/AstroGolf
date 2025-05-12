@@ -69,12 +69,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     const auto planet1 = std::make_shared<PlanetComponent>(game->GetWorld().NextComponentId(), 128);
     planet1->transform.translate = {300, 0};
+
+    const auto planet2 = std::make_shared<PlanetComponent>(game->GetWorld().NextComponentId(), 72);
+    planet2->transform.translate = {600, -400};
     
     game->GetWorld().AddComponent(box1);
     game->GetWorld().AddComponent(box2);
     game->GetWorld().AddComponent(box3);
     game->GetWorld().AddComponent(box4);
     game->GetWorld().AddComponent(planet1);
+    game->GetWorld().AddComponent(planet2);
 
     // FPS計測関係の初期化
     auto fpsCheckTime = GetNowHiPerformanceCount();

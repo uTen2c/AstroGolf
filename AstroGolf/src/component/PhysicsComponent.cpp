@@ -45,7 +45,10 @@ PhysicsComponent::PhysicsComponent(const int id): Component(id)
 void PhysicsComponent::Update(const float deltaTime)
 {
     Component::Update(deltaTime);
+}
 
+void PhysicsComponent::UpdateMovement(const float deltaTime)
+{
     // if (velocity.Length() > 0)
     // {
     auto copied = velocity;
@@ -53,7 +56,8 @@ void PhysicsComponent::Update(const float deltaTime)
     // copied.Mul(min(velocity.Length(), 500.0f));
     copied.Mul(deltaTime);
 
-    copied.Add(gravityVelocity.Copy().Mul(deltaTime));
+    auto gravityVec = GetMergedGravityVelocity();
+    copied.Add(gravityVec.Mul(deltaTime));
 
     // if (gravity > 0 && !intersecting_)
     // {
@@ -62,7 +66,12 @@ void PhysicsComponent::Update(const float deltaTime)
 
     Move(copied);
 
-    velocity.Add(gravityVelocity.Copy().Mul(deltaTime));
+    velocity.Add(gravityVec);
+}
+
+void PhysicsComponent::PostUpdate(const float deltaTime)
+{
+    gravitySources.clear();
 }
 
 void PhysicsComponent::Draw(DrawStack* stack)
@@ -293,14 +302,24 @@ void PhysicsComponent::Move(const Vec2& delta)
 
     if (intersecting_)
     {
-        const auto e = 0.75f;
-        const auto mergedVec = velocity.Copy().Add(gravityVelocity);
+        const auto e = 0.65f;
+        const auto gravityVec = GetMergedGravityVelocity();
+        const auto mergedVec = velocity.Copy().Add(gravityVec);
         const auto a = mergedVec.Copy().Neg().Dot(normal);
         auto r = mergedVec.Copy().Add(normal.Copy().Mul(a * 2).Mul(e));
-        r.Sub(gravityVelocity);
+        r.Sub(gravityVec);
         velocity = r;
     }
 
-    // spdlog::info("{}", velocity.y);
     transform.translate = moved;
+}
+
+Vec2 PhysicsComponent::GetMergedGravityVelocity() const
+{
+    Vec2 vec;
+    for (const auto& gravitySource : gravitySources)
+    {
+        vec.Add(gravitySource);
+    }
+    return vec;
 }

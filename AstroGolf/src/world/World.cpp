@@ -50,6 +50,17 @@ void World::Update(const float& deltaTime)
     {
         component->Update(deltaTime);
     }
+    for (const auto component : GetComponents())
+    {
+        if (const auto physComp = dynamic_cast<PhysicsComponent*>(component))
+        {
+            physComp->UpdateMovement(deltaTime);
+        }
+    }
+    for (const auto component : GetComponents())
+    {
+        component->PostUpdate(deltaTime);
+    }
 }
 
 int World::NextComponentId()

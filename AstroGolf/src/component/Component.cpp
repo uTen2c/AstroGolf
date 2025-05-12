@@ -4,6 +4,10 @@ void Component::Update(float delta)
 {
 }
 
+void Component::PostUpdate(float delta)
+{
+}
+
 void Component::Draw(DrawStack* stack)
 {
 }

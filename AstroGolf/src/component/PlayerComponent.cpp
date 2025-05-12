@@ -9,8 +9,6 @@
 PlayerComponent::PlayerComponent(const int id): PhysicsComponent(id)
 {
     collider = std::make_unique<CircleCollider>(radius);
-    gravity = 9.8f * 100;
-    gravityVelocity = {0, gravity};
 }
 
 void PlayerComponent::Update(const float deltaTime)
@@ -19,7 +17,7 @@ void PlayerComponent::Update(const float deltaTime)
     {
         circleCollider->radius = radius;
     }
-    
+
     PhysicsComponent::Update(deltaTime);
 
     auto move = Vec2(0, 0);
@@ -83,7 +81,12 @@ void PlayerComponent::Update(const float deltaTime)
     {
         const auto translate = world->GetCamera().transform.translate;
         velocity = {0, 0};
-        transform.translate = Vec2(translate.x + static_cast<float>(x), translate.y + static_cast<float>(y));
+
+        const auto zoom = world->GetCamera().zoom;
+        const auto dx = static_cast<float>(x) / zoom;
+        const auto dy = static_cast<float>(y) / zoom;
+
+        transform.translate = Vec2(translate.x + dx, translate.y + dy);
     }
 }
 
@@ -111,31 +114,15 @@ void PlayerComponent::Draw(DrawStack* stack)
         DrawCircleAA(screenPos.x, screenPos.y, 1, 4, GetColor(0, 255, 0), false);
         DrawCircleAA(screenPos.x, screenPos.y, radius, posnum, GetColor(0, 255, 0), false);
 
-        // Gravity
-        // {
-        //     auto copied = screenPos;
-        //     copied.Add(gravityVelocity);
-        //     DrawLineAA(screenPos.x, screenPos.y, copied.x, copied.y, GetColor(255, 255, 0), 2);
-        // }
-
         // Gravity + Velocity
         {
             auto copied = screenPos;
             auto vec = velocity;
-            vec.Add(gravityVelocity);
+            vec.Add(GetMergedGravityVelocity());
             vec.Mul(0.5f);
             copied.Add(vec);
             DrawLineAA(screenPos.x, screenPos.y, copied.x, copied.y, GetColor(0, 255, 0), 2);
         }
-
-        // Velocity
-        // {
-        //     auto copied = screenPos;
-        //     auto vec = velocity;
-        //     vec.Mul(1.0f);
-        //     copied.Add(vec);
-        //     DrawLineAA(screenPos.x, screenPos.y, copied.x, copied.y, GetColor(255, 0, 0), 2);
-        // }
 
         // Normal
         {

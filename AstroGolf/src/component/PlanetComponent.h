@@ -4,7 +4,7 @@
 class PlanetComponent : public PhysicsComponent
 {
 public:
-    float platnetGravity;
+    float planetGravity;
     float radius;
 
     explicit PlanetComponent(int id, float radius);
@@ -12,6 +12,7 @@ public:
     void Update(float deltaTime) override;
 
     void Draw(DrawStack* stack) override;
+
 private:
-    float GetPlayerDistance()const;
+    [[nodiscard]] float GetPlayerDistance() const;
 };

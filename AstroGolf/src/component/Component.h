@@ -25,6 +25,7 @@ public:
     Component& operator=(Component&&) noexcept = default;
 
     virtual void Update(float delta);
+    virtual void PostUpdate(float delta);
     virtual void Draw(DrawStack* stack);
 
     [[nodiscard]] int GetId() const;

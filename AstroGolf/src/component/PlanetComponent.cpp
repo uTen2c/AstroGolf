@@ -1,29 +1,34 @@
 #include "PlanetComponent.h"
 
 #include <DxLib.h>
+#include <spdlog/spdlog.h>
 
 #include "../math/CircleCollider.h"
 #include "../world/World.h"
 
-PlanetComponent::PlanetComponent(const int id, const float radius): PhysicsComponent(id), platnetGravity(0),
+PlanetComponent::PlanetComponent(const int id, const float radius): PhysicsComponent(id), planetGravity(0),
                                                                     radius(radius)
 {
     collider = std::make_unique<CircleCollider>(radius);
     isStatic = true;
+    planetGravity = 9.8f * 50; // 490
 }
 
 void PlanetComponent::Update(const float deltaTime)
 {
     PhysicsComponent::Update(deltaTime);
 
-    if (platnetGravity <= 0)
+    if (planetGravity <= 0)
     {
         return;
     }
 
-    const auto distance = GetPlayerDistance();
     const auto& player = world->GetPlayer();
-    player->gravityVelocity
+    const auto distance = max(GetPlayerDistance() / 100, 1); // 1px = 1cm, convert cm to meter
+    const auto g = planetGravity / pow(distance, 2) / 2;
+    spdlog::info("g {}", g);
+    const auto gravityDir = transform.translate.Copy().Sub(player->transform.translate).Normalize();
+    player->gravitySources.emplace_back(gravityDir.Copy().Mul(g));
 }
 
 void PlanetComponent::Draw(DrawStack* stack)
@@ -33,7 +38,7 @@ void PlanetComponent::Draw(DrawStack* stack)
 
     const auto pos = stack->GetScreenPos();
     const auto scale = stack->GetScreenScale();
-    const auto posnum = max(32 * scale.x, 32);
+    const auto posnum = static_cast<int>(max(32 * scale.x, 32));
     DrawCircleAA(pos.x, pos.y, radius * scale.x, posnum, 0xFFFFFFFF, true);
 
     const auto distance = GetPlayerDistance();

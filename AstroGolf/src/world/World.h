@@ -8,6 +8,12 @@
 #include "../component/PhysicsComponent.h"
 #include "../component/PlayerComponent.h"
 
+enum class WorldType
+{
+    Title,
+    Demo,
+};
+
 class World
 {
     int next_id_ = 0;
@@ -17,11 +23,13 @@ class World
     std::shared_ptr<PlayerComponent> player_;
 
 public:
-    World();
-    ~World() = default;
+    bool zoomEnabled = true;
 
-    void Draw();
-    void Update(const float& deltaTime);
+    World();
+    virtual ~World() = default;
+
+    virtual void Draw();
+    virtual void Update(const float& deltaTime);
 
     /**
      * ワールド内で一意なIDを生成する
@@ -52,8 +60,13 @@ public:
     Component* GetComponent(int id);
 
     [[nodiscard]] CameraComponent& GetCamera() const;
-    
+
     [[nodiscard]] PlayerComponent* GetPlayer() const;
 
-    std::vector<PhysicsComponent*> GetNearbyPhysicsComponents(const Vec2& origin, float radius) const;
+    [[nodiscard]] std::vector<PhysicsComponent*> GetNearbyPhysicsComponents(const Vec2& origin, float radius) const;
+
+    [[nodiscard]] virtual WorldType GetType() const;
+
+protected:
+    virtual void DrawBackground(DrawStack& stack) const;
 };

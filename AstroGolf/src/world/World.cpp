@@ -1,18 +1,16 @@
 #include "World.h"
 
 #include <DxLib.h>
-#include <imgui.h>
 #include <ranges>
 #include <spdlog/spdlog.h>
 
 World::World()
 {
     spdlog::info("World init");
-
+    
     camera_ = std::make_shared<CameraComponent>(NextComponentId());
 
     player_ = std::make_shared<PlayerComponent>(NextComponentId());
-    player_->transform.translate = {250, 400};
 
     AddComponent(camera_);
     AddComponent(player_);
@@ -31,6 +29,8 @@ void World::Draw()
     trans.Add(originOffset);
     stack.Translate(trans);
     stack.Scale(camera_->zoom);
+
+    DrawBackground(stack);
 
     stack.Push();
     const auto& pos = stack.GetScreenPos();
@@ -144,4 +144,13 @@ std::vector<PhysicsComponent*> World::GetNearbyPhysicsComponents(const Vec2& ori
     }
 
     return nearbyComponents;
+}
+
+WorldType World::GetType() const
+{
+    throw std::runtime_error("Not implemented");
+}
+
+void World::DrawBackground(DrawStack& stack) const
+{
 }

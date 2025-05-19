@@ -5,7 +5,7 @@
 
 class Game
 {
-    std::unique_ptr<World> world_ = std::make_unique<World>();
+    std::unique_ptr<World> world_;
 
 public:
     inline static int fps = 0;
@@ -13,7 +13,13 @@ public:
 
     Game();
     [[nodiscard]] World& GetWorld() const;
+
+    void Update();
+
+    template <class T, class... Args>
+    void ChangeWorld(Args&&... args)
+    {
+        static_assert(std::is_base_of_v<World, T>, "T must inherit from World");
+        world_ = std::make_unique<T>(std::forward<Args>(args)...);
+    }
 };
-
-
-const auto game = std::make_unique<Game>();

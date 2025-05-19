@@ -10,7 +10,9 @@
 #include "component/CircleComponent.h"
 #include "component/PlanetComponent.h"
 #include "component/RotatableBoxComponent.h"
+#include "component/planet/DemoPlanetComponent.h"
 #include "math/Math.h"
+#include "world/DemoWorld.h"
 
 // ReSharper disable once CppInconsistentNaming
 LRESULT CALLBACK WndProc(const HWND hwnd, const UINT msg, const WPARAM w_param, const LPARAM l_param)
@@ -40,6 +42,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         return -1;
     }
 
+    const auto game = std::make_unique<Game>();
+    game->ChangeWorld<DemoWorld>();
+
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
@@ -50,35 +55,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     // ReSharper disable once CppCStyleCast
     ImGui_ImplDX11_Init((ID3D11Device*)GetUseDirect3D11Device(), (ID3D11DeviceContext*)GetUseDirect3D11DeviceContext()); // NOLINT(clang-diagnostic-cast-qual)
-
-    const auto box1 = std::make_shared<BoxComponent>(game->GetWorld().NextComponentId(), 500, 50);
-    box1->transform.translate = {250, 500};
-
-    const auto box2 = std::make_shared<BoxComponent>(game->GetWorld().NextComponentId(), 50, 500);
-    box2->transform.translate = {550, 400};
-
-    const auto box3 = std::make_shared<BoxComponent>(game->GetWorld().NextComponentId(), 50, 500);
-    box3->transform.translate = {-100, 400};
-
-    const auto box4 = std::make_shared<RotatableBoxComponent>(game->GetWorld().NextComponentId(), 50, 500);
-    box4->transform.translate = {500, 400};
-    box4->transform.rotation = 30 * Math::deg_to_rad;
-
-    // const auto circle = std::make_shared<CircleComponent>(game->GetWorld().NextComponentId(), 64);
-    // circle->transform.translate = {300, 0};
-
-    const auto planet1 = std::make_shared<PlanetComponent>(game->GetWorld().NextComponentId(), 128);
-    planet1->transform.translate = {300, 0};
-
-    const auto planet2 = std::make_shared<PlanetComponent>(game->GetWorld().NextComponentId(), 72);
-    planet2->transform.translate = {600, -400};
-    
-    game->GetWorld().AddComponent(box1);
-    game->GetWorld().AddComponent(box2);
-    game->GetWorld().AddComponent(box3);
-    game->GetWorld().AddComponent(box4);
-    game->GetWorld().AddComponent(planet1);
-    game->GetWorld().AddComponent(planet2);
 
     // FPS計測関係の初期化
     auto fpsCheckTime = GetNowHiPerformanceCount();
@@ -106,10 +82,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         // 前回取得した時間からの経過時間を秒に変換してセット
         // ( GetNowHiPerformanceCount で取得できる値はマイクロ秒単位なので 1000000 で割ることで秒単位になる )
         Game::deltaTime = (nowTime - time) / 1000000.0f;
-
-        game->GetWorld().Update(Game::deltaTime);
-
-        game->GetWorld().Draw();
+        
+        game->Update();
 
         ImGui::Render();
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());

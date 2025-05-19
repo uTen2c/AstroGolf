@@ -12,7 +12,10 @@ protected:
 public:
     std::unique_ptr<Collider> collider;
     Vec2 velocity = {0, 0};
+
+    float lastGravityPower;
     std::vector<Vec2> gravitySources;
+
     float mass = 1;
     bool isStatic = false;
 

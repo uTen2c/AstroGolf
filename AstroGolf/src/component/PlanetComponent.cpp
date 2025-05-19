@@ -11,7 +11,7 @@ PlanetComponent::PlanetComponent(const int id, const float radius): PhysicsCompo
 {
     collider = std::make_unique<CircleCollider>(radius);
     isStatic = true;
-    planetGravity = 9.8f * 50; // 490
+    planetGravity = 9.8f * radius;
 }
 
 void PlanetComponent::Update(const float deltaTime)
@@ -25,8 +25,12 @@ void PlanetComponent::Update(const float deltaTime)
 
     const auto& player = world->GetPlayer();
     const auto distance = max(GetPlayerDistance() / 100, 1); // 1px = 1cm, convert cm to meter
-    const auto g = planetGravity / pow(distance, 2) / 2;
-    spdlog::info("g {}", g);
+    // const auto g = planetGravity * 0.2f / pow(distance, 1.2f);
+    const auto g = planetGravity * 0.2f / distance;
+    if (g < 20)
+    {
+        return;
+    }
     const auto gravityDir = transform.translate.Copy().Sub(player->transform.translate).Normalize();
     player->gravitySources.emplace_back(gravityDir.Copy().Mul(g));
 }

@@ -4,6 +4,8 @@
 #include <imgui.h>
 #include <spdlog/spdlog.h>
 
+#include "../world/World.h"
+
 void CameraComponent::Update(float delta)
 {
     UpdatePos();
@@ -27,9 +29,11 @@ void CameraComponent::UpdatePos()
     int y;
 
     GetMousePoint(&x, &y);
+
+    const auto playerDragging = world->GetPlayer()->isDragging;
     
     const auto clicking = (GetMouseInput() & MOUSE_INPUT_LEFT) != 0;
-    if (!dragging_ && clicking)
+    if (!dragging_ && clicking && !playerDragging)
     {
         dragging_ = true;
         prev_pos_ = transform.translate;
@@ -37,7 +41,7 @@ void CameraComponent::UpdatePos()
         drag_start_pos_y_ = y;
     }
 
-    if (dragging_ && !clicking)
+    if (dragging_ && (!clicking || playerDragging))
     {
         dragging_ = false;
     }
@@ -59,6 +63,10 @@ void CameraComponent::UpdatePos()
 
 void CameraComponent::UpdateZoom()
 {
+    if (!world->zoomEnabled)
+    {
+        return;
+    }
     const auto rot = GetMouseWheelRotVol();
-    zoom = max(zoom + static_cast<float>(rot) * 0.1f, 0.1f);
+    zoom = std::clamp(zoom + static_cast<float>(rot) * 0.1f, 0.5f, 2.0f);
 }

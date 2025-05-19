@@ -1,5 +1,6 @@
 #include "PhysicsComponent.h"
 
+#include <imgui.h>
 #include <spdlog/spdlog.h>
 
 #include "../math/BoundingBox.h"
@@ -57,6 +58,7 @@ void PhysicsComponent::UpdateMovement(const float deltaTime)
     copied.Mul(deltaTime);
 
     auto gravityVec = GetMergedGravityVelocity();
+    lastGravityPower = gravityVec.Length();
     copied.Add(gravityVec.Mul(deltaTime));
 
     // if (gravity > 0 && !intersecting_)
@@ -302,7 +304,7 @@ void PhysicsComponent::Move(const Vec2& delta)
 
     if (intersecting_)
     {
-        const auto e = 0.65f;
+        const auto e = 0.6f;
         const auto gravityVec = GetMergedGravityVelocity();
         const auto mergedVec = velocity.Copy().Add(gravityVec);
         const auto a = mergedVec.Copy().Neg().Dot(normal);

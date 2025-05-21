@@ -1,6 +1,5 @@
 #include "PhysicsComponent.h"
 
-#include <imgui.h>
 #include <spdlog/spdlog.h>
 
 #include "../math/BoundingBox.h"
@@ -108,11 +107,6 @@ void PhysicsComponent::Move(const Vec2& delta)
                     continue;
                 }
 
-                auto negDelta = delta;
-                negDelta.Mul(-1);
-                negDelta.Mul(10);
-                velocity.Add(negDelta);
-
                 auto negVec = moved;
                 negVec.Sub(otherPos);
                 negVec.Normalize();
@@ -204,8 +198,8 @@ void PhysicsComponent::Move(const Vec2& delta)
             if (const auto rbc = dynamic_cast<RotatableBoxCollider*>(nearbyComponent->collider.get()))
             {
                 // ReSharper disable once CppUseStructuredBinding
-                const auto result = collider->Intersects(transform.translate,
-                                                         nearbyComponent->transform.translate, *rbc);
+                const auto result = selfCc->Intersects(transform.translate,
+                                                       nearbyComponent->transform.translate, *rbc);
                 if (!result.intersected)
                 {
                     continue;
@@ -213,9 +207,8 @@ void PhysicsComponent::Move(const Vec2& delta)
 
                 normal = result.normal;
 
-                const auto& origin = transform.translate;
-                const auto diff = selfCc->radius - origin.Distance(result.point);
-                auto negVec = result.normal;
+                const auto diff = selfCc->radius - moved.Distance(result.point);
+                auto negVec = normal;
                 negVec.Mul(diff);
                 moved.Add(negVec);
             }

@@ -12,7 +12,7 @@ namespace
 {
     constexpr float max_shot_power = 100.0f;
     constexpr float shot_dead_zone = 20.0f;
-    constexpr float shot_power_multiplier = 10.0f;
+    constexpr float shot_power_multiplier = 20.0f;
 }
 
 PlayerComponent::PlayerComponent(const int id): PhysicsComponent(id)
@@ -42,7 +42,8 @@ void PlayerComponent::Update(const float deltaTime)
         {
             if (intersecting_)
             {
-                velocity.Sub(velocity.Copy().Mul(deltaTime));
+                // 0.5秒でとまる
+                velocity.Sub(velocity.Copy().Mul(deltaTime * 2));
             }
             else
             {
@@ -158,7 +159,7 @@ void PlayerComponent::UpdateShot()
     {
         auto shotVec = drag_vector_;
         shotVec.Mul(shot_power_multiplier);
-        velocity.Add(shotVec);
+        velocity = shotVec;
         isDragging = false;
     }
 

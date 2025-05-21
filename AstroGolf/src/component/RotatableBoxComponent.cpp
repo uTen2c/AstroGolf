@@ -2,6 +2,7 @@
 
 #include <DxLib.h>
 
+#include "../math/BoundingBox.h"
 #include "../math/RotatableBoxCollider.h"
 
 namespace

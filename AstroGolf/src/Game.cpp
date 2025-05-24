@@ -26,4 +26,5 @@ void Game::Update()
     
     world_->Update(deltaTime);
     world_->Draw();
+    world_->PostUpdate(deltaTime);
 }

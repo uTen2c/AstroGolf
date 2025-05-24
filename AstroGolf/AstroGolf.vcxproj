@@ -26,13 +26,93 @@
     <ClCompile Include="src\component\Component.cpp" />
     <ClCompile Include="src\component\PhysicsComponent.cpp" />
     <ClCompile Include="src\component\PlanetComponent.cpp" />
+    <ClCompile Include="src\component\planet\DemoPlanet2Component.cpp" />
     <ClCompile Include="src\component\planet\DemoPlanetComponent.cpp" />
     <ClCompile Include="src\component\PlayerComponent.cpp" />
     <ClCompile Include="src\component\RotatableBoxComponent.cpp" />
     <ClCompile Include="src\component\SimpleSquareComponent.cpp" />
+    <ClCompile Include="src\component\TestSquareComponent.cpp" />
+    <ClCompile Include="src\component\title\TitleComponent.cpp" />
     <ClCompile Include="src\component\title\TitleWorldGroundComponent.cpp" />
     <ClCompile Include="src\debug\Debug.cpp" />
     <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\graph\Graph.cpp" />
+    <ClCompile Include="src\graph\GraphUtils.cpp">
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <Optimization>Disabled</Optimization>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <AssemblerOutput>NoListing</AssemblerOutput>
+      <AssemblerListingLocation>x64\Debug\</AssemblerListingLocation>
+      <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
+      <BrowseInformation>false</BrowseInformation>
+      <BrowseInformationFile>x64\Debug\</BrowseInformationFile>
+      <CompileAs>Default</CompileAs>
+      <ConformanceMode>true</ConformanceMode>
+      <DiagnosticsFormat>Column</DiagnosticsFormat>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <ErrorReporting>Prompt</ErrorReporting>
+      <ExpandAttributedSource>false</ExpandAttributedSource>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <EnableASAN>false</EnableASAN>
+      <EnableFuzzer>false</EnableFuzzer>
+      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <GenerateModuleDependencies>false</GenerateModuleDependencies>
+      <GenerateSourceDependencies>false</GenerateSourceDependencies>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ModuleDependenciesFile>x64\Debug\</ModuleDependenciesFile>
+      <ModuleOutputFile>x64\Debug\</ModuleOutputFile>
+      <OmitDefaultLibName>false</OmitDefaultLibName>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <ObjectFileName>x64\Debug\</ObjectFileName>
+      <CallingConvention>Cdecl</CallingConvention>
+      <ProgramDataBaseFileName>x64\Debug\vc143.pdb</ProgramDataBaseFileName>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>x64\Debug\AstroGolf.pch</PrecompiledHeaderOutputFile>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessKeepComments>false</PreprocessKeepComments>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+      <ShowIncludes>false</ShowIncludes>
+      <SourceDependenciesFile>x64\Debug\</SourceDependenciesFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <SpectreMitigation>false</SpectreMitigation>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <TrackerLogDirectory>x64\Debug\AstroGolf.tlog\</TrackerLogDirectory>
+      <TranslateIncludes>false</TranslateIncludes>
+      <MinimalRebuildFromTracking>true</MinimalRebuildFromTracking>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UseFullPaths>true</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <XMLDocumentationFileName>x64\Debug\</XMLDocumentationFileName>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <IntelJCCErratum>false</IntelJCCErratum>
+      <BuildStlModules>false</BuildStlModules>
+      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
+      <ExternalWarningLevel>InheritWarningLevel</ExternalWarningLevel>
+      <TreatExternalTemplatesAsInternal>true</TreatExternalTemplatesAsInternal>
+      <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_MBCS;</PreprocessorDefinitions>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\nsmr\RiderProjects\AstroGolf\AstroGolf\lib\;C:\Users\nsmr\RiderProjects\AstroGolf\AstroGolf\lib\dxlib\;;C:\Users\nsmr\RiderProjects\AstroGolf\AstroGolf\\lib\dxlib;C:\Users\nsmr\RiderProjects\AstroGolf\AstroGolf\vcpkg_installed\x64-windows\x64-windows\include</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 </AdditionalOptions>
+      <LinkCompiled>true</LinkCompiled>
+    </ClCompile>
     <ClCompile Include="src\math\BoundingBox.cpp" />
     <ClCompile Include="src\math\CircleCollider.cpp" />
     <ClCompile Include="src\math\Collider.cpp" />
@@ -42,7 +122,6 @@
     <ClCompile Include="src\math\RotatableBoxCollider.cpp" />
     <ClCompile Include="src\math\Transform.cpp" />
     <ClCompile Include="src\math\Vec2.cpp" />
-    <ClCompile Include="src\GraphUtils.cpp" />
     <ClCompile Include="src\world\DemoWorld.cpp" />
     <ClCompile Include="src\world\TitleWorld.cpp" />
     <ClCompile Include="src\world\World.cpp" />
@@ -54,13 +133,18 @@
     <ClInclude Include="src\component\Component.h" />
     <ClInclude Include="src\component\PhysicsComponent.h" />
     <ClInclude Include="src\component\PlanetComponent.h" />
+    <ClInclude Include="src\component\planet\DemoPlanet2Component.h" />
     <ClInclude Include="src\component\planet\DemoPlanetComponent.h" />
     <ClInclude Include="src\component\PlayerComponent.h" />
     <ClInclude Include="src\component\RotatableBoxComponent.h" />
     <ClInclude Include="src\component\SimpleSquareComponent.h" />
+    <ClInclude Include="src\component\TestSquareComponent.h" />
+    <ClInclude Include="src\component\title\TitleComponent.h" />
     <ClInclude Include="src\component\title\TitleWorldGroundComponent.h" />
     <ClInclude Include="src\debug\Debug.h" />
     <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\graph\Graph.h" />
+    <ClInclude Include="src\graph\GraphUtils.h" />
     <ClInclude Include="src\math\BoundingBox.h" />
     <ClInclude Include="src\math\CircleCollider.h" />
     <ClInclude Include="src\math\Collider.h" />
@@ -70,7 +154,6 @@
     <ClInclude Include="src\math\RotatableBoxCollider.h" />
     <ClInclude Include="src\math\Transform.h" />
     <ClInclude Include="src\math\Vec2.h" />
-    <ClInclude Include="src\GraphUtils.h" />
     <ClInclude Include="src\world\DemoWorld.h" />
     <ClInclude Include="src\world\TitleWorld.h" />
     <ClInclude Include="src\world\World.h" />

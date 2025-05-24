@@ -3,6 +3,9 @@
 
 #include "world/World.h"
 
+constexpr auto WINDOW_WIDTH = 1280;
+constexpr auto WINDOW_HEIGHT = 720;
+
 class Game
 {
     std::unique_ptr<World> world_;

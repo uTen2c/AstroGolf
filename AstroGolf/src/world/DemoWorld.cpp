@@ -2,10 +2,11 @@
 
 #include <DxLib.h>
 
-#include "../GraphUtils.h"
 #include "../component/BoxComponent.h"
 #include "../component/RotatableBoxComponent.h"
+#include "../component/planet/DemoPlanet2Component.h"
 #include "../component/planet/DemoPlanetComponent.h"
+#include "../graph/GraphUtils.h"
 #include "../math/Math.h"
 
 DemoWorld::DemoWorld()
@@ -34,12 +35,16 @@ DemoWorld::DemoWorld()
     const auto planet2 = std::make_shared<PlanetComponent>(NextComponentId(), 72);
     planet2->transform.translate = {600, -400};
 
+    const auto planet3 = std::make_shared<DemoPlanet2Component>(NextComponentId());
+    planet3->transform.translate = {-400, -100};
+
     AddComponent(box1);
     AddComponent(box2);
     AddComponent(box3);
     AddComponent(box4);
     AddComponent(planet1);
     AddComponent(planet2);
+    AddComponent(planet3);
 
     GetPlayer()->transform.translate = {250, 400};
 }

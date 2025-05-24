@@ -1,13 +1,14 @@
 #include "World.h"
 
 #include <DxLib.h>
+#include <algorithm>
 #include <ranges>
 #include <spdlog/spdlog.h>
 
 World::World()
 {
     spdlog::info("World init");
-    
+
     camera_ = std::make_shared<CameraComponent>(NextComponentId());
 
     player_ = std::make_shared<PlayerComponent>(NextComponentId());
@@ -32,13 +33,19 @@ void World::Draw()
 
     DrawBackground(stack);
 
-    stack.Push();
-    const auto& pos = stack.GetScreenPos();
-    DrawLine(-2000, pos.y, 2000, pos.y, GetColor(255, 0, 0));
-    DrawLine(pos.x, -2000, pos.x, 2000, GetColor(0, 255, 0));
-    stack.Pop();
+    // X, Yの十字線描画
+    // stack.Push();
+    // const auto& pos = stack.GetScreenPos();
+    // DrawLine(-2000, pos.y, 2000, pos.y, GetColor(255, 0, 0));
+    // DrawLine(pos.x, -2000, pos.x, 2000, GetColor(0, 255, 0));
+    // stack.Pop();
 
-    for (const auto& component : GetComponents())
+    auto components = GetComponents();
+    std::ranges::sort(components, [](const Component* a, const Component* b)
+    {
+        return a->zIndex < b->zIndex;
+    });
+    for (const auto& component : components)
     {
         component->Draw(&stack);
     }
@@ -46,17 +53,22 @@ void World::Draw()
 
 void World::Update(const float& deltaTime)
 {
-    for (const auto component : GetComponents())
+    const auto components = GetComponents();
+    for (const auto component : components)
     {
         component->Update(deltaTime);
     }
-    for (const auto component : GetComponents())
+    for (const auto component : components)
     {
         if (const auto physComp = dynamic_cast<PhysicsComponent*>(component))
         {
             physComp->UpdateMovement(deltaTime);
         }
     }
+}
+
+void World::PostUpdate(const float& deltaTime)
+{
     for (const auto component : GetComponents())
     {
         component->PostUpdate(deltaTime);
@@ -149,6 +161,11 @@ std::vector<PhysicsComponent*> World::GetNearbyPhysicsComponents(const Vec2& ori
 WorldType World::GetType() const
 {
     throw std::runtime_error("Not implemented");
+}
+
+void World::OnCameraMove(CameraComponent* camera)
+{
+    //
 }
 
 void World::DrawBackground(DrawStack& stack) const

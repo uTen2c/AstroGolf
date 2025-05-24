@@ -11,6 +11,7 @@ class Component
 public:
     Transform transform;
     World* world = nullptr;
+    int zIndex = 1000;
 
     explicit Component(const int id): id_(id)
     {

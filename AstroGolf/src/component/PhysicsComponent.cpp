@@ -82,7 +82,7 @@ void PhysicsComponent::Draw(DrawStack* stack)
 
 void PhysicsComponent::Move(const Vec2& delta)
 {
-    const auto nearbyComponents = world->GetNearbyPhysicsComponents(transform.translate, 1000);
+    const auto nearbyComponents = world->GetNearbyPhysicsComponents(transform.translate, 10000); // FIXME radius
     auto moved = Vec2(transform.translate.x, transform.translate.y);
     Vec2 normal;
 
@@ -198,7 +198,7 @@ void PhysicsComponent::Move(const Vec2& delta)
             if (const auto rbc = dynamic_cast<RotatableBoxCollider*>(nearbyComponent->collider.get()))
             {
                 // ReSharper disable once CppUseStructuredBinding
-                const auto result = selfCc->Intersects(transform.translate,
+                const auto result = selfCc->Intersects(moved,
                                                        nearbyComponent->transform.translate, *rbc);
                 if (!result.intersected)
                 {
@@ -297,7 +297,7 @@ void PhysicsComponent::Move(const Vec2& delta)
 
     if (intersecting_)
     {
-        const auto e = 0.6f;
+        const auto e = 0.75f;
         const auto gravityVec = GetMergedGravityVelocity();
         const auto mergedVec = velocity.Copy().Add(gravityVec);
         const auto a = mergedVec.Copy().Neg().Dot(normal);

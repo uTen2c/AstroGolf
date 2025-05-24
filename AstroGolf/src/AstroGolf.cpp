@@ -2,16 +2,9 @@
 
 #include "DxLib.h"
 #include "Game.h"
-#include "component/SimpleSquareComponent.h"
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
-#include "component/BoxComponent.h"
-#include "component/CircleComponent.h"
-#include "component/PlanetComponent.h"
-#include "component/RotatableBoxComponent.h"
-#include "component/planet/DemoPlanetComponent.h"
-#include "math/Math.h"
 #include "world/DemoWorld.h"
 
 // ReSharper disable once CppInconsistentNaming
@@ -27,7 +20,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
     SetUseCharCodeFormat(DX_CHARCODEFORMAT_UTF8);
     SetFullScreenScalingMode(DX_FSSCALINGMODE_NEAREST, TRUE);
-    SetGraphMode(1280, 720, 32, 144);
+    SetGraphMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32, 144);
     SetMainWindowText(_T("Astro Golf"));
     ChangeWindowMode(true);
     SetWindowSizeChangeEnableFlag(true);
@@ -82,7 +75,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         // 前回取得した時間からの経過時間を秒に変換してセット
         // ( GetNowHiPerformanceCount で取得できる値はマイクロ秒単位なので 1000000 で割ることで秒単位になる )
         Game::deltaTime = (nowTime - time) / 1000000.0f;
-        
+
         game->Update();
 
         ImGui::Render();

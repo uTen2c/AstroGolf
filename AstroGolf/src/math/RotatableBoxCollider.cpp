@@ -31,7 +31,7 @@ namespace
             return NO_INTERSECTED;
         }
 
-        if (center.Distance(nearPoint) < radius)
+        if (center.Distance(nearPoint) <= radius)
         {
             const auto normal = center.Copy().Sub(nearPoint).Normalize();
             return {.intersected = true, .normal = normal, .point = nearPoint};
@@ -126,7 +126,7 @@ IntersectingResult RotatableBoxCollider::Intersects(const Vec2& origin, const Ve
             {
                 nearbyPoint = p41;
             }
-            const auto normal = nearbyPoint.Sub(origin).Normalize();
+            const auto normal = nearbyPoint.Copy().Sub(origin).Normalize();
             return {.intersected = true, .normal = normal, .point = nearbyPoint};
         }
     }
@@ -151,5 +151,5 @@ bool RotatableBoxCollider::Contains(const Vec2& origin, const Vec2& point) const
 
 float RotatableBoxCollider::GetSize()
 {
-    return sqrt(width * width + height + height);
+    return sqrt(width * width + height * height);
 }

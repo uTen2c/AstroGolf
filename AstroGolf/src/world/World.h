@@ -30,6 +30,7 @@ public:
 
     virtual void Draw();
     virtual void Update(const float& deltaTime);
+    virtual void PostUpdate(const float& deltaTime);
 
     /**
      * ワールド内で一意なIDを生成する
@@ -66,6 +67,8 @@ public:
     [[nodiscard]] std::vector<PhysicsComponent*> GetNearbyPhysicsComponents(const Vec2& origin, float radius) const;
 
     [[nodiscard]] virtual WorldType GetType() const;
+
+    virtual void OnCameraMove(CameraComponent* camera);
 
 protected:
     virtual void DrawBackground(DrawStack& stack) const;

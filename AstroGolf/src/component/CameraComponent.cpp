@@ -59,6 +59,7 @@ void CameraComponent::UpdatePos()
     
     const auto newPos = Vec2(prev_pos_.x + dx, prev_pos_.y + dy);
     transform.translate = newPos;
+    world->OnCameraMove(this);
 }
 
 void CameraComponent::UpdateZoom()

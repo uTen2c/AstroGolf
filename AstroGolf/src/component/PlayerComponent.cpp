@@ -18,6 +18,7 @@ namespace
 PlayerComponent::PlayerComponent(const int id): PhysicsComponent(id)
 {
     collider = std::make_unique<CircleCollider>(radius);
+    zIndex = 1100;
 }
 
 void PlayerComponent::Update(const float deltaTime)
@@ -87,14 +88,12 @@ void PlayerComponent::Draw(DrawStack* stack)
         DrawCircleAA(screenPos.x, screenPos.y, 1, 4, GetColor(0, 255, 0), false);
         DrawCircleAA(screenPos.x, screenPos.y, scaledRadius, scaledPosnum, GetColor(0, 255, 0), false);
 
-        // Gravity + Velocity
+        // Gravity sources
+        for (const auto& gravitySource : gravitySources)
         {
-            auto copied = screenPos;
-            auto vec = velocity;
-            vec.Add(GetMergedGravityVelocity());
-            vec.Mul(0.5f);
-            copied.Add(vec);
-            DrawLineAA(screenPos.x, screenPos.y, copied.x, copied.y, GetColor(0, 255, 0), 2);
+            auto vec = screenPos;
+            vec.Add(gravitySource.Copy().Mul(0.5f));
+            DrawLineAA(screenPos.x, screenPos.y, vec.x, vec.y, GetColor(0, 255, 0), 2);
         }
 
         // Normal
@@ -141,7 +140,7 @@ void PlayerComponent::UpdateShot()
     int y;
 
     GetMousePoint(&x, &y);
-    
+
     const auto clicking = (GetMouseInput() & MOUSE_INPUT_LEFT) != 0;
     if (!isDragging && clicking)
     {
@@ -170,7 +169,7 @@ void PlayerComponent::UpdateShot()
 
     x -= 640; // FIXME マジックナンバーをやめる
     y -= 360; // FIXME マジックナンバーをやめる
-    
+
     const auto cameraTranslate = world->GetCamera().transform.translate;
     const auto zoom = world->GetCamera().zoom;
     const auto dx = static_cast<float>(x) / zoom;

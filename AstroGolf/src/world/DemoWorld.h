@@ -10,6 +10,11 @@ public:
     ~DemoWorld() override;
     [[nodiscard]] WorldType GetType() const override;
 
+    void Update(const float& deltaTime) override;
+
 protected:
     void DrawBackground(DrawStack& stack) const override;
+
+private:
+    void UpdateCamera(const float& deltaTime) const;
 };

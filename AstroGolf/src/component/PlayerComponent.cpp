@@ -62,8 +62,8 @@ void PlayerComponent::Update(const float deltaTime)
 void PlayerComponent::Draw(DrawStack* stack)
 {
     stack->Push();
-    transform.ApplyDrawStack(stack);
-
+    ApplyDrawStack(stack);
+    
     ImGui::Begin("Player", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
     ImGui::SeparatorText("Transform");
     ImGui::Text("Translate");
@@ -188,7 +188,7 @@ void PlayerComponent::UpdateShot()
         drag_vector_ = {};
         return;
     }
-    const auto power = min(vec.Length() - shot_dead_zone, max_shot_power);
+    const auto power = min((vec.Length() - shot_dead_zone) * 0.5f, max_shot_power);
     drag_vector_ = vec.Normalize().Mul(power);
 }
 

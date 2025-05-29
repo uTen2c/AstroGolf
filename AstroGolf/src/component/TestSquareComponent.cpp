@@ -20,7 +20,7 @@ void TestSquareComponent::Update(float delta)
 void TestSquareComponent::Draw(DrawStack* stack)
 {
     stack->Push();
-    stack->Scale({scale_x_, scale_y_});
+    ApplyDrawStack(stack);
     graph_->Draw(*stack);
 
     const auto & screenPos = stack->GetScreenPos();

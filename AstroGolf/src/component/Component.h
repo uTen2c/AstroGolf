@@ -1,9 +1,16 @@
 #pragma once
+#include <memory>
+
 #include "../math/DrawStack.h"
 #include "../math/Transform.h"
 
 class World;
 
+struct AbsolutePos
+{
+    Vec2 pos;
+    float rot;
+};
 class Component
 {
     int id_;
@@ -12,6 +19,7 @@ public:
     Transform transform;
     World* world = nullptr;
     int zIndex = 1000;
+    std::shared_ptr<Component> parent = nullptr;
 
     explicit Component(const int id): id_(id)
     {
@@ -29,5 +37,10 @@ public:
     virtual void PostUpdate(float delta);
     virtual void Draw(DrawStack* stack);
 
+    [[nodiscard]] AbsolutePos GetWorldPos() const;
+
     [[nodiscard]] int GetId() const;
+
+protected:
+    void ApplyDrawStack(DrawStack* stack) const;
 };

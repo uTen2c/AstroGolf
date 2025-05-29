@@ -5,10 +5,10 @@
 void SimpleSquareComponent::Draw(DrawStack* stack)
 {
     stack->Push();
-    transform.ApplyDrawStack(stack);
+    ApplyDrawStack(stack);
 
     const auto vec = stack->GetScreenPos();
-    DrawBoxAA(vec.x - 1, vec.y - 1, vec.x + 1, vec.y + 1, 0xFFFFFFFF, true);
+    DrawBoxAA(vec.x - 2, vec.y - 2, vec.x + 2, vec.y + 2, GetColor(255, 0, 0), true);
 
     stack->Pop();
 }

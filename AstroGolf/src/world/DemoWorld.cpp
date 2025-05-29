@@ -3,6 +3,7 @@
 #include <DxLib.h>
 
 #include "../component/BoxComponent.h"
+#include "../component/GoalHoleComponent.h"
 #include "../component/RotatableBoxComponent.h"
 #include "../component/planet/DemoPlanet2Component.h"
 #include "../component/planet/DemoPlanetComponent.h"
@@ -37,6 +38,7 @@ DemoWorld::DemoWorld()
 
     const auto planet3 = std::make_shared<DemoPlanet2Component>(NextComponentId());
     planet3->transform.translate = {-400, -100};
+    planet3->transform.rotation = 65.0f * Math::deg_to_rad;
 
     AddComponent(box1);
     AddComponent(box2);
@@ -45,6 +47,11 @@ DemoWorld::DemoWorld()
     AddComponent(planet1);
     AddComponent(planet2);
     AddComponent(planet3);
+
+    const auto hole = std::make_shared<GoalHoleComponent>(NextComponentId());
+    hole->parent = planet3;
+    hole->transform.translate = {0, -175};
+    // AddComponent(hole);
 
     GetPlayer()->transform.translate = {250, 400};
 }
@@ -59,6 +66,12 @@ WorldType DemoWorld::GetType() const
     return WorldType::Demo;
 }
 
+void DemoWorld::Update(const float& deltaTime)
+{
+    World::Update(deltaTime);
+    UpdateCamera(deltaTime);
+}
+
 void DemoWorld::DrawBackground(DrawStack& stack) const
 {
     stack.Push();
@@ -66,4 +79,12 @@ void DemoWorld::DrawBackground(DrawStack& stack) const
     DrawGraphF(0, 0, background_graph_handle_, true);
 
     stack.Pop();
+}
+
+void DemoWorld::UpdateCamera(const float& deltaTime) const
+{
+    auto& camera = GetCamera();
+    const auto player = GetPlayer();
+    const auto focusPos = player->transform.translate;
+    camera.transform.translate = Math::Lerp(camera.transform.translate, focusPos, deltaTime * 3.0f);
 }

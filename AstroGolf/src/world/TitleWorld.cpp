@@ -9,6 +9,7 @@
 #include "../Game.h"
 #include "../component/GoalHoleComponent.h"
 #include "../component/RotatableBoxComponent.h"
+#include "../component/SimpleSquareComponent.h"
 #include "../component/TestSquareComponent.h"
 #include "../component/title/TitleWorldGroundComponent.h"
 #include "../graph/GraphUtils.h"
@@ -49,6 +50,24 @@ TitleWorld::TitleWorld()
     hole->transform.translate = {200, 340};
     // hole->transform.rotation = 30.0f * Math::deg_to_rad;
     AddComponent(hole);
+
+    const auto parent = std::make_shared<SimpleSquareComponent>(NextComponentId());
+    parent->transform.translate = {0, 100};
+    parent->transform.rotation = 45.0f * Math::deg_to_rad;
+
+    const auto child = std::make_shared<SimpleSquareComponent>(NextComponentId());
+    child->parent = parent;
+    child->transform.translate = {0, 100};
+
+    const auto hole2 = std::make_shared<GoalHoleComponent>(NextComponentId());
+    hole2->parent = parent;
+    hole2->transform.translate = {0, 100};
+    // hole->transform.rotation = 30.0f * Math::deg_to_rad;
+    AddComponent(hole2);
+
+    AddComponent(parent);
+    AddComponent(child);
+    AddComponent(hole2);
 }
 
 TitleWorld::~TitleWorld()

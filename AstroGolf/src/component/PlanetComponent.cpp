@@ -38,7 +38,7 @@ void PlanetComponent::Update(const float deltaTime)
 void PlanetComponent::Draw(DrawStack* stack)
 {
     stack->Push();
-    transform.ApplyDrawStack(stack);
+    ApplyDrawStack(stack);
 
     const auto pos = stack->GetScreenPos();
     const auto scale = stack->GetScreenScale();

@@ -5,6 +5,7 @@
 class TitleWorldGroundComponent final : public PhysicsComponent
 {
     std::unique_ptr<Graph> ground_graph_;
+    std::unique_ptr<Graph> grasses_graph_;
 
 public:
     explicit TitleWorldGroundComponent(int id);

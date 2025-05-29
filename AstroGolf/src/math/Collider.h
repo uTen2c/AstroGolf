@@ -1,6 +1,8 @@
 #pragma once
 #include "Vec2.h"
 
+class DrawStack;
+
 struct IntersectingResult
 {
     bool intersected;
@@ -30,4 +32,11 @@ public:
 
     // 大まかな当たり判定のサイズ
     [[nodiscard]] virtual float GetSize();
+
+    virtual void Draw(DrawStack* stack) const
+    {
+    }
+
+protected:
+    static void DrawWireBox(const DrawStack* stack, const float& width, const float& height);
 };

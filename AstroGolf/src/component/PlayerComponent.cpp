@@ -158,6 +158,13 @@ void PlayerComponent::UpdateShot()
     {
         auto shotVec = drag_vector_;
         shotVec.Mul(shot_power_multiplier);
+
+        // 重力の影響を相殺する
+        for (const auto & gravitySource : gravitySources)
+        {
+            shotVec.Add(gravitySource.Copy().Neg());
+        }
+        
         velocity = shotVec;
         isDragging = false;
     }
@@ -174,7 +181,6 @@ void PlayerComponent::UpdateShot()
     const auto zoom = world->GetCamera().zoom;
     const auto dx = static_cast<float>(x) / zoom;
     const auto dy = static_cast<float>(y) / zoom;
-
 
     auto vec = transform.translate.Copy().Sub({cameraTranslate.x + dx, cameraTranslate.y + dy});
     if (vec.Length() < shot_dead_zone)

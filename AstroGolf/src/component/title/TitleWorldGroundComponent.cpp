@@ -22,7 +22,7 @@ void TitleWorldGroundComponent::Draw(DrawStack* stack)
 {
     stack->Push();
     transform.ApplyDrawStack(stack);
-    stack->Translate({-1024, -1024 - 100});
+    stack->Translate({0, -100});
     ground_graph_->Draw(*stack);
     stack->Pop();
 }

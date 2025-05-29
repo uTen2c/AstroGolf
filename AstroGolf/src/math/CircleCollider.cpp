@@ -1,6 +1,7 @@
 #include "CircleCollider.h"
 
 #include "BoundingBox.h"
+#include "HoleCollider.h"
 #include "RotatableBoxCollider.h"
 
 IntersectingResult CircleCollider::Intersects(const Vec2& origin, const Vec2& otherOrigin,
@@ -64,6 +65,12 @@ IntersectingResult CircleCollider::Intersects(const Vec2& origin, const Vec2& ot
     if (const auto* rbc = dynamic_cast<const RotatableBoxCollider*>(&otherCollider))
     {
         return rbc->Intersects(otherOrigin, origin, *this); // NOLINT(readability-suspicious-call-argument)
+    }
+
+    // 円とホールの衝突
+    if (const auto* hole = dynamic_cast<const HoleCollider*>(&otherCollider))
+    {
+        return hole->Intersects(otherOrigin, origin, *this); // NOLINT(readability-suspicious-call-argument)
     }
 
     return NO_INTERSECTED;

@@ -37,6 +37,15 @@ void DrawStack::Scale(const Vec2 scale)
     current = scale;
 }
 
+void DrawStack::Rotate(const float angle)
+{
+    if (!angle_stack_.empty())
+    {
+        angle_stack_.pop();
+    }
+    angle_stack_.push(angle);
+}
+
 Vec2 DrawStack::GetScreenPos() const
 {
     Vec2 vec;
@@ -64,6 +73,11 @@ Vec2 DrawStack::GetScreenScale() const
     return MergeScaleStack(scale_stack_);
 }
 
+float DrawStack::GetScreenRotate() const
+{
+    return MergeAngleStack(angle_stack_);
+}
+
 Vec2 DrawStack::MergeScaleStack(std::stack<Vec2> stack)
 {
     Vec2 scale = {1, 1};
@@ -73,4 +87,15 @@ Vec2 DrawStack::MergeScaleStack(std::stack<Vec2> stack)
         stack.pop();
     }
     return scale;
+}
+
+float DrawStack::MergeAngleStack(std::stack<float> stack)
+{
+    float angle = 0;
+    while (!stack.empty())
+    {
+        angle += stack.top();
+        stack.pop();
+    }
+    return angle;
 }

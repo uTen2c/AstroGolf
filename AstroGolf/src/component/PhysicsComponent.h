@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "../math/Collider.h"
+#include "../math/RotatableBoxCollider.h"
 
 class PhysicsComponent : public Component
 {
@@ -11,6 +12,7 @@ protected:
 
 public:
     std::unique_ptr<Collider> collider;
+    std::unique_ptr<RotatableBoxCollider> goal_collider_;
     Vec2 velocity = {0, 0};
 
     float lastGravityPower;

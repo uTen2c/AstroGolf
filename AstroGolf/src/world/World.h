@@ -68,7 +68,7 @@ public:
 
     [[nodiscard]] virtual WorldType GetType() const;
 
-    virtual void OnCameraMove(CameraComponent* camera);
+    virtual void OnCameraMoveWithMouse(CameraComponent* camera);
 
 protected:
     virtual void DrawBackground(DrawStack& stack) const;

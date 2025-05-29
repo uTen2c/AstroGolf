@@ -25,5 +25,7 @@ void Graph::Draw(const DrawStack& stack) const
 {
     const auto& pos = stack.GetScreenPos();
     const auto& scale = stack.GetScreenScale();
-    DrawRotaGraph3F(pos.x, pos.y, 0, 0, scale.x, scale.y, 0, handle, true);
+    const auto& rot = stack.GetScreenRotate();
+    DrawRotaGraph3F(pos.x, pos.y, static_cast<float>(width) * 0.5f, static_cast<float>(height) * 0.5f, scale.x, scale.y,
+                    rot, handle, true);
 }

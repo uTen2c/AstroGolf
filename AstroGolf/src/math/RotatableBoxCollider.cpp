@@ -5,14 +5,14 @@
 #include "CircleCollider.h"
 #include "DrawStack.h"
 
-struct Edge
-{
-    Vec2 start;
-    Vec2 end;
-};
-
 namespace
 {
+    struct Edge
+    {
+        Vec2 start;
+        Vec2 end;
+    };
+
     [[maybe_unused]] Vec2 GetNearbyPoint(const Vec2& p1, const Vec2& p2, const Vec2& center)
     {
         const auto n = p2.Copy().Sub(p1).Normalize();
@@ -152,4 +152,9 @@ bool RotatableBoxCollider::Contains(const Vec2& origin, const Vec2& point) const
 float RotatableBoxCollider::GetSize()
 {
     return sqrt(width * width + height * height);
+}
+
+void RotatableBoxCollider::Draw(DrawStack* stack) const
+{
+    Collider::Draw(stack);
 }

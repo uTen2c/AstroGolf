@@ -13,10 +13,15 @@ public:
     ~TitleWorld() override;
     void Update(const float& deltaTime) override;
 
-    void OnCameraMove(CameraComponent* camera) override;
+    void OnCameraMoveWithMouse(CameraComponent* camera) override;
 
 protected:
     void DrawBackground(DrawStack& stack) const override;
+
+private:
+    void UpdateCamera(const float& deltaTime);
+
+    static Vec2 ClampCameraPos(const Vec2& pos);
 
 public:
     [[nodiscard]] WorldType GetType() const override;

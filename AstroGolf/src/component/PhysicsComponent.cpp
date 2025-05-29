@@ -4,6 +4,7 @@
 
 #include "../math/BoundingBox.h"
 #include "../math/CircleCollider.h"
+#include "../math/HoleCollider.h"
 #include "../math/NullCollider.h"
 #include "../math/RotatableBoxCollider.h"
 #include "../world/World.h"
@@ -90,8 +91,52 @@ void PhysicsComponent::Move(const Vec2& delta)
     {
         moved.Add(delta);
 
+        auto inverted = false;
+
+
+        // ２回 for 回すのはきれいじゃない
         for (const auto& nearbyComponent : nearbyComponents)
         {
+            if (nearbyComponent == this)
+            {
+                continue;
+            }
+
+            if (const auto hole = dynamic_cast<HoleCollider*>(nearbyComponent->collider.get()))
+            {
+                if (
+                    const auto areaResult = hole->IntersectsArea(nearbyComponent->transform.translate, moved, *selfCc);
+                    !areaResult.intersected
+                )
+                {
+                    continue;
+                }
+
+                inverted = true;
+
+                const auto result = selfCc->Intersects(moved,
+                                       nearbyComponent->transform.translate, *hole);
+                if (!result.intersected)
+                {
+                    continue;
+                }
+
+                normal = result.normal;
+
+                const auto diff = selfCc->radius - moved.Distance(result.point);
+                auto negVec = normal;
+                negVec.Mul(diff);
+                moved.Add(negVec);
+                break;
+            }
+        }
+
+        for (const auto& nearbyComponent : nearbyComponents)
+        {
+            if (inverted)
+            {
+                break;
+            }
             if (nearbyComponent == this)
             {
                 continue;

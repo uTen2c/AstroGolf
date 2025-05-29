@@ -12,6 +12,9 @@ void CameraComponent::Update(float delta)
     UpdateZoom();
 
     ImGui::Begin("Camera", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+
+    ImGui::InputFloat("X", &transform.translate.x, 0.1f,  1);
+    ImGui::InputFloat("Y", &transform.translate.y, 0.1f,  1);
     
     ImGui::Text("Zoom: %0.3f", zoom);
     
@@ -31,9 +34,10 @@ void CameraComponent::UpdatePos()
     GetMousePoint(&x, &y);
 
     const auto playerDragging = world->GetPlayer()->isDragging;
+    const auto& io = ImGui::GetIO();
     
     const auto clicking = (GetMouseInput() & MOUSE_INPUT_LEFT) != 0;
-    if (!dragging_ && clicking && !playerDragging)
+    if (!dragging_ && clicking && !playerDragging && !io.WantCaptureMouse)
     {
         dragging_ = true;
         prev_pos_ = transform.translate;
@@ -59,7 +63,7 @@ void CameraComponent::UpdatePos()
     
     const auto newPos = Vec2(prev_pos_.x + dx, prev_pos_.y + dy);
     transform.translate = newPos;
-    world->OnCameraMove(this);
+    world->OnCameraMoveWithMouse(this);
 }
 
 void CameraComponent::UpdateZoom()

@@ -163,7 +163,7 @@ WorldType World::GetType() const
     throw std::runtime_error("Not implemented");
 }
 
-void World::OnCameraMove(CameraComponent* camera)
+void World::OnCameraMoveWithMouse(CameraComponent* camera)
 {
     //
 }

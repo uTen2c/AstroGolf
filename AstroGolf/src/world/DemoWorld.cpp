@@ -5,6 +5,7 @@
 #include "../component/BoxComponent.h"
 #include "../component/GoalHoleComponent.h"
 #include "../component/RotatableBoxComponent.h"
+#include "../component/object/SatelliteParentComponent.h"
 #include "../component/planet/DemoPlanet2Component.h"
 #include "../component/planet/DemoPlanetComponent.h"
 #include "../graph/GraphUtils.h"
@@ -50,8 +51,8 @@ DemoWorld::DemoWorld()
 
     const auto hole = std::make_shared<GoalHoleComponent>(NextComponentId());
     hole->parent = planet3;
-    hole->transform.translate = {0, -175};
-    // AddComponent(hole);
+    hole->transform.translate = {0, -175 + 60};
+    AddComponent(hole);
 
     GetPlayer()->transform.translate = {250, 400};
 }

@@ -22,6 +22,8 @@ void GoalHoleComponent::Update(float deltaTime)
 
     PhysicsComponent::Update(deltaTime);
 
+    // spdlog::info("{}, {}", transform.translate.x, transform.translate.y);
+
     CheckGoal(deltaTime);
 }
 

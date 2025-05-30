@@ -37,6 +37,8 @@ public:
     virtual void PostUpdate(float delta);
     virtual void Draw(DrawStack* stack);
 
+    void SetWorldPos(const Vec2& pos);
+
     [[nodiscard]] AbsolutePos GetWorldPos() const;
 
     [[nodiscard]] int GetId() const;

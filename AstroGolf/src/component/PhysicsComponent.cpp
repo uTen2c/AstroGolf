@@ -2,6 +2,7 @@
 
 #include <spdlog/spdlog.h>
 
+#include "GoalHoleComponent.h"
 #include "../math/BoundingBox.h"
 #include "../math/CircleCollider.h"
 #include "../math/HoleCollider.h"
@@ -83,8 +84,10 @@ void PhysicsComponent::Draw(DrawStack* stack)
 
 void PhysicsComponent::Move(const Vec2& delta)
 {
-    const auto nearbyComponents = world->GetNearbyPhysicsComponents(transform.translate, 10000); // FIXME radius
-    auto moved = Vec2(transform.translate.x, transform.translate.y);
+    const auto selfWorldPos = GetWorldPos();
+    const auto nearbyComponents = world->GetNearbyPhysicsComponents(selfWorldPos.pos, 10000); // FIXME radius
+    // auto moved = Vec2(transform.translate.x, transform.translate.y);
+    auto moved = Vec2(selfWorldPos.pos.x, selfWorldPos.pos.y);
     Vec2 normal;
 
     if (const auto selfCc = dynamic_cast<CircleCollider*>(collider.get()))
@@ -102,10 +105,12 @@ void PhysicsComponent::Move(const Vec2& delta)
                 continue;
             }
 
+            const auto& worldPos = nearbyComponent->GetWorldPos();
+
             if (const auto hole = dynamic_cast<HoleCollider*>(nearbyComponent->collider.get()))
             {
                 if (
-                    const auto areaResult = hole->IntersectsArea(nearbyComponent->transform.translate, moved, *selfCc);
+                    const auto areaResult = hole->IntersectsArea(worldPos.pos, moved, *selfCc);
                     !areaResult.intersected
                 )
                 {
@@ -114,8 +119,7 @@ void PhysicsComponent::Move(const Vec2& delta)
 
                 inverted = true;
 
-                const auto result = selfCc->Intersects(moved,
-                                       nearbyComponent->transform.translate, *hole);
+                const auto result = selfCc->Intersects(moved, worldPos.pos, *hole);
                 if (!result.intersected)
                 {
                     continue;
@@ -142,9 +146,16 @@ void PhysicsComponent::Move(const Vec2& delta)
                 continue;
             }
 
+            if (dynamic_cast<HoleCollider*>(nearbyComponent->collider.get()))
+            {
+                continue;
+            }
+
+            const auto& worldPos = nearbyComponent->GetWorldPos();
+
             if (const auto cc = dynamic_cast<CircleCollider*>(nearbyComponent->collider.get()))
             {
-                const auto otherPos = nearbyComponent->transform.translate;
+                const auto otherPos = worldPos.pos;
                 const auto distance = otherPos.Distance(moved);
 
                 if (distance >= selfCc->radius + cc->radius)
@@ -165,7 +176,7 @@ void PhysicsComponent::Move(const Vec2& delta)
             }
             if (const auto bb = dynamic_cast<BoundingBox*>(nearbyComponent->collider.get()))
             {
-                const auto otherPos = nearbyComponent->transform.translate;
+                const auto otherPos = worldPos.pos;
                 const auto x1 = otherPos.x + bb->GetLeft();
                 const auto x2 = otherPos.x + bb->GetRight();
                 const auto y1 = otherPos.y + bb->GetTop();
@@ -243,8 +254,7 @@ void PhysicsComponent::Move(const Vec2& delta)
             if (const auto rbc = dynamic_cast<RotatableBoxCollider*>(nearbyComponent->collider.get()))
             {
                 // ReSharper disable once CppUseStructuredBinding
-                const auto result = selfCc->Intersects(moved,
-                                                       nearbyComponent->transform.translate, *rbc);
+                const auto result = selfCc->Intersects(moved, worldPos.pos, *rbc);
                 if (!result.intersected)
                 {
                     continue;
@@ -273,19 +283,21 @@ void PhysicsComponent::Move(const Vec2& delta)
                     continue;
                 }
 
+                const auto& worldPos = nearbyComponent->GetWorldPos();
+
                 const auto& otherCollider = nearbyComponent->collider;
                 if (const BoundingBox* bb = dynamic_cast<BoundingBox*>(otherCollider.get()))
                 {
-                    if (collider->Intersects(moved, nearbyComponent->transform.translate, *bb).intersected)
+                    if (collider->Intersects(moved, worldPos.pos, *bb).intersected)
                     {
                         if (delta.x > 0)
                         {
-                            const auto otherEdgeX = nearbyComponent->transform.translate.x - bb->width / 2;
+                            const auto otherEdgeX = worldPos.pos.x - bb->width / 2;
                             moved.x = otherEdgeX - GetColliderRadiusX(collider.get());
                         }
                         else
                         {
-                            const auto otherEdgeX = nearbyComponent->transform.translate.x + bb->width / 2;
+                            const auto otherEdgeX = worldPos.pos.x + bb->width / 2;
                             moved.x = otherEdgeX + GetColliderRadiusX(collider.get());
                         }
                     }
@@ -308,19 +320,21 @@ void PhysicsComponent::Move(const Vec2& delta)
                     continue;
                 }
 
+                const auto& worldPos = nearbyComponent->GetWorldPos();
+
                 const auto& otherCollider = nearbyComponent->collider;
                 if (const BoundingBox* bb = dynamic_cast<BoundingBox*>(otherCollider.get()))
                 {
-                    if (collider->Intersects(moved, nearbyComponent->transform.translate, *bb).intersected)
+                    if (collider->Intersects(moved, worldPos.pos, *bb).intersected)
                     {
                         if (delta.y > 0)
                         {
-                            const auto otherEdgeY = nearbyComponent->transform.translate.y - bb->height / 2;
+                            const auto otherEdgeY = worldPos.pos.y - bb->height / 2;
                             moved.y = otherEdgeY - GetColliderRadiusY(collider.get());
                         }
                         else
                         {
-                            const auto otherEdgeY = nearbyComponent->transform.translate.y + bb->height / 2;
+                            const auto otherEdgeY = worldPos.pos.y + bb->height / 2;
                             moved.y = otherEdgeY + GetColliderRadiusY(collider.get());
                         }
                     }
@@ -351,7 +365,15 @@ void PhysicsComponent::Move(const Vec2& delta)
         velocity = r;
     }
 
-    transform.translate = moved;
+    if (selfWorldPos.pos.Distance(moved) == 0.0f)
+    {
+        return;
+    }
+
+    if (!isStatic)
+    {
+        SetWorldPos(moved);
+    }
 }
 
 Vec2 PhysicsComponent::GetMergedGravityVelocity() const

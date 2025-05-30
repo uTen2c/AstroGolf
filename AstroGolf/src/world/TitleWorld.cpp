@@ -11,6 +11,7 @@
 #include "../component/RotatableBoxComponent.h"
 #include "../component/SimpleSquareComponent.h"
 #include "../component/TestSquareComponent.h"
+#include "../component/object/SatelliteParentComponent.h"
 #include "../component/title/TitleWorldGroundComponent.h"
 #include "../graph/GraphUtils.h"
 #include "../math/Math.h"
@@ -51,9 +52,9 @@ TitleWorld::TitleWorld()
     // hole->transform.rotation = 30.0f * Math::deg_to_rad;
     AddComponent(hole);
 
-    const auto parent = std::make_shared<SimpleSquareComponent>(NextComponentId());
-    parent->transform.translate = {0, 100};
-    parent->transform.rotation = 45.0f * Math::deg_to_rad;
+    const auto parent = std::make_shared<SatelliteParentComponent>(NextComponentId());
+    parent->transform.translate = {0, -100};
+    // parent->transform.rotation = 45.0f * Math::deg_to_rad;
 
     const auto child = std::make_shared<SimpleSquareComponent>(NextComponentId());
     child->parent = parent;
@@ -63,7 +64,6 @@ TitleWorld::TitleWorld()
     hole2->parent = parent;
     hole2->transform.translate = {0, 100};
     // hole->transform.rotation = 30.0f * Math::deg_to_rad;
-    AddComponent(hole2);
 
     AddComponent(parent);
     AddComponent(child);

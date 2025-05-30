@@ -25,6 +25,7 @@
     <ClCompile Include="src\component\CircleComponent.cpp" />
     <ClCompile Include="src\component\Component.cpp" />
     <ClCompile Include="src\component\GoalHoleComponent.cpp" />
+    <ClCompile Include="src\component\object\SatelliteParentComponent.cpp" />
     <ClCompile Include="src\component\PhysicsComponent.cpp" />
     <ClCompile Include="src\component\PlanetComponent.cpp" />
     <ClCompile Include="src\component\planet\DemoPlanet2Component.cpp" />
@@ -135,6 +136,7 @@
     <ClInclude Include="src\component\CircleComponent.h" />
     <ClInclude Include="src\component\Component.h" />
     <ClInclude Include="src\component\GoalHoleComponent.h" />
+    <ClInclude Include="src\component\object\SatelliteParentComponent.h" />
     <ClInclude Include="src\component\PhysicsComponent.h" />
     <ClInclude Include="src\component\PlanetComponent.h" />
     <ClInclude Include="src\component\planet\DemoPlanet2Component.h" />

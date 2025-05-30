@@ -14,6 +14,12 @@ void Component::Draw(DrawStack* stack)
 {
 }
 
+void Component::SetWorldPos(const Vec2& pos)
+{
+    const Vec2 parentPos = parent ? parent->GetWorldPos().pos : Vec2();
+    transform.translate = pos.Copy().Sub(parentPos);
+}
+
 AbsolutePos Component::GetWorldPos() const
 {
     std::vector<Transform> transforms = {};

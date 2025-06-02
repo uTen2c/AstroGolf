@@ -12,6 +12,7 @@ enum class WorldType
 {
     Title,
     Demo,
+    StageSelect,
 };
 
 class World

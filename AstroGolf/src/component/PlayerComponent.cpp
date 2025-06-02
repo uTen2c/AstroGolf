@@ -30,9 +30,6 @@ void PlayerComponent::Update(const float deltaTime)
 
     PhysicsComponent::Update(deltaTime);
 
-    ImGui::Begin("Test");
-    ImGui::Text("Last V %0.3f", velocity.Length());
-    ImGui::Text("Last G %0.3f", lastGravityPower);
     if (velocity.Length() > 0)
     {
         if (velocity.Length() < 0.1)
@@ -53,7 +50,6 @@ void PlayerComponent::Update(const float deltaTime)
             }
         }
     }
-    ImGui::End();
 
     UpdateShot();
     UpdateDebugMove();
@@ -63,7 +59,7 @@ void PlayerComponent::Draw(DrawStack* stack)
 {
     stack->Push();
     ApplyDrawStack(stack);
-    
+
     ImGui::Begin("Player", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
     ImGui::SeparatorText("Transform");
     ImGui::Text("Translate");
@@ -160,11 +156,11 @@ void PlayerComponent::UpdateShot()
         shotVec.Mul(shot_power_multiplier);
 
         // 重力の影響を相殺する
-        for (const auto & gravitySource : gravitySources)
+        for (const auto& gravitySource : gravitySources)
         {
             shotVec.Add(gravitySource.Copy().Neg());
         }
-        
+
         velocity = shotVec;
         isDragging = false;
     }

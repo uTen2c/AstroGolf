@@ -3,6 +3,7 @@
 #include <DxLib.h>
 
 #include "world/DemoWorld.h"
+#include "world/StageSelectWorld.h"
 #include "world/TitleWorld.h"
 
 
@@ -23,7 +24,11 @@ void Game::Update()
     {
         ChangeWorld<DemoWorld>();
     }
-    
+    if (CheckHitKey(KEY_INPUT_3) != 0 && world_->GetType() != WorldType::StageSelect)
+    {
+        ChangeWorld<StageSelectWorld>();
+    }
+
     world_->Update(deltaTime);
     world_->Draw();
     world_->PostUpdate(deltaTime);

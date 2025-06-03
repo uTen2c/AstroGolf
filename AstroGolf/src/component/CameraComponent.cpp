@@ -11,19 +11,22 @@ void CameraComponent::Update(float delta)
     UpdatePos();
     UpdateZoom();
 
-    ImGui::Begin("Camera", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-
-    ImGui::InputFloat("X", &transform.translate.x, 0.1f,  1);
-    ImGui::InputFloat("Y", &transform.translate.y, 0.1f,  1);
-    
-    ImGui::Text("Zoom: %0.3f", zoom);
-    
-    if (ImGui::Button("Reset pos"))
+    if (world->GetType() != WorldType::StageSelect)
     {
-        transform.translate = {0, 0};
+        ImGui::Begin("Camera", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+
+        ImGui::InputFloat("X", &transform.translate.x, 0.1f, 1);
+        ImGui::InputFloat("Y", &transform.translate.y, 0.1f, 1);
+
+        ImGui::Text("Zoom: %0.3f", zoom);
+
+        if (ImGui::Button("Reset pos"))
+        {
+            transform.translate = {0, 0};
+        }
+
+        ImGui::End();
     }
-    
-    ImGui::End();
 }
 
 void CameraComponent::UpdatePos()
@@ -35,7 +38,7 @@ void CameraComponent::UpdatePos()
 
     const auto playerDragging = world->GetPlayer()->isDragging;
     const auto& io = ImGui::GetIO();
-    
+
     const auto clicking = (GetMouseInput() & MOUSE_INPUT_LEFT) != 0;
     if (!dragging_ && clicking && !playerDragging && !io.WantCaptureMouse)
     {
@@ -60,7 +63,7 @@ void CameraComponent::UpdatePos()
 
     dx /= zoom;
     dy /= zoom;
-    
+
     const auto newPos = Vec2(prev_pos_.x + dx, prev_pos_.y + dy);
     transform.translate = newPos;
     world->OnCameraMoveWithMouse(this);

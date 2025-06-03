@@ -5,7 +5,8 @@
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
-#include "world/DemoWorld.h"
+#include "game/StageManager.h"
+#include "world/TitleWorld.h"
 
 // ReSharper disable once CppInconsistentNaming
 LRESULT CALLBACK WndProc(const HWND hwnd, const UINT msg, const WPARAM w_param, const LPARAM l_param)
@@ -14,6 +15,20 @@ LRESULT CALLBACK WndProc(const HWND hwnd, const UINT msg, const WPARAM w_param, 
     if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, w_param, l_param))
         return true;
     return 0;
+}
+
+static void LoadFonts()
+{
+    spdlog::info("Loading fonts...");
+    AddFontResourceExA("assets/fonts/MPLUS1p-Medium.ttf", FR_PRIVATE, nullptr);
+    spdlog::info("Fonts loaded");
+}
+
+static void UnloadFonts()
+{
+    spdlog::info("UnLoading fonts...");
+    RemoveFontResourceExA("", FR_PRIVATE, nullptr);
+    spdlog::info("fonts unloaded");
 }
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -28,6 +43,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     // SetWindowStyleMode(7);
     SetWaitVSyncFlag(false);
     SetBackgroundColor(20, 29, 39);
+    SetAlwaysRunFlag(true);
 
     if (DxLib_Init() == -1)
     {
@@ -35,8 +51,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         return -1;
     }
 
+    LoadFonts();
+
+    if (!StageManager::LoadStages())
+    {
+        return -1;
+    }
+
     const auto game = std::make_unique<Game>();
-    game->ChangeWorld<DemoWorld>();
+    game->ChangeWorld<TitleWorld>();
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -101,6 +124,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     ImGui::DestroyContext();
 
     DxLib_End();
+
+    UnloadFonts();
 
     return 0;
 }

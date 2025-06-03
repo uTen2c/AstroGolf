@@ -77,7 +77,6 @@ void World::PostUpdate(const float& deltaTime)
 
 int World::NextComponentId()
 {
-    spdlog::info("{}", next_id_);
     return next_id_++;
 }
 

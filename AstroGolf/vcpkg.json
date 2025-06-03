@@ -1,7 +1,6 @@
 {
   "dependencies": [
     "fmt",
-    "spdlog",
     {
       "name": "imgui",
       "default-features": false,
@@ -9,6 +8,8 @@
         "dx11-binding",
         "win32-binding"
       ]
-    }
+    },
+    "spdlog",
+    "nlohmann-json"
   ]
 }

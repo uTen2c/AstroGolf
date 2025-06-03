@@ -2,22 +2,30 @@
 #include <string>
 
 #include "../Component.h"
+#include "../../graph/Graph.h"
 
 class StageSelectComponent final : public Component
 {
-    int current_index_ = 0;
-    inline static bool last_down_pressed_ = false;
-    inline static bool last_up_pressed_ = false;
-    inline static float key_check_duration_ = 0.f;
-    inline static bool key_check_repeat_ = false;
+    int font_handle_;
+    int current_center_index_ = 0;
+    int focused_index_ = 0;
+    int mouse_hovering_index_ = -1;
+    bool mouse_clicked_ = false;
+    std::unique_ptr<Graph> inactive_star_graph_;
+    std::unique_ptr<Graph> active_star_graph_;
 
 public:
     explicit StageSelectComponent(int id);
+    ~StageSelectComponent() override;
 
     void Update(float delta) override;
     void Draw(DrawStack* stack) override;
 
+    [[nodiscard]] int GetFocusedIndex() const;
+
 private:
-    static void DrawButton(const float& x, const float& y, const float& scale, const std::string& label, const bool& selected);
+    void DrawButton(const float& x, const float& y, const float& scale, const std::string& label, const bool& selected, const int& stars) const;
     static int CheckMoveKey(float deltaTime);
+
+    static void OnSelect(int index);
 };

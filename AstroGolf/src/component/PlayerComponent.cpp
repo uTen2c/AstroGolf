@@ -60,15 +60,18 @@ void PlayerComponent::Draw(DrawStack* stack)
     stack->Push();
     ApplyDrawStack(stack);
 
-    ImGui::Begin("Player", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-    ImGui::SeparatorText("Transform");
-    ImGui::Text("Translate");
-    ImGui::InputFloat("X", &transform.translate.x);
-    ImGui::InputFloat("Y", &transform.translate.y);
-    ImGui::Separator();
-    ImGui::Text("Shot vec: %0.3f, %0.3f", drag_vector_.x, drag_vector_.y);
-    ImGui::Text("Shot pow: %0.3f", drag_vector_.Length());
-    ImGui::End();
+    if (world->GetType() != WorldType::StageSelect)
+    {
+        ImGui::Begin("Player", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+        ImGui::SeparatorText("Transform");
+        ImGui::Text("Translate");
+        ImGui::InputFloat("X", &transform.translate.x);
+        ImGui::InputFloat("Y", &transform.translate.y);
+        ImGui::Separator();
+        ImGui::Text("Shot vec: %0.3f, %0.3f", drag_vector_.x, drag_vector_.y);
+        ImGui::Text("Shot pow: %0.3f", drag_vector_.Length());
+        ImGui::End();
+    }
 
     const auto& screenPos = stack->GetScreenPos();
     screen_pos_ = screenPos;

@@ -1,19 +1,25 @@
 #include "StageSelectWorld.h"
 
 #include <DxLib.h>
+#include <format>
 #include <memory>
 
 #include "../component/select/StageSelectComponent.h"
+#include "../game/StageManager.h"
 #include "../graph/GraphUtils.h"
 
 StageSelectWorld::StageSelectWorld()
 {
     background_graph_handle_ = GraphUtils::Load("background.png");
 
+    for (const auto& stage : StageManager::GetStages())
+    {
+        const auto ptr = std::make_shared<Graph>(std::format("preview/{}", stage.preview), 1024, 1024);
+        preview_graphs_.emplace_back(ptr);
+    }
+
     preview_component_ = std::make_shared<StagePreviewComponent>(NextComponentId());
     select_component_ = std::make_shared<StageSelectComponent>(NextComponentId());
-
-    preview_component_->SetGraph(std::make_shared<Graph>("preview/placeholder.png", 1024, 1024));
 
     AddComponent(preview_component_);
     AddComponent(select_component_);
@@ -38,6 +44,17 @@ void StageSelectWorld::Update(const float& deltaTime)
 
     auto& camera = GetCamera();
     camera.transform.translate = {};
+
+    if (
+        const int& focusedIndex = select_component_->GetFocusedIndex();
+        focusedIndex != -1
+    )
+    {
+        if (const auto& graph = preview_graphs_[focusedIndex])
+        {
+            preview_component_->SetGraph(graph);
+        }
+    }
 }
 
 WorldType StageSelectWorld::GetType() const

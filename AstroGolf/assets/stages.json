@@ -1,0 +1,22 @@
+[
+  {
+    "id": "demo",
+    "name": "デモステージ",
+    "preview": "stage1.png"
+  },
+  {
+    "id": "test",
+    "name": "テストステージ",
+    "preview": "stage2.png"
+  },
+  {
+    "id": "placeholder",
+    "name": "プレースホルダー",
+    "preview": "placeholder.png"
+  },
+  {
+    "id": "placeholder2",
+    "name": "プレースホルダー2",
+    "preview": "placeholder.png"
+  }
+]

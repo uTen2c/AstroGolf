@@ -177,6 +177,10 @@
   <ItemGroup>
     <Folder Include="assets\sprite\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\fonts\MPLUS1p-Medium.ttf" />
+    <Content Include="assets\stages.json" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

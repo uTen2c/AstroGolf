@@ -1,17 +1,24 @@
 #include "World.h"
 
-#include <DxLib.h>
 #include <algorithm>
+#include <DxLib.h>
 #include <ranges>
 #include <spdlog/spdlog.h>
+
+#include "StageSelectWorld.h"
+#include "../Game.h"
+#include "../graph/Graph.h"
+#include "../math/Math.h"
 
 World::World()
 {
     spdlog::info("World init");
 
     camera_ = std::make_shared<CameraComponent>(NextComponentId());
-
     player_ = std::make_shared<PlayerComponent>(NextComponentId());
+    menu_button_graph_ = std::make_unique<Graph>("menu_button.png", 72, 72);
+    menu_background_graph_ = std::make_unique<Graph>("menu/menu_background.png", 1024, 720);
+    menu_buttons_graph_ = std::make_unique<Graph>("menu/buttons.png", 512, 70);
 
     AddComponent(camera_);
     AddComponent(player_);
@@ -49,6 +56,8 @@ void World::Draw()
     {
         component->Draw(&stack);
     }
+
+    DrawUi();
 }
 
 void World::Update(const float& deltaTime)
@@ -72,6 +81,95 @@ void World::PostUpdate(const float& deltaTime)
     for (const auto component : GetComponents())
     {
         component->PostUpdate(deltaTime);
+    }
+}
+
+void World::DrawUi()
+{
+    int mouseX;
+    int mouseY;
+    GetMousePoint(&mouseX, &mouseY);
+
+    if (!menu_opened_)
+    {
+        constexpr auto menuButtonPadding = 24;
+        const auto halfW = static_cast<float>(menu_button_graph_->width) * 0.5f;
+        const auto halfH = static_cast<float>(menu_button_graph_->height) * 0.5f;
+        const auto centerX = WINDOW_WIDTH - halfW - menuButtonPadding;
+        const auto centerY = halfH + menuButtonPadding;
+        const auto isHovering = Math::InRange(static_cast<float>(mouseX), centerX - halfW, centerX + halfW) &&
+            Math::InRange(static_cast<float>(mouseY), centerY - halfH, centerY + halfH);
+        menu_button_graph_->DrawCenter(centerX, centerY, isHovering ? 1 : 0, 0);
+
+        if (isHovering && (GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
+        {
+            SetMenuOpen(true);
+        }
+    }
+
+    if (!menu_opened_)
+    {
+        return;
+    }
+
+    // Esc押したら閉じる
+    if (CheckHitKey(KEY_INPUT_ESCAPE) != 0)
+    {
+        SetMenuOpen(false);
+        return;
+    }
+
+    menu_background_graph_->Draw(WINDOW_WIDTH - menu_background_graph_->width, 0);
+
+    constexpr auto padding = 24;
+    constexpr auto buttonCount = 3;
+    const auto buttonX = WINDOW_WIDTH - menu_buttons_graph_->width - padding;
+    const auto offsetY = WINDOW_HEIGHT - menu_buttons_graph_->height - padding;
+    for (int i = 0; i <= buttonCount; ++i)
+    {
+        constexpr auto gap = 24;
+        const auto tileY = i * 2;
+        const auto buttonY = offsetY + (i - buttonCount) * (menu_buttons_graph_->height + gap);
+        const auto isHovering = Math::InRange(mouseX, buttonX, buttonX + menu_buttons_graph_->width) &&
+            Math::InRange(mouseY, buttonY, buttonY + menu_buttons_graph_->height);
+        menu_buttons_graph_->Draw(
+            isHovering ? buttonX - 4 : buttonX,
+            buttonY,
+            0,
+            isHovering ? tileY + 1 : tileY
+        );
+
+        if (isHovering && (GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
+        {
+            switch (i)
+            {
+            // ゲームに戻る
+            case 0:
+                {
+                    SetMenuOpen(false);
+                    break;
+                }
+            // はじめから
+            case 1:
+                {
+                    break;
+                }
+            // ステージセレクト
+            case 2:
+                {
+                    Game::instance->ChangeWorldWithTransition<StageSelectWorld>(TransitionMode::Circle);
+                    break;
+                }
+            // ゲームを閉じる
+            case 3:
+                {
+                    Game::shouldShutdown = true;
+                    break;
+                }
+            default:
+                break;
+            }
+        }
     }
 }
 
@@ -167,6 +265,16 @@ void World::OnCameraMoveWithMouse(CameraComponent* camera)
     //
 }
 
+void World::OnGoal()
+{
+}
+
 void World::DrawBackground(DrawStack& stack) const
 {
+}
+
+void World::SetMenuOpen(bool open)
+{
+    menu_opened_ = open;
+    Game::instance->isPaused = open;
 }

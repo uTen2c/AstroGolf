@@ -14,4 +14,10 @@ public:
     
     static float Lerp(const float& start, const float& end, const float& delta);
     static Vec2 Lerp(const Vec2& start, const Vec2& end, const float& delta);
+
+    template <class T>
+    static bool InRange(const T& value, const T& min, const T& max)
+    {
+        return min <= value && value <= max;
+    }
 };

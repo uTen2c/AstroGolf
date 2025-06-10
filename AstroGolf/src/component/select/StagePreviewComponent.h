@@ -11,7 +11,7 @@ class StagePreviewComponent final : public Component
 public:
     int blurHandle = 0;
 
-    explicit StagePreviewComponent(const int id);
+    explicit StagePreviewComponent(int id);
 
     ~StagePreviewComponent() override;
 

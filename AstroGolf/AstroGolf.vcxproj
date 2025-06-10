@@ -36,6 +36,7 @@
     <ClCompile Include="src\component\select\StageSelectComponent.cpp" />
     <ClCompile Include="src\component\SimpleSquareComponent.cpp" />
     <ClCompile Include="src\component\TestSquareComponent.cpp" />
+    <ClCompile Include="src\component\title\StartTextComponent.cpp" />
     <ClCompile Include="src\component\title\TitleComponent.cpp" />
     <ClCompile Include="src\component\title\TitleSlopeComponent.cpp" />
     <ClCompile Include="src\component\title\TitleWorldGroundComponent.cpp" />
@@ -131,6 +132,7 @@
     <ClCompile Include="src\math\Vec2.cpp" />
     <ClCompile Include="src\world\DemoWorld.cpp" />
     <ClCompile Include="src\world\StageSelectWorld.cpp" />
+    <ClCompile Include="src\world\StageWorld.cpp" />
     <ClCompile Include="src\world\TitleWorld.cpp" />
     <ClCompile Include="src\world\World.cpp" />
   </ItemGroup>
@@ -151,6 +153,7 @@
     <ClInclude Include="src\component\select\StageSelectComponent.h" />
     <ClInclude Include="src\component\SimpleSquareComponent.h" />
     <ClInclude Include="src\component\TestSquareComponent.h" />
+    <ClInclude Include="src\component\title\StartTextComponent.h" />
     <ClInclude Include="src\component\title\TitleComponent.h" />
     <ClInclude Include="src\component\title\TitleSlopeComponent.h" />
     <ClInclude Include="src\component\title\TitleWorldGroundComponent.h" />
@@ -171,6 +174,7 @@
     <ClInclude Include="src\math\Vec2.h" />
     <ClInclude Include="src\world\DemoWorld.h" />
     <ClInclude Include="src\world\StageSelectWorld.h" />
+    <ClInclude Include="src\world\StageWorld.h" />
     <ClInclude Include="src\world\TitleWorld.h" />
     <ClInclude Include="src\world\World.h" />
   </ItemGroup>

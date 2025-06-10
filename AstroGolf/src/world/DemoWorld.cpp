@@ -8,6 +8,7 @@
 #include "../component/object/SatelliteParentComponent.h"
 #include "../component/planet/DemoPlanet2Component.h"
 #include "../component/planet/DemoPlanetComponent.h"
+#include "../game/StageManager.h"
 #include "../graph/GraphUtils.h"
 #include "../math/Math.h"
 
@@ -51,7 +52,7 @@ DemoWorld::DemoWorld()
 
     const auto hole = std::make_shared<GoalHoleComponent>(NextComponentId());
     hole->parent = planet3;
-    hole->transform.translate = {0, -175 + 60};
+    hole->transform.translate = {0, -175 + 40};
     AddComponent(hole);
 
     GetPlayer()->transform.translate = {250, 400};
@@ -71,6 +72,11 @@ void DemoWorld::Update(const float& deltaTime)
 {
     World::Update(deltaTime);
     UpdateCamera(deltaTime);
+}
+
+std::string DemoWorld::GetStageId() const
+{
+    return StageManager::demoId;
 }
 
 void DemoWorld::DrawBackground(DrawStack& stack) const

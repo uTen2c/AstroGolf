@@ -45,7 +45,7 @@ void GoalHoleComponent::CheckGoal(const float deltaTime)
         goaled_ = false;
     }
 
-    if (check_duration_sec_ > 1.5 && !goaled_)
+    if (check_duration_sec_ > 1 && !goaled_)
     {
         goaled_ = true;
         OnGoal();
@@ -59,14 +59,9 @@ void GoalHoleComponent::Draw(DrawStack* stack)
     ApplyDrawStack(stack);
     hole_graph_->Draw(*stack);
     stack->Pop();
-
-    // Debug
-    // stack->Push();
-    // transform.ApplyDrawStack(stack);
-    // collider->Draw(stack);
-    // stack->Pop();
 }
 
 void GoalHoleComponent::OnGoal()
 {
+    world->OnGoal();
 }

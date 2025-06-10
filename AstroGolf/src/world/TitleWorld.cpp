@@ -6,13 +6,14 @@
 #include <memory>
 #include <spdlog/spdlog.h>
 
+#include "StageSelectWorld.h"
 #include "../Game.h"
 #include "../component/GoalHoleComponent.h"
 #include "../component/RotatableBoxComponent.h"
 #include "../component/SimpleSquareComponent.h"
-#include "../component/TestSquareComponent.h"
-#include "../component/object/SatelliteParentComponent.h"
+#include "../component/title/StartTextComponent.h"
 #include "../component/title/TitleWorldGroundComponent.h"
+#include "../game/StageManager.h"
 #include "../graph/GraphUtils.h"
 #include "../math/Math.h"
 
@@ -22,6 +23,9 @@ TitleWorld::TitleWorld()
     title_graph_ = std::make_unique<Graph>("title.png", 1024, 1024);
 
     zoomEnabled = false;
+
+    GetPlayer()->transform.translate = {500, 270};
+    ResetCamera();
 
     const auto ground = std::make_shared<TitleWorldGroundComponent>(NextComponentId());
     ground->transform.translate = {0, 400};
@@ -48,26 +52,12 @@ TitleWorld::TitleWorld()
     AddComponent(leftWall);
 
     const auto hole = std::make_shared<GoalHoleComponent>(NextComponentId());
-    hole->transform.translate = {200, 340};
-    // hole->transform.rotation = 30.0f * Math::deg_to_rad;
+    hole->transform.translate = {0, 340};
     AddComponent(hole);
 
-    const auto parent = std::make_shared<SatelliteParentComponent>(NextComponentId());
-    parent->transform.translate = {0, -100};
-    // parent->transform.rotation = 45.0f * Math::deg_to_rad;
-
-    const auto child = std::make_shared<SimpleSquareComponent>(NextComponentId());
-    child->parent = parent;
-    child->transform.translate = {0, 100};
-
-    const auto hole2 = std::make_shared<GoalHoleComponent>(NextComponentId());
-    hole2->parent = parent;
-    hole2->transform.translate = {0, 100};
-    // hole->transform.rotation = 30.0f * Math::deg_to_rad;
-
-    AddComponent(parent);
-    AddComponent(child);
-    AddComponent(hole2);
+    const auto startText = std::make_shared<StartTextComponent>(NextComponentId());
+    startText->transform.translate = {0, 128};
+    AddComponent(startText);
 }
 
 TitleWorld::~TitleWorld()
@@ -93,18 +83,34 @@ void TitleWorld::OnCameraMoveWithMouse(CameraComponent* camera)
     camera->transform.translate = ClampCameraPos(camera->transform.translate);
 }
 
+void TitleWorld::OnGoal()
+{
+    Game::instance->ChangeWorldWithTransition<StageSelectWorld>(TransitionMode::Circle);
+}
+
+std::string TitleWorld::GetStageId() const
+{
+    return StageManager::titleId;
+}
+
 void TitleWorld::DrawBackground(DrawStack& stack) const
 {
     DrawGraphF(0, 0, background_graph_handle_, true);
-    title_graph_->DrawCenter(WINDOW_WIDTH * 0.5f, 200);
+    title_graph_->DrawCenter(WINDOW_WIDTH * 0.5f, 200.0f);
 }
 
-void TitleWorld::UpdateCamera(const float& deltaTime)
+void TitleWorld::UpdateCamera(const float& deltaTime) const
 {
     auto& camera = GetCamera();
     const auto player = GetPlayer();
     const auto focusPos = player->transform.translate.Copy().Add({0, -300});
     camera.transform.translate = Math::Lerp(camera.transform.translate, ClampCameraPos(focusPos), deltaTime * 3.0f);
+}
+
+void TitleWorld::ResetCamera() const
+{
+    const auto focusPos = GetPlayer()->transform.translate.Copy().Add({0, -300});
+    GetCamera().transform.translate = ClampCameraPos(focusPos);
 }
 
 Vec2 TitleWorld::ClampCameraPos(const Vec2& pos)

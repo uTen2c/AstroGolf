@@ -11,6 +11,7 @@ struct AbsolutePos
     Vec2 pos;
     float rot;
 };
+
 class Component
 {
     int id_;

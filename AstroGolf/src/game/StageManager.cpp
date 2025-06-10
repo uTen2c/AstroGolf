@@ -4,6 +4,9 @@
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
 
+#include "../world/DemoWorld.h"
+#include "../world/TitleWorld.h"
+
 using json = nlohmann::json;
 
 bool StageManager::LoadStages()
@@ -33,6 +36,9 @@ bool StageManager::LoadStages()
         }
 
         spdlog::info("Loaded {} stages", stages_.size());
+
+        OnRegisterWorlds();
+
         return true;
     }
     catch (const std::exception& e)
@@ -40,4 +46,38 @@ bool StageManager::LoadStages()
         spdlog::error("Failed to load stages: {}", e.what());
         return false;
     }
+}
+
+std::unique_ptr<World> StageManager::CreateWorld(const std::string& id)
+{
+    const auto& function = factories_[id];
+    if (!function)
+    {
+        spdlog::warn("Tried to create a world with a non-exists ID: {}", id);
+        return nullptr;
+    }
+    return function();
+}
+
+void StageManager::OnRegisterWorlds()
+{
+    RegisterWorld(demoId, []
+    {
+        return std::make_unique<DemoWorld>();
+    });
+    RegisterWorld(titleId, []
+    {
+        return std::make_unique<TitleWorld>();
+    });
+}
+
+void StageManager::RegisterWorld(const std::string& id, const std::function<std::unique_ptr<World>()>& worldFactory)
+{
+    if (factories_.contains(id))
+    {
+        spdlog::warn("World factory already registered: {}", id);
+        return;
+    }
+    factories_[id] = worldFactory;
+    spdlog::info("World factory registered: {}", id);
 }

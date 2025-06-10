@@ -5,8 +5,8 @@
     "preview": "stage1.png"
   },
   {
-    "id": "test",
-    "name": "テストステージ",
+    "id": "title",
+    "name": "タイトルステージ",
     "preview": "stage2.png"
   },
   {

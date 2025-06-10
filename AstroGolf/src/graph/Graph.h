@@ -1,4 +1,5 @@
 #pragma once
+#include <DxLib.h>
 #include <string>
 
 #include "../math/DrawStack.h"
@@ -13,6 +14,19 @@ public:
     Graph(const std::string& path, int width, int height);
     ~Graph();
 
-    void DrawCenter(const float& x, const float& y) const;
+    template <class T>
+    void DrawCenter(const T& x, const T& y, const int& tileX = 0, const int& tileY = 0) const
+    {
+        const auto destX = static_cast<float>(x) - static_cast<float>(width) * 0.5f;
+        const auto destY = static_cast<float>(y) - static_cast<float>(height) * 0.5f;
+        DrawRectGraphF(destX, destY, tileX * width, tileY * height, width, height, handle, true);
+    }
+    
+    template <class T>
+    void Draw(const T& x, const T& y, const int& tileX = 0, const int& tileY = 0) const
+    {
+        DrawRectGraphF(x, y, tileX * width, tileY * height, width, height, handle, true);
+    }
+
     void Draw(const DrawStack& stack) const;
 };

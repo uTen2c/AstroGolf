@@ -8,6 +8,8 @@
 #include "../component/PhysicsComponent.h"
 #include "../component/PlayerComponent.h"
 
+class Graph;
+
 enum class WorldType
 {
     Title,
@@ -18,10 +20,14 @@ enum class WorldType
 class World
 {
     int next_id_ = 0;
+    bool menu_opened_ = false;
     std::map<int, std::shared_ptr<Component>> component_map_ = {};
 
     std::shared_ptr<CameraComponent> camera_;
     std::shared_ptr<PlayerComponent> player_;
+    std::unique_ptr<Graph> menu_button_graph_;
+    std::unique_ptr<Graph> menu_background_graph_;
+    std::unique_ptr<Graph> menu_buttons_graph_;
 
 public:
     bool zoomEnabled = true;
@@ -32,6 +38,8 @@ public:
     virtual void Draw();
     virtual void Update(const float& deltaTime);
     virtual void PostUpdate(const float& deltaTime);
+
+    virtual void DrawUi();
 
     /**
      * ワールド内で一意なIDを生成する
@@ -71,6 +79,11 @@ public:
 
     virtual void OnCameraMoveWithMouse(CameraComponent* camera);
 
+    virtual void OnGoal();
+
 protected:
     virtual void DrawBackground(DrawStack& stack) const;
+
+private:
+    void SetMenuOpen(bool open);
 };

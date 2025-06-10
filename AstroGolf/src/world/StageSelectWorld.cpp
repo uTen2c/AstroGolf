@@ -38,6 +38,11 @@ void StageSelectWorld::Draw()
     World::Draw();
 }
 
+void StageSelectWorld::DrawUi()
+{
+    // Nothing
+}
+
 void StageSelectWorld::Update(const float& deltaTime)
 {
     World::Update(deltaTime);

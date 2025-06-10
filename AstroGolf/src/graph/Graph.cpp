@@ -16,11 +16,6 @@ Graph::~Graph()
     DeleteGraph(handle);
 }
 
-void Graph::DrawCenter(const float& x, const float& y) const
-{
-    DrawGraphF(x - static_cast<float>(width) * 0.5f, y - static_cast<float>(height) * 0.5f, handle, true);
-}
-
 void Graph::Draw(const DrawStack& stack) const
 {
     const auto& pos = stack.GetScreenPos();

@@ -19,6 +19,7 @@ PlayerComponent::PlayerComponent(const int id): PhysicsComponent(id)
 {
     collider = std::make_unique<CircleCollider>(radius);
     zIndex = 1100;
+    shot_start_transform_ = transform;
 }
 
 void PlayerComponent::Update(const float deltaTime)
@@ -55,6 +56,16 @@ void PlayerComponent::Update(const float deltaTime)
     UpdateDebugMove();
 }
 
+void PlayerComponent::UpdateMovement(const float deltaTime)
+{
+    const auto lastPos = transform.translate;
+    PhysicsComponent::UpdateMovement(deltaTime);
+
+    // 設置判定
+    const auto& movedDistance = lastPos.Distance(transform.translate);
+    can_shot_ = intersectingNormal.Length() > 0 && movedDistance < 0.1;
+}
+
 void PlayerComponent::Draw(DrawStack* stack)
 {
     stack->Push();
@@ -72,6 +83,8 @@ void PlayerComponent::Draw(DrawStack* stack)
         ImGui::Text("Shot pow: %0.3f", drag_vector_.Length());
         ImGui::End();
     }
+
+    DrawTrail(stack);
 
     const auto& screenPos = stack->GetScreenPos();
     screen_pos_ = screenPos;
@@ -133,10 +146,20 @@ void PlayerComponent::Draw(DrawStack* stack)
     stack->Pop();
 }
 
+void PlayerComponent::Respawn()
+{
+    transform = shot_start_transform_;
+}
+
 void PlayerComponent::UpdateShot()
 {
     int x;
     int y;
+
+    if (!can_shot_)
+    {
+        return;
+    }
 
     GetMousePoint(&x, &y);
 
@@ -155,6 +178,7 @@ void PlayerComponent::UpdateShot()
 
     if (isDragging && !clicking)
     {
+        shot_start_transform_ = transform;
         auto shotVec = drag_vector_;
         shotVec.Mul(shot_power_multiplier);
 
@@ -212,4 +236,37 @@ void PlayerComponent::UpdateDebugMove()
 
         transform.translate = translate.Add(delta);
     }
+}
+
+void PlayerComponent::DrawTrail(DrawStack* stack)
+{
+    if (trails_.empty())
+    {
+        for (int i = 0; i < 30; ++i)
+        {
+            trails_.emplace_back(transform.translate);
+        }
+    }
+
+    trails_.pop_front();
+    trails_.push_back(transform.translate);
+
+    const auto screen = MakeScreen(WINDOW_WIDTH, WINDOW_HEIGHT, true);
+    SetDrawScreen(screen);
+    for (const auto& trailPos : trails_)
+    {
+        stack->Push();
+        stack->Translate(transform.translate.Copy().Neg());
+        stack->Translate(trailPos);
+        const auto distance = transform.translate.Distance(trailPos);
+        const auto& screenPos = stack->GetScreenPos();
+        const auto scale = (150.0f - std::clamp(distance, 0.0f, 150.0f)) / 150.0f;
+        DrawCircleAA(screenPos.x, screenPos.y, max(12.0f * scale, 3.0f), 16, GetColor(255, 255, 255));
+        stack->Pop();
+    }
+    SetDrawScreen(DX_SCREEN_BACK);
+
+    SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255 * 0.5));
+    DrawExtendGraph(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, screen, true);
+    SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }

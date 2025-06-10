@@ -6,23 +6,62 @@
 constexpr auto WINDOW_WIDTH = 1280;
 constexpr auto WINDOW_HEIGHT = 720;
 
+enum class TransitionMode
+{
+    Slide,
+    Circle,
+};
+
 class Game
 {
+    inline static float max_transition_delta_ = 1.f;
+
     std::unique_ptr<World> world_;
+    bool changing_ = false;
+    bool world_changed_ = false;
+    float last_transition_progress_ = 0;
+    float transition_delta_ = 0;
+    std::unique_ptr<World> transition_world_;
+    TransitionMode transition_mode_ = TransitionMode::Circle;
 
 public:
+    inline static std::unique_ptr<Game> instance = nullptr;
     inline static int fps = 0;
     inline static float deltaTime = 0;
+    inline static bool shouldShutdown = false;
+
+    bool isPaused = false;
 
     Game();
     [[nodiscard]] World& GetWorld() const;
 
     void Update();
+    void UpdateTransition(float delta);
 
     template <class T, class... Args>
     void ChangeWorld(Args&&... args)
     {
         static_assert(std::is_base_of_v<World, T>, "T must inherit from World");
         world_ = std::make_unique<T>(std::forward<Args>(args)...);
+        isPaused = false;
     }
+
+    template <class T, class... Args>
+    void ChangeWorldWithTransition(const TransitionMode mode, Args&&... args)
+    {
+        ChangeWorldWithTransition(mode, std::make_unique<T>(std::forward<Args>(args)...));
+    }
+
+    void ChangeWorldWithTransition(const TransitionMode mode, std::unique_ptr<World> world)
+    {
+        transition_mode_ = mode;
+        transition_world_ = std::move(world);
+        changing_ = true;
+        transition_delta_ = 0;
+        last_transition_progress_ = 0;
+        world_changed_ = false;
+    }
+
+private:
+    [[nodiscard]] static float GetTransitionProgress(float elapsedTimeMs, float durationMs);
 };

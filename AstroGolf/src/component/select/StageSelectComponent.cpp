@@ -105,7 +105,6 @@ void StageSelectComponent::DrawButton(
     const auto scaledX = x + (BUTTON_WIDTH - scaledWidth) * 0.5f;
     const auto scaledY = y + (BUTTON_HEIGHT - scaledHeight) * 0.5f;
 
-
     const auto borderColor = selected ? GetColor(66, 86, 213) : GetColor(22, 33, 104);
     DrawBoxAA(scaledX, scaledY, scaledX + scaledWidth, scaledY + scaledHeight, borderColor, false, scaledBorderWidth);
 
@@ -153,5 +152,10 @@ int StageSelectComponent::CheckMoveKey(float deltaTime)
 void StageSelectComponent::OnSelect(int index)
 {
     const auto& stages = StageManager::GetStages();
-    spdlog::info("Select {}, {}, {}", index, stages[index].id, stages[index].name);
+    const auto& stage = stages[index];
+    spdlog::info("Select {}, {}, {}", index, stage.id, stage.name);
+    if (auto world = StageManager::CreateWorld(stage.id))
+    {
+        Game::instance->ChangeWorldWithTransition(TransitionMode::Slide, std::move(world));
+    }
 }

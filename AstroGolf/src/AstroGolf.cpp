@@ -58,8 +58,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         return -1;
     }
 
-    const auto game = std::make_unique<Game>();
-    game->ChangeWorld<TitleWorld>();
+    Game::instance = std::make_unique<Game>();
+    Game::instance->ChangeWorld<TitleWorld>();
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -77,12 +77,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     auto fpsCounter = 0;
     auto time = GetNowHiPerformanceCount();
 
-    while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
+    while (ProcessMessage() == 0 && !Game::shouldShutdown)
     {
         ImGui_ImplDX11_NewFrame();
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
-        ImGui::ShowDemoWindow();
+        // ImGui::ShowDemoWindow();
 
         ScreenFlip();
 
@@ -99,7 +99,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         // ( GetNowHiPerformanceCount で取得できる値はマイクロ秒単位なので 1000000 で割ることで秒単位になる )
         Game::deltaTime = (nowTime - time) / 1000000.0f;
 
-        game->Update();
+        Game::instance->Update();
 
         ImGui::Render();
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());

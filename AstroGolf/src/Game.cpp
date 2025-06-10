@@ -112,7 +112,8 @@ void Game::UpdateTransition(const float delta)
 
                 stack.Translate(world_->GetPlayer()->transform.translate);
                 const auto center = stack.GetScreenPos();
-                DrawCircleAA(center.x, center.y, WINDOW_WIDTH * progress * 0.75f, 16, 0);
+                const auto posnum = static_cast<int>(64 * progress);
+                DrawCircleAA(center.x, center.y, WINDOW_WIDTH * progress * 0.75f, posnum, 0);
             }
         }
         last_transition_progress_ = progress;

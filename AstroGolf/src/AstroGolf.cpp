@@ -42,7 +42,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     SetHookWinProc(WndProc);
     // SetWindowStyleMode(7);
     SetWaitVSyncFlag(false);
-    SetBackgroundColor(20, 29, 39);
+    SetBackgroundColor(18, 25, 33);
     SetAlwaysRunFlag(true);
 
     if (DxLib_Init() == -1)

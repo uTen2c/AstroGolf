@@ -6,5 +6,7 @@
 class StageWorld : public World
 {
 public:
-    virtual std::string GetStageId() const;
+    [[nodiscard]] virtual std::string GetStageId() const;
+
+    void Reload() const;
 };

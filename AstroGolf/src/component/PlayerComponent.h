@@ -6,6 +6,8 @@ class PlayerComponent final : public PhysicsComponent
     bool can_shot_ = true;
     Transform shot_start_transform_ = {};
     std::deque<Vec2> trails_ = {};
+    int trail_screen_;
+    bool should_trails_ = false;
 
 public:
     Vec2 intersectingNormal;
@@ -14,12 +16,15 @@ public:
     bool isDragging = false;
 
     explicit PlayerComponent(int id);
+    ~PlayerComponent() override;
 
     void Update(float deltaTime) override;
     void UpdateMovement(float deltaTime) override;
     void Draw(DrawStack* stack) override;
 
     void Respawn();
+
+    [[nodiscard]] Vec2 GetDragVector() const;
 
 private:
     Vec2 drag_vector_;

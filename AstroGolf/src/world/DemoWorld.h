@@ -4,7 +4,7 @@
 
 class DemoWorld final : public StageWorld
 {
-    int background_graph_handle_;
+    std::unique_ptr<Graph> background_graph_;
 
 public:
     DemoWorld();

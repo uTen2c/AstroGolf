@@ -2,8 +2,6 @@
 
 #include <DxLib.h>
 
-#include "../../graph/GraphUtils.h"
-
 namespace
 {
     constexpr auto SPRITE_SIZE = 512.0f;
@@ -12,13 +10,10 @@ namespace
 
 DemoPlanet2Component::DemoPlanet2Component(const int id): PlanetComponent(id, PLANET_RADIUS)
 {
-    graph_handle_ = GraphUtils::Load("planet_2.png");
+    graph_ = std::make_unique<Graph>("planet_2.png", 512, 512);
 }
 
-DemoPlanet2Component::~DemoPlanet2Component()
-{
-    DeleteGraph(graph_handle_);
-}
+DemoPlanet2Component::~DemoPlanet2Component() = default;
 
 void DemoPlanet2Component::Update(const float deltaTime)
 {
@@ -34,6 +29,6 @@ void DemoPlanet2Component::Draw(DrawStack* stack)
     const auto scale = stack->GetScreenScale().x;
     const auto scaledSpriteSize = SPRITE_SIZE * scale;
     const auto offset = scaledSpriteSize / 2.0f;
-    DrawExtendGraphF(pos.x- offset, pos.y - offset, pos.x + offset, pos.y + offset, graph_handle_, true);
+    DrawExtendGraphF(pos.x - offset, pos.y - offset, pos.x + offset, pos.y + offset, graph_->handle, true);
     stack->Pop();
 }

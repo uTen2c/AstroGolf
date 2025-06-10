@@ -7,6 +7,7 @@
 #include "../component/Component.h"
 #include "../component/PhysicsComponent.h"
 #include "../component/PlayerComponent.h"
+#include "../component/misc/BallisticComponent.h"
 
 class Graph;
 
@@ -21,7 +22,11 @@ class World
 {
     int next_id_ = 0;
     bool menu_opened_ = false;
+    float menu_transition_delta_ = 0;
+    bool menu_key_pressing_ = false;
+    
     std::map<int, std::shared_ptr<Component>> component_map_ = {};
+    std::vector<std::shared_ptr<BallisticComponent>> ballistic_components_ = {};
 
     std::shared_ptr<CameraComponent> camera_;
     std::shared_ptr<PlayerComponent> player_;
@@ -40,6 +45,7 @@ public:
     virtual void PostUpdate(const float& deltaTime);
 
     virtual void DrawUi();
+    virtual void DrawBallistic();
 
     /**
      * ワールド内で一意なIDを生成する

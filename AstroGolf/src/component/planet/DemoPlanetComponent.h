@@ -1,9 +1,10 @@
 #pragma once
 #include "../PlanetComponent.h"
+#include "../../graph/Graph.h"
 
 class DemoPlanetComponent final : public PlanetComponent
 {
-    int graph_handle_;
+    std::unique_ptr<Graph> graph_;
 
 public:
     explicit DemoPlanetComponent(int id);

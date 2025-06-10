@@ -1,16 +1,14 @@
 #include "StageSelectWorld.h"
 
-#include <DxLib.h>
 #include <format>
 #include <memory>
 
 #include "../component/select/StageSelectComponent.h"
 #include "../game/StageManager.h"
-#include "../graph/GraphUtils.h"
 
 StageSelectWorld::StageSelectWorld()
 {
-    background_graph_handle_ = GraphUtils::Load("background.png");
+    background_graph_ = std::make_unique<Graph>("background.png", 2048, 2048);
 
     for (const auto& stage : StageManager::GetStages())
     {
@@ -28,11 +26,7 @@ StageSelectWorld::StageSelectWorld()
     GetPlayer()->transform.translate = {10000, 10000};
 }
 
-StageSelectWorld::~StageSelectWorld()
-{
-    DeleteGraph(background_graph_handle_);
-}
-
+StageSelectWorld::~StageSelectWorld() = default;
 void StageSelectWorld::Draw()
 {
     World::Draw();
@@ -69,5 +63,5 @@ WorldType StageSelectWorld::GetType() const
 
 void StageSelectWorld::DrawBackground(DrawStack& stack) const
 {
-    DrawGraphF(0, 0, background_graph_handle_, true);
+    background_graph_->Draw(0, 0);
 }

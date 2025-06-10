@@ -6,7 +6,9 @@
 #include <spdlog/spdlog.h>
 
 #include "StageSelectWorld.h"
+#include "StageWorld.h"
 #include "../Game.h"
+#include "../game/StageManager.h"
 #include "../graph/Graph.h"
 #include "../math/Math.h"
 
@@ -22,6 +24,13 @@ World::World()
 
     AddComponent(camera_);
     AddComponent(player_);
+
+    ballistic_components_.resize(10);
+    for (int i = 0; i < 10; ++i)
+    {
+        const auto& ptr = std::make_shared<BallisticComponent>(NextComponentId());
+        ballistic_components_.emplace_back(ptr);
+    }
 }
 
 void World::Draw()
@@ -107,15 +116,22 @@ void World::DrawUi()
         }
     }
 
-    if (!menu_opened_)
-    {
-        return;
-    }
-
     // Esc押したら閉じる
     if (CheckHitKey(KEY_INPUT_ESCAPE) != 0)
     {
-        SetMenuOpen(false);
+        if (!menu_key_pressing_)
+        {
+            SetMenuOpen(!menu_opened_);
+            menu_key_pressing_ = true;
+        }
+    }
+    else
+    {
+        menu_key_pressing_ = false;
+    }
+
+    if (!menu_opened_)
+    {
         return;
     }
 
@@ -152,6 +168,10 @@ void World::DrawUi()
             // はじめから
             case 1:
                 {
+                    if (const auto stageWorld = dynamic_cast<StageWorld*>(this))
+                    {
+                        stageWorld->Reload();
+                    }
                     break;
                 }
             // ステージセレクト
@@ -163,12 +183,47 @@ void World::DrawUi()
             // ゲームを閉じる
             case 3:
                 {
+                    SetWindowVisibleFlag(false);
                     Game::shouldShutdown = true;
                     break;
                 }
             default:
                 break;
             }
+        }
+    }
+
+    SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+    menu_transition_delta_ += Game::deltaTime;
+}
+
+void World::DrawBallistic()
+{
+    const auto& dragVector = player_->GetDragVector();
+
+    if (dragVector.Length() <= 0)
+    {
+        for (const auto & ballisticComponent : ballistic_components_)
+        {
+            ballisticComponent->transform.translate = {-1000, 1000};
+        } 
+        return;
+    }
+
+    for (int i = 0; i < static_cast<int>(ballistic_components_.size()); ++i)
+    {
+        const auto& ballisticComponent = ballistic_components_[i];
+        ballisticComponent->transform.translate = player_->transform.translate;
+
+        ballisticComponent->velocity = dragVector;
+
+        const auto ticks = (i + 2) * 2;
+        for (int j = 0; j < ticks; ++j)
+        {
+            ballisticComponent->Update(0.1f);
+            ballisticComponent->UpdateMovement(0.1f);
+            ballisticComponent->PostUpdate(0.1f);
         }
     }
 }
@@ -277,4 +332,5 @@ void World::SetMenuOpen(bool open)
 {
     menu_opened_ = open;
     Game::instance->isPaused = open;
+    menu_transition_delta_ = 0;
 }

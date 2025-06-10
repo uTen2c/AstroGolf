@@ -9,12 +9,11 @@
 #include "../component/planet/DemoPlanet2Component.h"
 #include "../component/planet/DemoPlanetComponent.h"
 #include "../game/StageManager.h"
-#include "../graph/GraphUtils.h"
 #include "../math/Math.h"
 
 DemoWorld::DemoWorld()
 {
-    background_graph_handle_ = GraphUtils::Load("background.png");
+    background_graph_ = std::make_unique<Graph>("background.png", 2048, 2048);
 
     const auto box1 = std::make_shared<BoxComponent>(NextComponentId(), 500, 50);
     box1->transform.translate = {250, 500};
@@ -58,10 +57,7 @@ DemoWorld::DemoWorld()
     GetPlayer()->transform.translate = {250, 400};
 }
 
-DemoWorld::~DemoWorld()
-{
-    DeleteGraph(background_graph_handle_);
-}
+DemoWorld::~DemoWorld() = default;
 
 WorldType DemoWorld::GetType() const
 {
@@ -81,11 +77,7 @@ std::string DemoWorld::GetStageId() const
 
 void DemoWorld::DrawBackground(DrawStack& stack) const
 {
-    stack.Push();
-
-    DrawGraphF(0, 0, background_graph_handle_, true);
-
-    stack.Pop();
+    background_graph_->Draw(0, 0);
 }
 
 void DemoWorld::UpdateCamera(const float& deltaTime) const

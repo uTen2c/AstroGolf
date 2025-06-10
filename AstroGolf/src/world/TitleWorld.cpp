@@ -14,12 +14,11 @@
 #include "../component/title/StartTextComponent.h"
 #include "../component/title/TitleWorldGroundComponent.h"
 #include "../game/StageManager.h"
-#include "../graph/GraphUtils.h"
 #include "../math/Math.h"
 
 TitleWorld::TitleWorld()
 {
-    background_graph_handle_ = GraphUtils::Load("background.png");
+    background_graph_ = std::make_unique<Graph>("background.png", 2048, 2048);
     title_graph_ = std::make_unique<Graph>("title.png", 1024, 1024);
 
     zoomEnabled = false;
@@ -60,10 +59,7 @@ TitleWorld::TitleWorld()
     AddComponent(startText);
 }
 
-TitleWorld::~TitleWorld()
-{
-    DeleteGraph(background_graph_handle_);
-}
+TitleWorld::~TitleWorld() = default;
 
 void TitleWorld::Update(const float& deltaTime)
 {
@@ -95,7 +91,7 @@ std::string TitleWorld::GetStageId() const
 
 void TitleWorld::DrawBackground(DrawStack& stack) const
 {
-    DrawGraphF(0, 0, background_graph_handle_, true);
+    background_graph_->Draw(0, 0);
     title_graph_->DrawCenter(WINDOW_WIDTH * 0.5f, 200.0f);
 }
 

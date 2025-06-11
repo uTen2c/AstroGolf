@@ -105,8 +105,8 @@ void PlayerComponent::Draw(DrawStack* stack)
         // 本体描画
         DrawCircleAA(screenPos.x, screenPos.y, scaledRadius, scaledPosnum, GetColor(255, 255, 255), true);
         // コライダー描画
-        DrawCircleAA(screenPos.x, screenPos.y, 1, 4, GetColor(0, 255, 0), false);
-        DrawCircleAA(screenPos.x, screenPos.y, scaledRadius, scaledPosnum, GetColor(0, 255, 0), false);
+        // DrawCircleAA(screenPos.x, screenPos.y, 1, 4, GetColor(0, 255, 0), false);
+        // DrawCircleAA(screenPos.x, screenPos.y, scaledRadius, scaledPosnum, GetColor(0, 255, 0), false);
 
         // Gravity sources
         for (const auto& gravitySource : gravitySources)
@@ -200,6 +200,7 @@ void PlayerComponent::UpdateShot()
         {
             velocity = shotVec;
         }
+        velocity = shotVec;
         drag_vector_ = {};
         isDragging = false;
     }
@@ -278,15 +279,15 @@ void PlayerComponent::DrawTrail(DrawStack* stack)
         const auto distance = transform.translate.Distance(trailPos);
         const auto& screenPos = stack->GetScreenPos();
         const auto scale = (180 - std::clamp(distance, 0.0f, 180.0f)) / 180.0f;
-        DrawCircleAA(screenPos.x, screenPos.y, max(10.0f * scale, 4.0f), 16, GetColor(255, 255, 255));
+        DrawCircleAA(screenPos.x, screenPos.y, max(12.0f * scale, 3.0f), 16, GetColor(255, 255, 255));
         stack->Pop();
     }
     SetDrawScreen(DX_SCREEN_BACK);
 
-    SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255 * 0.5));
+    // SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255 * 0.5));
     GraphFilter(trail_screen_, DX_GRAPH_FILTER_TWO_COLOR, 128, GetColor(0, 0, 0), 255, GetColor(255, 255, 255), 255);
     GraphFilter(trail_screen_, DX_GRAPH_FILTER_BRIGHT_CLIP, DX_CMP_LESS, 128, true, GetColor(0, 0, 0), 0);
     GraphFilter(trail_screen_, DX_GRAPH_FILTER_GAUSS, 32, 100);
     DrawExtendGraph(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, trail_screen_, true);
-    SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+    // SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }

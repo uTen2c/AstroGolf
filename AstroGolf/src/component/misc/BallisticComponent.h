@@ -8,6 +8,8 @@ class BallisticComponent final : public PhysicsComponent
     int trail_screen_;
 
 public:
+    bool shouldDraw = false;
+    
     explicit BallisticComponent(int id);
     ~BallisticComponent() override;
 

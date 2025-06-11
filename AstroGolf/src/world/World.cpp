@@ -209,26 +209,35 @@ void World::DrawUi()
     menu_transition_delta_ += Game::deltaTime;
 }
 
+static float fps = 150.0f;
+static float duration = 0.25f;
+static int gap = 2;
+
 void World::DrawBallistic()
 {
     const auto& dragVector = player_->GetDragVector();
+    
+    ImGui::Begin("Ballistic");
+    ImGui::InputFloat("Frame rate", &fps, 0.1f, 1);
+    ImGui::InputFloat("Duration", &duration, 0.1f, 1);
+    ImGui::InputInt("Gap", &gap);
+    ImGui::End();
 
     if (dragVector.Length() <= 0)
     {
-        ballistic_->transform.translate = {-1000, 1000};
+        ballistic_->transform.translate = {};
         return;
     }
+    
 
-    ImGui::Begin("Ballistic");
-
-    static constexpr float fps = 60.0f;
-    static constexpr float frame_sec = 1.0f / fps;
-    static constexpr float duration_sec = 1.0f;
+    // static constexpr float fps = 100.0f;
+    static const float frame_sec = 1.0f / fps;
+    // static constexpr float duration_sec = 2.25f;
     // static constexpr int steps = 10;
-    static constexpr int gap = 10;
-    static constexpr float delta = frame_sec;
+    // static constexpr int gap = 5;
+    static const float delta = frame_sec;
 
-    ballistic_->transform = player_->transform;
+    ballistic_->transform.translate = player_->transform.translate.Copy().Add(player_->intersectingNormal.Copy().Mul(0.0001));
     ballistic_->velocity = {};
 
     ballistic_->Reset();
@@ -247,12 +256,14 @@ void World::DrawBallistic()
     ballistic_->UpdateMovement(0);
     ballistic_->PostUpdate(0);
 
-    for (int i = 0; i < static_cast<int>(fps * duration_sec); ++i)
+    ballistic_->shouldDraw = true;
+
+    for (int i = 0; i < static_cast<int>(fps * duration); ++i)
     {
         ballistic_->Update(delta);
         ballistic_->UpdateMovement(delta);
 
-        // if (i % gap == 0)
+        if (i % gap == 0)
         {
             auto stack = DrawStack();
 
@@ -271,7 +282,7 @@ void World::DrawBallistic()
         ballistic_->PostUpdate(delta);
     }
 
-    ImGui::End();
+    ballistic_->shouldDraw = false;
 }
 
 int World::NextComponentId()

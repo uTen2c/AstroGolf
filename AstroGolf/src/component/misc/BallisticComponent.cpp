@@ -7,7 +7,7 @@
 
 BallisticComponent::BallisticComponent(const int id): PhysicsComponent(id)
 {
-    collider = std::make_unique<CircleCollider>(5);
+    collider = std::make_unique<CircleCollider>(12);
     trail_screen_ = MakeScreen(WINDOW_WIDTH, WINDOW_HEIGHT, true);
 }
 
@@ -18,9 +18,6 @@ BallisticComponent::~BallisticComponent()
 
 void BallisticComponent::Draw(DrawStack* stack)
 {
-    stack->Push();
-    ApplyDrawStack(stack);
-
     if (trails_.empty())
     {
         for (int i = 0; i < 10; ++i)
@@ -32,6 +29,14 @@ void BallisticComponent::Draw(DrawStack* stack)
     trails_.pop_front();
     trails_.push_back(transform.translate);
 
+    if (!shouldDraw)
+    {
+        return;
+    }
+
+    stack->Push();
+    ApplyDrawStack(stack);
+
     SetDrawScreen(trail_screen_);
     ClearDrawScreen();
     for (const auto& trailPos : trails_)
@@ -40,7 +45,7 @@ void BallisticComponent::Draw(DrawStack* stack)
         stack->Translate(transform.translate.Copy().Neg());
         stack->Translate(trailPos);
         const auto& screenPos = stack->GetScreenPos();
-        DrawCircleAA(screenPos.x, screenPos.y, 6, 16, GetColor(255, 255, 255));
+        DrawCircleAA(screenPos.x, screenPos.y, 3, 16, GetColor(255, 255, 255));
         stack->Pop();
     }
     SetDrawScreen(DX_SCREEN_BACK);

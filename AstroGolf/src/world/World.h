@@ -8,8 +8,7 @@
 #include "../component/PhysicsComponent.h"
 #include "../component/PlayerComponent.h"
 #include "../component/misc/BallisticComponent.h"
-
-class Graph;
+#include "../graph/Graph.h"
 
 enum class WorldType
 {
@@ -24,12 +23,13 @@ class World
     bool menu_opened_ = false;
     float menu_transition_delta_ = 0;
     bool menu_key_pressing_ = false;
-    
+
     std::map<int, std::shared_ptr<Component>> component_map_ = {};
-    std::vector<std::shared_ptr<BallisticComponent>> ballistic_components_ = {};
 
     std::shared_ptr<CameraComponent> camera_;
     std::shared_ptr<PlayerComponent> player_;
+    std::shared_ptr<BallisticComponent> ballistic_;
+
     std::unique_ptr<Graph> menu_button_graph_;
     std::unique_ptr<Graph> menu_background_graph_;
     std::unique_ptr<Graph> menu_buttons_graph_;

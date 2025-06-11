@@ -1,7 +1,5 @@
 #include "DemoWorld.h"
 
-#include <DxLib.h>
-
 #include "../component/BoxComponent.h"
 #include "../component/GoalHoleComponent.h"
 #include "../component/RotatableBoxComponent.h"

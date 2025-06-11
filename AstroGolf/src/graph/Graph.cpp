@@ -4,8 +4,6 @@
 #include <fmt/format.h>
 #include <spdlog/spdlog.h>
 
-#include "GraphUtils.h"
-
 namespace
 {
     int load(const std::string& graphName)

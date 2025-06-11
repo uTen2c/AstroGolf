@@ -17,22 +17,6 @@ PlanetComponent::PlanetComponent(const int id, const float radius): PhysicsCompo
 void PlanetComponent::Update(const float deltaTime)
 {
     PhysicsComponent::Update(deltaTime);
-
-    if (planetGravity <= 0)
-    {
-        return;
-    }
-
-    const auto& player = world->GetPlayer();
-    const auto distance = max(GetPlayerDistance() / 100, 1); // 1px = 1cm, convert cm to meter
-    // const auto g = planetGravity * 0.2f / pow(distance, 1.2f);
-    const auto g = planetGravity * 0.2f / distance;
-    if (g < 20)
-    {
-        return;
-    }
-    const auto gravityDir = transform.translate.Copy().Sub(player->transform.translate).Normalize();
-    player->gravitySources.emplace_back(gravityDir.Copy().Mul(g));
 }
 
 void PlanetComponent::Draw(DrawStack* stack)
@@ -45,7 +29,7 @@ void PlanetComponent::Draw(DrawStack* stack)
     const auto posnum = static_cast<int>(max(32 * scale.x, 32));
     DrawCircleAA(pos.x, pos.y, radius * scale.x, posnum, 0xFFFFFFFF, true);
 
-    const auto distance = GetPlayerDistance();
+    const auto distance = GetPlayerDistance(world->GetPlayer());
     const auto textWidth = GetDrawFormatStringWidth("%0.3f", distance);
     DrawFormatString(static_cast<int>(pos.x),
                      static_cast<int>(pos.y - static_cast<float>(textWidth) * 0.5f), GetColor(0, 0, 0),
@@ -53,7 +37,25 @@ void PlanetComponent::Draw(DrawStack* stack)
     stack->Pop();
 }
 
-float PlanetComponent::GetPlayerDistance() const
+void PlanetComponent::ApplyGravity(PhysicsComponent* component) const
 {
-    return transform.translate.Distance(world->GetPlayer()->transform.translate) - radius - world->GetPlayer()->radius;
+    if (planetGravity <= 0)
+    {
+        return;
+    }
+
+    const auto distance = max(GetPlayerDistance(component) / 100, 1); // 1px = 1cm, convert cm to meter
+    const auto g = planetGravity * 0.2f / distance;
+    if (g < 20)
+    {
+        return;
+    }
+    const auto gravityDir = transform.translate.Copy().Sub(component->transform.translate).Normalize();
+    component->gravitySources.emplace_back(gravityDir.Copy().Mul(g));
+}
+
+float PlanetComponent::GetPlayerDistance(const PhysicsComponent* component) const
+{
+    // GetPlayerでプレイヤーの半径を取得しているが、弾道も同じ処理をしている
+    return transform.translate.Distance(component->transform.translate) - radius - world->GetPlayer()->radius;
 }

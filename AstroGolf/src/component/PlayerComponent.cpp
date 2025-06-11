@@ -200,6 +200,7 @@ void PlayerComponent::UpdateShot()
         {
             velocity = shotVec;
         }
+        drag_vector_ = {};
         isDragging = false;
     }
 

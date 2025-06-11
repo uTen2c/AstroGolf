@@ -2,12 +2,13 @@
 
 #include <spdlog/spdlog.h>
 
-#include "GoalHoleComponent.h"
+#include "PlanetComponent.h"
 #include "../math/BoundingBox.h"
 #include "../math/CircleCollider.h"
 #include "../math/HoleCollider.h"
 #include "../math/NullCollider.h"
 #include "../math/RotatableBoxCollider.h"
+#include "../world/TitleWorld.h"
 #include "../world/World.h"
 
 namespace
@@ -47,6 +48,7 @@ PhysicsComponent::PhysicsComponent(const int id): Component(id)
 void PhysicsComponent::Update(const float deltaTime)
 {
     Component::Update(deltaTime);
+    CalcGravity();
 }
 
 void PhysicsComponent::UpdateMovement(const float deltaTime)
@@ -105,6 +107,16 @@ void PhysicsComponent::Move(const Vec2& delta)
                 continue;
             }
 
+            // 弾道とプレイヤーは互いに干渉しない
+            if (
+                dynamic_cast<PlayerComponent*>(this) && dynamic_cast<BallisticComponent*>(nearbyComponent) ||
+                dynamic_cast<BallisticComponent*>(this) && dynamic_cast<PlayerComponent*>(nearbyComponent) ||
+                dynamic_cast<BallisticComponent*>(this) && dynamic_cast<BallisticComponent*>(nearbyComponent)
+            )
+            {
+                continue;
+            }
+
             const auto& worldPos = nearbyComponent->GetWorldPos();
 
             if (const auto hole = dynamic_cast<HoleCollider*>(nearbyComponent->collider.get()))
@@ -147,6 +159,16 @@ void PhysicsComponent::Move(const Vec2& delta)
             }
 
             if (dynamic_cast<HoleCollider*>(nearbyComponent->collider.get()))
+            {
+                continue;
+            }
+
+            // 弾道とプレイヤーは互いに干渉しない
+            if (
+                dynamic_cast<PlayerComponent*>(this) && dynamic_cast<BallisticComponent*>(nearbyComponent) ||
+                dynamic_cast<BallisticComponent*>(this) && dynamic_cast<PlayerComponent*>(nearbyComponent) ||
+                dynamic_cast<BallisticComponent*>(this) && dynamic_cast<BallisticComponent*>(nearbyComponent)
+            )
             {
                 continue;
             }
@@ -384,4 +406,29 @@ Vec2 PhysicsComponent::GetMergedGravityVelocity() const
         vec.Add(gravitySource);
     }
     return vec;
+}
+
+void PhysicsComponent::CalcGravity()
+{
+    if (dynamic_cast<TitleWorld*>(world))
+    {
+        constexpr auto base = 9.8f * 300;
+        const auto distance = std::clamp(200.0f - transform.translate.y, 0.0f, 50.0f);
+        const auto correctedDistance = std::max(distance / 100.0f, 1.0f); // 1px = 1cm, convert cm to meter
+        const auto g = base * 0.2f / correctedDistance;
+        gravitySources.emplace_back(0.0f, g);
+        return;
+    }
+
+    for (const auto & other : world->GetComponents())
+    {
+        if (other == this)
+        {
+            continue;
+        }
+        if (const auto& planet = dynamic_cast<PlanetComponent*>(other))
+        {
+            planet->ApplyGravity(this);
+        }
+    }
 }

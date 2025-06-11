@@ -32,4 +32,6 @@ public:
     void Move(const Vec2& delta);
 
     [[nodiscard]] Vec2 GetMergedGravityVelocity() const;
+
+    void CalcGravity();
 };

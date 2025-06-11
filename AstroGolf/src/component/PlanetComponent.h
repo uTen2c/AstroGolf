@@ -13,6 +13,8 @@ public:
 
     void Draw(DrawStack* stack) override;
 
+    void ApplyGravity(PhysicsComponent* component) const;
+
 private:
-    [[nodiscard]] float GetPlayerDistance() const;
+    [[nodiscard]] float GetPlayerDistance(const PhysicsComponent* component) const;
 };

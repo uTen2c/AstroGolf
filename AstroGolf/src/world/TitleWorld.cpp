@@ -63,12 +63,6 @@ TitleWorld::~TitleWorld() = default;
 
 void TitleWorld::Update(const float& deltaTime)
 {
-    constexpr auto base = 9.8f * 300;
-    const auto playerDistance = std::clamp(200.0f - GetPlayer()->transform.translate.y, 0.0f, 50.0f);
-    const auto distance = max(playerDistance / 100.0f, 1.0f); // 1px = 1cm, convert cm to meter
-    const auto g = base * 0.2f / distance;
-    GetPlayer()->gravitySources.emplace_back(0.0f, g);
-
     World::Update(deltaTime);
 
     UpdateCamera(deltaTime);

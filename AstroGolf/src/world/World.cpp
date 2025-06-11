@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <DxLib.h>
+#include <imgui.h>
 #include <ranges>
 #include <spdlog/spdlog.h>
 
@@ -16,21 +17,17 @@ World::World()
 {
     spdlog::info("World init");
 
-    camera_ = std::make_shared<CameraComponent>(NextComponentId());
-    player_ = std::make_shared<PlayerComponent>(NextComponentId());
     menu_button_graph_ = std::make_unique<Graph>("menu_button.png", 72, 72);
     menu_background_graph_ = std::make_unique<Graph>("menu/menu_background.png", 1024, 720);
     menu_buttons_graph_ = std::make_unique<Graph>("menu/buttons.png", 512, 70);
 
+    camera_ = std::make_shared<CameraComponent>(NextComponentId());
+    player_ = std::make_shared<PlayerComponent>(NextComponentId());
+    ballistic_ = std::make_shared<BallisticComponent>(NextComponentId());
+
     AddComponent(camera_);
     AddComponent(player_);
-
-    ballistic_components_.resize(10);
-    for (int i = 0; i < 10; ++i)
-    {
-        const auto& ptr = std::make_shared<BallisticComponent>(NextComponentId());
-        ballistic_components_.emplace_back(ptr);
-    }
+    AddComponent(ballistic_);
 }
 
 void World::Draw()
@@ -66,6 +63,8 @@ void World::Draw()
         component->Draw(&stack);
     }
 
+    DrawBallistic();
+
     DrawUi();
 }
 
@@ -74,10 +73,18 @@ void World::Update(const float& deltaTime)
     const auto components = GetComponents();
     for (const auto component : components)
     {
+        if (dynamic_cast<BallisticComponent*>(component))
+        {
+            continue;
+        }
         component->Update(deltaTime);
     }
     for (const auto component : components)
     {
+        if (dynamic_cast<BallisticComponent*>(component))
+        {
+            continue;
+        }
         if (const auto physComp = dynamic_cast<PhysicsComponent*>(component))
         {
             physComp->UpdateMovement(deltaTime);
@@ -89,6 +96,10 @@ void World::PostUpdate(const float& deltaTime)
 {
     for (const auto component : GetComponents())
     {
+        if (dynamic_cast<BallisticComponent*>(component))
+        {
+            continue;
+        }
         component->PostUpdate(deltaTime);
     }
 }
@@ -204,28 +215,63 @@ void World::DrawBallistic()
 
     if (dragVector.Length() <= 0)
     {
-        for (const auto & ballisticComponent : ballistic_components_)
-        {
-            ballisticComponent->transform.translate = {-1000, 1000};
-        } 
+        ballistic_->transform.translate = {-1000, 1000};
         return;
     }
 
-    for (int i = 0; i < static_cast<int>(ballistic_components_.size()); ++i)
+    ImGui::Begin("Ballistic");
+
+    static constexpr float fps = 60.0f;
+    static constexpr float frame_sec = 1.0f / fps;
+    static constexpr float duration_sec = 1.0f;
+    // static constexpr int steps = 10;
+    static constexpr int gap = 10;
+    static constexpr float delta = frame_sec;
+
+    ballistic_->transform = player_->transform;
+    ballistic_->velocity = {};
+
+    ballistic_->Reset();
+
+    ballistic_->Update(0);
+
+    auto shotVec = dragVector;
+    shotVec.Mul(20.0f);
+    // 重力の影響を相殺する
+    for (const auto& gravitySource : ballistic_->gravitySources)
     {
-        const auto& ballisticComponent = ballistic_components_[i];
-        ballisticComponent->transform.translate = player_->transform.translate;
-
-        ballisticComponent->velocity = dragVector;
-
-        const auto ticks = (i + 2) * 2;
-        for (int j = 0; j < ticks; ++j)
-        {
-            ballisticComponent->Update(0.1f);
-            ballisticComponent->UpdateMovement(0.1f);
-            ballisticComponent->PostUpdate(0.1f);
-        }
+        shotVec.Add(gravitySource.Copy().Neg());
     }
+    ballistic_->velocity = shotVec;
+
+    ballistic_->UpdateMovement(0);
+    ballistic_->PostUpdate(0);
+
+    for (int i = 0; i < static_cast<int>(fps * duration_sec); ++i)
+    {
+        ballistic_->Update(delta);
+        ballistic_->UpdateMovement(delta);
+
+        // if (i % gap == 0)
+        {
+            auto stack = DrawStack();
+
+            // カメラの位置を補正する
+            auto originOffset = Vec2(640, 360); // FIXME マジックナンバーをやめる
+            originOffset.Div(camera_->zoom);
+
+            auto trans = camera_->transform.translate;
+            trans.Mul(-1);
+            trans.Add(originOffset);
+            stack.Translate(trans);
+            stack.Scale(camera_->zoom);
+            ballistic_->Draw(&stack);
+        }
+
+        ballistic_->PostUpdate(delta);
+    }
+
+    ImGui::End();
 }
 
 int World::NextComponentId()

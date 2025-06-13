@@ -18,17 +18,10 @@ BallisticComponent::~BallisticComponent()
 
 void BallisticComponent::Draw(DrawStack* stack)
 {
-    if (trails_.empty())
-    {
-        for (int i = 0; i < 10; ++i)
-        {
-            trails_.emplace_back(transform.translate);
-        }
-    }
+}
 
-    trails_.pop_front();
-    trails_.push_back(transform.translate);
-
+void BallisticComponent::DrawPoints(DrawStack* stack) const
+{
     if (!shouldDraw)
     {
         return;
@@ -39,15 +32,21 @@ void BallisticComponent::Draw(DrawStack* stack)
 
     SetDrawScreen(trail_screen_);
     ClearDrawScreen();
+
+    stack->Push();
+    stack->Translate(transform.translate.Copy().Neg());
+    
     for (const auto& trailPos : trails_)
     {
         stack->Push();
-        stack->Translate(transform.translate.Copy().Neg());
         stack->Translate(trailPos);
         const auto& screenPos = stack->GetScreenPos();
         DrawCircleAA(screenPos.x, screenPos.y, 3, 16, GetColor(255, 255, 255));
         stack->Pop();
     }
+    
+    stack->Pop();
+
     SetDrawScreen(DX_SCREEN_BACK);
 
     SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255 * 0.5));
@@ -84,6 +83,11 @@ void BallisticComponent::Update(float deltaTime)
             }
         }
     }
+}
+
+void BallisticComponent::CreatePoint()
+{
+    trails_.push_back(transform.translate);
 }
 
 void BallisticComponent::Reset()

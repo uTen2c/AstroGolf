@@ -4,7 +4,7 @@
 
 class BallisticComponent final : public PhysicsComponent
 {
-    std::deque<Vec2> trails_ = {};
+    std::vector<Vec2> trails_ = {};
     int trail_screen_;
 
 public:
@@ -14,7 +14,9 @@ public:
     ~BallisticComponent() override;
 
     void Draw(DrawStack* stack) override;
+    void DrawPoints(DrawStack* stack) const;
     void Update(float deltaTime) override;
+    void CreatePoint();
 
     void Reset();
 };

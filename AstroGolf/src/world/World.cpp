@@ -209,9 +209,9 @@ void World::DrawUi()
     menu_transition_delta_ += Game::deltaTime;
 }
 
-static float fps = 150.0f;
-static float duration = 0.25f;
-static int gap = 2;
+static float fps = 100.0f;
+static float duration = 0.5f;
+static int gap = 4;
 
 void World::DrawBallistic()
 {
@@ -219,7 +219,7 @@ void World::DrawBallistic()
     {
         return;
     }
-    
+
     const auto& dragVector = player_->GetDragVector();
 
     ImGui::Begin("Ballistic");
@@ -271,23 +271,24 @@ void World::DrawBallistic()
 
         if (gap == 0 || i % gap == 0)
         {
-            auto stack = DrawStack();
-
-            // カメラの位置を補正する
-            auto originOffset = Vec2(640, 360); // FIXME マジックナンバーをやめる
-            originOffset.Div(camera_->zoom);
-
-            auto trans = camera_->transform.translate;
-            trans.Mul(-1);
-            trans.Add(originOffset);
-            stack.Translate(trans);
-            stack.Scale(camera_->zoom);
-            ballistic_->Draw(&stack);
+            ballistic_->CreatePoint();
         }
 
         ballistic_->PostUpdate(delta);
     }
 
+    auto stack = DrawStack();
+
+    // カメラの位置を補正する
+    auto originOffset = Vec2(640, 360); // FIXME マジックナンバーをやめる
+    originOffset.Div(camera_->zoom);
+
+    auto trans = camera_->transform.translate;
+    trans.Mul(-1);
+    trans.Add(originOffset);
+    stack.Translate(trans);
+    stack.Scale(camera_->zoom);
+    ballistic_->DrawPoints(&stack);
     ballistic_->shouldDraw = false;
 }
 

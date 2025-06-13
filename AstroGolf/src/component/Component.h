@@ -44,6 +44,6 @@ public:
 
     [[nodiscard]] int GetId() const;
 
-    void ApplyDrawStack(DrawStack* stack) const;
 protected:
+    void ApplyDrawStack(DrawStack* stack) const;
 };

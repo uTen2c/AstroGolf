@@ -215,8 +215,13 @@ static int gap = 2;
 
 void World::DrawBallistic()
 {
-    const auto& dragVector = player_->GetDragVector();
+    if (!player_->CanShot())
+    {
+        return;
+    }
     
+    const auto& dragVector = player_->GetDragVector();
+
     ImGui::Begin("Ballistic");
     ImGui::InputFloat("Frame rate", &fps, 0.1f, 1);
     ImGui::InputFloat("Duration", &duration, 0.1f, 1);
@@ -228,7 +233,7 @@ void World::DrawBallistic()
         ballistic_->transform.translate = {};
         return;
     }
-    
+
 
     // static constexpr float fps = 100.0f;
     static const float frame_sec = 1.0f / fps;
@@ -237,7 +242,8 @@ void World::DrawBallistic()
     // static constexpr int gap = 5;
     static const float delta = frame_sec;
 
-    ballistic_->transform.translate = player_->transform.translate.Copy().Add(player_->intersectingNormal.Copy().Mul(0.0001));
+    ballistic_->transform.translate = player_->transform.translate.Copy().Add(
+        player_->intersectingNormal.Copy().Mul(0.0001));
     ballistic_->velocity = {};
 
     ballistic_->Reset();
@@ -263,7 +269,7 @@ void World::DrawBallistic()
         ballistic_->Update(delta);
         ballistic_->UpdateMovement(delta);
 
-        if (i % gap == 0)
+        if (gap == 0 || i % gap == 0)
         {
             auto stack = DrawStack();
 

@@ -25,6 +25,8 @@ public:
     void Respawn();
 
     [[nodiscard]] Vec2 GetDragVector() const;
+    [[nodiscard]] bool CanShot() const;
+    [[nodiscard]] int GetShotCount() const;
 
 private:
     Vec2 drag_vector_;

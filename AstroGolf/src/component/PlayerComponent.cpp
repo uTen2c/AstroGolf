@@ -67,11 +67,18 @@ void PlayerComponent::UpdateMovement(const float deltaTime)
     const auto lastPos = transform.translate;
     PhysicsComponent::UpdateMovement(deltaTime);
 
-    // 設置判定
+    // 接地判定
     const auto& movedDistance = lastPos.Distance(transform.translate);
-    can_shot_ = intersectingNormal.Length() > 0 && movedDistance < 0.3;
+    can_shot_ = intersectingNormal.Length() > 0;
 
-    should_trails_ = movedDistance > 0.3;
+    // 接地法線との角度が105deg以上なら打てない
+    if (intersectingNormal.Length() > 0 && drag_vector_.Length() > 0 && intersectingNormal.Dot(drag_vector_) < -15 *
+        Math::deg_to_rad)
+    {
+        can_shot_ = false;
+    }
+
+    should_trails_ = movedDistance > 0.2;
 }
 
 void PlayerComponent::Draw(DrawStack* stack)
@@ -164,6 +171,16 @@ Vec2 PlayerComponent::GetDragVector() const
     return drag_vector_;
 }
 
+bool PlayerComponent::CanShot() const
+{
+    return can_shot_;
+}
+
+int PlayerComponent::GetShotCount() const
+{
+    return shotCount;
+}
+
 void PlayerComponent::UpdateShot()
 {
     int x;
@@ -200,9 +217,9 @@ void PlayerComponent::UpdateShot()
         {
             velocity = shotVec;
         }
-        velocity = shotVec;
         drag_vector_ = {};
         isDragging = false;
+        shotCount++;
     }
 
     if (!isDragging)

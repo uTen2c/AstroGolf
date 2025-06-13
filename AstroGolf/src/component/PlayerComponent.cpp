@@ -71,9 +71,12 @@ void PlayerComponent::UpdateMovement(const float deltaTime)
     const auto& movedDistance = lastPos.Distance(transform.translate);
     can_shot_ = intersectingNormal.Length() > 0;
 
-    // 接地法線との角度が105deg以上なら打てない
-    if (intersectingNormal.Length() > 0 && drag_vector_.Length() > 0 && intersectingNormal.Dot(drag_vector_) < -15 *
-        Math::deg_to_rad)
+    // 接地法線との角度が135deg以上なら打てない
+    static constexpr auto over_rad = -45.0f * Math::deg_to_rad;
+    if (
+        intersectingNormal.Length() > 0 && drag_vector_.Length() > 0
+        && intersectingNormal.Dot(drag_vector_.Normalized()) < over_rad
+    )
     {
         can_shot_ = false;
     }

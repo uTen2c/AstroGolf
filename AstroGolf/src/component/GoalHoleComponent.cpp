@@ -45,7 +45,7 @@ void GoalHoleComponent::CheckGoal(const float deltaTime)
         goaled_ = false;
     }
 
-    if (check_duration_sec_ > 1 && !goaled_)
+    if (check_duration_sec_ > 0.5f && !goaled_)
     {
         goaled_ = true;
         OnGoal();

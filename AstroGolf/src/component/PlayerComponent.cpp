@@ -99,6 +99,7 @@ void PlayerComponent::Draw(DrawStack* stack)
         ImGui::Separator();
         ImGui::Text("Shot vec: %0.3f, %0.3f", drag_vector_.x, drag_vector_.y);
         ImGui::Text("Shot pow: %0.3f", drag_vector_.Length());
+        ImGui::Text("Shot count: %d", shot_count_);
         ImGui::End();
     }
 
@@ -181,7 +182,7 @@ bool PlayerComponent::CanShot() const
 
 int PlayerComponent::GetShotCount() const
 {
-    return shotCount;
+    return shot_count_;
 }
 
 void PlayerComponent::UpdateShot()
@@ -219,10 +220,10 @@ void PlayerComponent::UpdateShot()
         if (can_shot_)
         {
             velocity = shotVec;
+            shot_count_++;
         }
         drag_vector_ = {};
         isDragging = false;
-        shotCount++;
     }
 
     if (!isDragging)

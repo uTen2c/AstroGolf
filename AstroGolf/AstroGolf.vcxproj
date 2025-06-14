@@ -26,6 +26,7 @@
     <ClCompile Include="src\component\Component.cpp" />
     <ClCompile Include="src\component\GoalHoleComponent.cpp" />
     <ClCompile Include="src\component\misc\BallisticComponent.cpp" />
+    <ClCompile Include="src\component\misc\GoalScoreDisplayComponent.cpp" />
     <ClCompile Include="src\component\object\SatelliteParentComponent.cpp" />
     <ClCompile Include="src\component\PhysicsComponent.cpp" />
     <ClCompile Include="src\component\PlanetComponent.cpp" />
@@ -68,6 +69,7 @@
     <ClInclude Include="src\component\Component.h" />
     <ClInclude Include="src\component\GoalHoleComponent.h" />
     <ClInclude Include="src\component\misc\BallisticComponent.h" />
+    <ClInclude Include="src\component\misc\GoalScoreDisplayComponent.h" />
     <ClInclude Include="src\component\object\SatelliteParentComponent.h" />
     <ClInclude Include="src\component\PhysicsComponent.h" />
     <ClInclude Include="src\component\PlanetComponent.h" />
@@ -108,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\fonts\MPLUS1p-Medium.ttf" />
+    <Content Include="assets\fonts\Outfit-Bold.ttf" />
     <Content Include="assets\stages.json" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

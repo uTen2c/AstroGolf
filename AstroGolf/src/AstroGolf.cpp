@@ -21,6 +21,7 @@ static void LoadFonts()
 {
     spdlog::info("Loading fonts...");
     AddFontResourceExA("assets/fonts/MPLUS1p-Medium.ttf", FR_PRIVATE, nullptr);
+    AddFontResourceExA("assets/fonts/Outfit-Bold.ttf", FR_PRIVATE, nullptr);
     spdlog::info("Fonts loaded");
 }
 

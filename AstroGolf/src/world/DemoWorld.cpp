@@ -3,6 +3,7 @@
 #include "../component/BoxComponent.h"
 #include "../component/GoalHoleComponent.h"
 #include "../component/RotatableBoxComponent.h"
+#include "../component/misc/GoalScoreDisplayComponent.h"
 #include "../component/object/SatelliteParentComponent.h"
 #include "../component/planet/DemoPlanet2Component.h"
 #include "../component/planet/DemoPlanetComponent.h"
@@ -53,6 +54,11 @@ DemoWorld::DemoWorld()
     AddComponent(hole);
 
     GetPlayer()->transform.translate = {250, 400};
+
+
+    const auto scoreDisplay = std::make_shared<GoalScoreDisplayComponent>(NextComponentId());
+    scoreDisplay->scoreType = GoalScoreType::HoleInOne;
+    AddComponent(scoreDisplay);
 }
 
 DemoWorld::~DemoWorld() = default;

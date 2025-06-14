@@ -8,11 +8,11 @@ class PlayerComponent final : public PhysicsComponent
     std::deque<Vec2> trails_ = {};
     int trail_screen_;
     bool should_trails_ = false;
+    int shot_count_ = 0;
 
 public:
     Vec2 intersectingNormal;
     float radius = 12;
-    int shotCount = 0;
     bool isDragging = false;
 
     explicit PlayerComponent(int id);

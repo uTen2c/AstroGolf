@@ -12,6 +12,8 @@ GoalScoreDisplayComponent::GoalScoreDisplayComponent(const int id): Component(id
     confitti_screen_ = MakeScreen(1280, 720, true);
     font_handle_ = CreateFontToHandle("Outfit", 128, 7, DX_FONTTYPE_ANTIALIASING_8X8);
     movie_handle_ = LoadGraph("assets/movie/confetti.mp4");
+    star_graph_ = std::make_unique<Graph>("stage/challenge_star.png", 96, 96);
+
     zIndex = 2000;
 }
 
@@ -50,6 +52,7 @@ void GoalScoreDisplayComponent::Draw(DrawStack* stack)
     }
 
     DrawConfitti();
+    DrawStars();
 
     static constexpr auto text_y = 150.0f;
 
@@ -94,6 +97,53 @@ void GoalScoreDisplayComponent::DrawConfitti() const
     GraphFilter(confitti_screen_, DX_GRAPH_FILTER_BRIGHT_CLIP, DX_CMP_LESS, 128, true, GetColor(0, 0, 0), 0);
     SetDrawScreen(DX_SCREEN_BACK);
     DrawExtendGraph(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, confitti_screen_, true);
+}
+
+void GoalScoreDisplayComponent::DrawStars() const
+{
+    static constexpr float delay = 0.6f;
+    auto currentDelay = 0.25f;
+    const auto star1Delta = GetStarDelta(currentDelay, animation_seconds_);
+    currentDelay += delay;
+    const auto star2Delta = GetStarDelta(currentDelay, animation_seconds_);
+    currentDelay += delay;
+    const auto star3Delta = GetStarDelta(currentDelay, animation_seconds_);
+
+    constexpr auto centerX = static_cast<float>(WINDOW_WIDTH) * 0.5f;
+    constexpr auto y = 400;
+    constexpr auto offset = 100;
+
+    DrawStar({centerX - offset, y}, true, star1Delta);
+    DrawStar({centerX + offset, y}, true, star2Delta);
+    DrawStar({centerX, y - 20}, false, star3Delta);
+}
+
+void GoalScoreDisplayComponent::DrawStar(const Vec2 pos, const bool cleared, const float delta) const
+{
+    if (!cleared)
+    {
+        star_graph_->DrawCenter(pos.x, pos.y, 1, 0);
+        return;
+    }
+
+    if (delta < 1)
+    {
+        star_graph_->DrawCenter(pos.x, pos.y, 1, 0);
+    }
+
+    SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255 * delta));
+    DrawStack stack;
+    stack.Translate(pos);
+    stack.Scale(Math::Lerp(1.75f, 1.0f, delta));
+    star_graph_->Draw(stack, cleared ? 0 : 1, 0);
+    SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+}
+
+float GoalScoreDisplayComponent::GetStarDelta(const float delaySeconds, const float currentSeconds)
+{
+    static constexpr float duration_seconds = 0.25f;
+    const auto d = max(currentSeconds - delaySeconds, 0);
+    return min(d / duration_seconds, 1);
 }
 
 GoalScoreType GoalScoreDisplayComponent::GetScoreType() const

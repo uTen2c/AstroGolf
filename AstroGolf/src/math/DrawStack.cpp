@@ -55,8 +55,8 @@ Vec2 DrawStack::GetScreenPos() const
     {
         auto vec2 = copiedVecStack.top();
         auto scale = MergeScaleStack(copiedScaleStack);
-        vec2.Mul({scale.x, scale.y});
         vec.Add(vec2);
+        vec2.Mul({scale.x, scale.y});
         copiedVecStack.pop();
         copiedScaleStack.pop();
     }

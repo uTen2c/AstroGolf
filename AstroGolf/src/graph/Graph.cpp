@@ -31,11 +31,11 @@ Graph::~Graph()
     DeleteGraph(handle);
 }
 
-void Graph::Draw(const DrawStack& stack) const
+void Graph::Draw(const DrawStack& stack, const int& tileX, const int& tileY) const
 {
     const auto& pos = stack.GetScreenPos();
     const auto& scale = stack.GetScreenScale();
     const auto& rot = stack.GetScreenRotate();
-    DrawRotaGraph3F(pos.x, pos.y, static_cast<float>(width) * 0.5f, static_cast<float>(height) * 0.5f, scale.x, scale.y,
+    DrawRectRotaGraph3F(pos.x, pos.y, tileX * width, tileY * height, width, height, static_cast<float>(width) * 0.5f, static_cast<float>(height) * 0.5f, scale.x, scale.y,
                     rot, handle, true);
 }

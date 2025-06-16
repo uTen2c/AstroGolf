@@ -22,14 +22,18 @@ class GoalScoreDisplayComponent final : public Component
     int star_count_ = 0;
     GoalScoreType score_type_ = GoalScoreType::None;
 
+    std::unique_ptr<Graph> star_graph_;
+
 public:
-    
     explicit GoalScoreDisplayComponent(int id);
     ~GoalScoreDisplayComponent() override;
 
     void Update(float delta) override;
     void Draw(DrawStack* stack) override;
     void DrawConfitti() const;
+    void DrawStars() const;
+    void DrawStar(Vec2 pos, bool cleared, float delta) const;
+    static float GetStarDelta(float delaySeconds, float currentSeconds);
 
     [[nodiscard]] GoalScoreType GetScoreType() const;
     void SetScoreType(GoalScoreType scoreType);

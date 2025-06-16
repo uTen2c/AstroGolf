@@ -28,5 +28,5 @@ public:
         DrawRectGraphF(x, y, tileX * width, tileY * height, width, height, handle, true);
     }
 
-    void Draw(const DrawStack& stack) const;
+    void Draw(const DrawStack& stack, const int& tileX = 0, const int& tileY = 0) const;
 };

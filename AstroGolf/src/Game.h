@@ -54,12 +54,14 @@ public:
 
     void ChangeWorldWithTransition(const TransitionMode mode, std::unique_ptr<World> world)
     {
+        isPaused = true;
         transition_mode_ = mode;
         transition_world_ = std::move(world);
         changing_ = true;
         transition_delta_ = 0;
         last_transition_progress_ = 0;
         world_changed_ = false;
+        isPaused = false;
     }
 
 private:

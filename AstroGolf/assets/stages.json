@@ -2,21 +2,41 @@
   {
     "id": "demo",
     "name": "デモステージ",
-    "preview": "stage1.png"
+    "preview": "stage1.png",
+    "challenges": [
+      "GoalHoleInOne",
+      "GoalExcellent",
+      "Goal"
+    ]
   },
   {
     "id": "title",
     "name": "タイトルステージ",
-    "preview": "stage2.png"
+    "preview": "stage2.png",
+    "challenges": [
+      "GoalHoleInOne",
+      "GoalExcellent",
+      "Goal"
+    ]
   },
   {
     "id": "placeholder",
     "name": "プレースホルダー",
-    "preview": "placeholder.png"
+    "preview": "placeholder.png",
+    "challenges": [
+      "GoalHoleInOne",
+      "GoalExcellent",
+      "Goal"
+    ]
   },
   {
     "id": "placeholder2",
     "name": "プレースホルダー2",
-    "preview": "placeholder.png"
+    "preview": "placeholder.png",
+    "challenges": [
+      "GoalHoleInOne",
+      "GoalExcellent",
+      "Goal"
+    ]
   }
 ]

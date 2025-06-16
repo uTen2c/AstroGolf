@@ -3,7 +3,8 @@
 
 class PlayerComponent final : public PhysicsComponent
 {
-    bool can_shot_ = true;
+    bool landing_ = true;
+    bool valid_shot_angle_ = true;
     Transform shot_start_transform_ = {};
     std::deque<Vec2> trails_ = {};
     int trail_screen_;

@@ -87,6 +87,8 @@ public:
 
     virtual void OnGoal();
 
+    virtual bool CanPlayerShot(); 
+
 protected:
     virtual void DrawBackground(DrawStack& stack) const;
 

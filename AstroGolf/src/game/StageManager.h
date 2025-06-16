@@ -4,14 +4,33 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <nlohmann/json.hpp>
 
 #include "../world/World.h"
+
+using json = nlohmann::json;
+
+enum class GoalChallengeType : std::uint8_t
+{
+    GoalHoleInOne,
+    GoalExcellent,
+    Goal,
+};
+
+NLOHMANN_JSON_SERIALIZE_ENUM(
+    GoalChallengeType,
+    {
+    {GoalChallengeType::GoalHoleInOne, "GoalHoleInOne"},
+    {GoalChallengeType::GoalExcellent, "GoalExcellent"},
+    {GoalChallengeType::Goal, "Goal"},
+    })
 
 struct Stage
 {
     std::string id;
     std::string name;
     std::string preview;
+    std::vector<GoalChallengeType> challenges;
 };
 
 class StageManager

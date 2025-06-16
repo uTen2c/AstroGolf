@@ -215,18 +215,18 @@ static int gap = 4;
 
 void World::DrawBallistic()
 {
+    ImGui::Begin("Ballistic");
+    ImGui::InputFloat("Frame rate", &fps, 0.1f, 1);
+    ImGui::InputFloat("Duration", &duration, 0.1f, 1);
+    ImGui::InputInt("Gap", &gap);
+    ImGui::End();
+    
     if (!player_->CanShot())
     {
         return;
     }
 
     const auto& dragVector = player_->GetDragVector();
-
-    ImGui::Begin("Ballistic");
-    ImGui::InputFloat("Frame rate", &fps, 0.1f, 1);
-    ImGui::InputFloat("Duration", &duration, 0.1f, 1);
-    ImGui::InputInt("Gap", &gap);
-    ImGui::End();
 
     if (dragVector.Length() <= 0)
     {
@@ -386,6 +386,11 @@ void World::OnCameraMoveWithMouse(CameraComponent* camera)
 
 void World::OnGoal()
 {
+}
+
+bool World::CanPlayerShot()
+{
+    return true;
 }
 
 void World::DrawBackground(DrawStack& stack) const

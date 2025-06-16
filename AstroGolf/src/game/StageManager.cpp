@@ -32,6 +32,7 @@ bool StageManager::LoadStages()
             stage.id = stageJson["id"];
             stage.name = stageJson["name"];
             stage.preview = stageJson["preview"];
+            stage.challenges = stageJson["challenges"].get<std::vector<GoalChallengeType>>();
             stages_.push_back(stage);
         }
 

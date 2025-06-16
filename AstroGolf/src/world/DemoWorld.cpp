@@ -54,11 +54,6 @@ DemoWorld::DemoWorld()
     AddComponent(hole);
 
     GetPlayer()->transform.translate = {250, 400};
-
-
-    const auto scoreDisplay = std::make_shared<GoalScoreDisplayComponent>(NextComponentId());
-    scoreDisplay->scoreType = GoalScoreType::HoleInOne;
-    AddComponent(scoreDisplay);
 }
 
 DemoWorld::~DemoWorld() = default;

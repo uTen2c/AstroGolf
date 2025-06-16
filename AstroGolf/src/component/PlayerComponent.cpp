@@ -68,19 +68,15 @@ void PlayerComponent::UpdateMovement(const float deltaTime)
     PhysicsComponent::UpdateMovement(deltaTime);
 
     // 接地判定
-    const auto& movedDistance = lastPos.Distance(transform.translate);
-    can_shot_ = intersectingNormal.Length() > 0;
+    landing_ = intersectingNormal.Length() > 0;
 
     // 接地法線との角度が135deg以上なら打てない
     static constexpr auto over_rad = -45.0f * Math::deg_to_rad;
-    if (
-        intersectingNormal.Length() > 0 && drag_vector_.Length() > 0
-        && intersectingNormal.Dot(drag_vector_.Normalized()) < over_rad
-    )
-    {
-        can_shot_ = false;
-    }
+    valid_shot_angle_ = intersectingNormal.Length() > 0
+        && drag_vector_.Length() > 0
+        && intersectingNormal.Dot(drag_vector_.Normalized()) >= over_rad;
 
+    const auto& movedDistance = lastPos.Distance(transform.translate);
     should_trails_ = movedDistance > 0.2;
 }
 
@@ -177,7 +173,7 @@ Vec2 PlayerComponent::GetDragVector() const
 
 bool PlayerComponent::CanShot() const
 {
-    return can_shot_;
+    return landing_ && valid_shot_angle_ && world->CanPlayerShot();
 }
 
 int PlayerComponent::GetShotCount() const
@@ -217,7 +213,7 @@ void PlayerComponent::UpdateShot()
             shotVec.Add(gravitySource.Copy().Neg());
         }
 
-        if (can_shot_)
+        if (CanShot())
         {
             velocity = shotVec;
             shot_count_++;

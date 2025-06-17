@@ -15,7 +15,7 @@ public:
     std::unique_ptr<RotatableBoxCollider> goal_collider_;
     Vec2 velocity = {0, 0};
 
-    float lastGravityPower;
+    float lastGravityPower = 0;
     std::vector<Vec2> gravitySources;
 
     float mass = 1;

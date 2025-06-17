@@ -15,7 +15,8 @@ enum class GoalScoreType : std::uint8_t
 
 class GoalScoreDisplayComponent final : public Component
 {
-    int font_handle_;
+    int message_font_handle_;
+    int score_font_handle_;
     int movie_handle_;
     int confitti_screen_;
     float animation_seconds_ = 0;
@@ -34,6 +35,10 @@ public:
     void DrawStars() const;
     void DrawStar(Vec2 pos, bool cleared, float delta) const;
     static float GetStarDelta(float delaySeconds, float currentSeconds);
+    static void DrawOutlinedText(float x, float y, const std::string& text, unsigned int color, float outlineWidth,
+                                 unsigned int outlineColor, int fontHandle);
+    static void DrawOutlinedTextCentered(float x, float y, const std::string& text, unsigned int color, float outlineWidth,
+                                 unsigned int outlineColor, int fontHandle);
 
     [[nodiscard]] GoalScoreType GetScoreType() const;
     void SetScoreType(GoalScoreType scoreType);

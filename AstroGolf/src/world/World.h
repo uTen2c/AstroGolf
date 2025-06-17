@@ -36,10 +36,12 @@ class World
 
 public:
     bool zoomEnabled = true;
+    bool initialized = false;
 
     World();
     virtual ~World() = default;
 
+    virtual void Init();
     virtual void Draw();
     virtual void Update(const float& deltaTime);
     virtual void PostUpdate(const float& deltaTime);
@@ -87,11 +89,10 @@ public:
 
     virtual void OnGoal();
 
-    virtual bool CanPlayerShot(); 
+    virtual bool CanPlayerShot();
+
+    void SetMenuOpen(bool open);
 
 protected:
     virtual void DrawBackground(DrawStack& stack) const;
-
-private:
-    void SetMenuOpen(bool open);
 };

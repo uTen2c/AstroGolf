@@ -6,8 +6,11 @@
 #include "../component/misc/GoalScoreDisplayComponent.h"
 #include "../game/StageManager.h"
 
-StageWorld::StageWorld()
+StageWorld::StageWorld() = default;
+
+void StageWorld::Init()
 {
+    World::Init();
     goal_score_display_ = std::make_shared<GoalScoreDisplayComponent>(NextComponentId());
     AddComponent(goal_score_display_);
 }

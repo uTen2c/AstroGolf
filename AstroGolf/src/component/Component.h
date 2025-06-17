@@ -21,6 +21,7 @@ public:
     World* world = nullptr;
     int zIndex = 1000;
     std::shared_ptr<Component> parent = nullptr;
+    bool initialized = false;
 
     explicit Component(const int id): id_(id)
     {
@@ -34,6 +35,7 @@ public:
     Component(Component&&) noexcept = default;
     Component& operator=(Component&&) noexcept = default;
 
+    virtual void Init();
     virtual void Update(float delta);
     virtual void PostUpdate(float delta);
     virtual void Draw(DrawStack* stack);

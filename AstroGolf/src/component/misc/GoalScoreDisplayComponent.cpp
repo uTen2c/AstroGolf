@@ -10,16 +10,18 @@
 GoalScoreDisplayComponent::GoalScoreDisplayComponent(const int id): Component(id)
 {
     confitti_screen_ = MakeScreen(1280, 720, true);
-    font_handle_ = CreateFontToHandle("Outfit", 128, 7, DX_FONTTYPE_ANTIALIASING_8X8);
+    message_font_handle_ = CreateFontToHandle("M PLUS 1p Medium", 32, 5, DX_FONTTYPE_ANTIALIASING_8X8);
+    score_font_handle_ = CreateFontToHandle("Outfit", 128, 7, DX_FONTTYPE_ANTIALIASING_8X8);
     movie_handle_ = LoadGraph("assets/movie/confetti.mp4");
-    star_graph_ = std::make_unique<Graph>("stage/challenge_star.png", 96, 96);
+    star_graph_ = std::make_unique<Graph>("stage/challenge_star.png", 72, 72);
 
     zIndex = 2000;
 }
 
 GoalScoreDisplayComponent::~GoalScoreDisplayComponent()
 {
-    DeleteFontToHandle(font_handle_);
+    DeleteFontToHandle(message_font_handle_);
+    DeleteFontToHandle(score_font_handle_);
     DeleteGraph(movie_handle_);
     DeleteGraph(confitti_screen_);
 }
@@ -54,55 +56,82 @@ void GoalScoreDisplayComponent::Draw(DrawStack* stack)
     DrawConfitti();
     DrawStars();
 
-    static constexpr auto text_y = 150.0f;
-
-    const auto& scoreText = GetScoreText(score_type_);
-    const auto textWidth = static_cast<float>(GetDrawStringWidthToHandle(
-        scoreText.c_str(),
-        static_cast<int>(scoreText.length()),
-        font_handle_
-    ));
-
-    for (float offsetXMul = -1; offsetXMul <= 1; offsetXMul += 0.5f)
-    {
-        for (float offsetYMul = -1; offsetYMul <= 1; offsetYMul += 0.5f)
-        {
-            const auto offset = Vec2(offsetXMul, offsetYMul).Normalize().Mul(4);
-            DrawStringFToHandle(
-                (WINDOW_WIDTH - textWidth) * 0.5f + offset.x,
-                text_y + offset.y,
-                scoreText.c_str(),
-                GetColor(255, 255, 255),
-                font_handle_
-            );
-        }
-    }
-
-    DrawStringFToHandle(
-        (WINDOW_WIDTH - textWidth) * 0.5f,
-        text_y,
-        scoreText.c_str(),
-        GetColor(66, 86, 213),
-        font_handle_
+    DrawOutlinedTextCentered(
+        WINDOW_WIDTH * 0.5f, 150,
+        GetScoreText(score_type_), GetColor(66, 86, 213),
+        4, GetColor(255, 255, 255),
+        score_font_handle_
     );
-    SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void GoalScoreDisplayComponent::DrawConfitti() const
 {
     const auto delta = std::clamp(animation_seconds_ * 4.0f, 0.0f, 1.0f);
     SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255 * delta));
+
     SetDrawScreen(confitti_screen_);
     DrawGraph(0, 0, movie_handle_, false);
     GraphFilter(confitti_screen_, DX_GRAPH_FILTER_BRIGHT_CLIP, DX_CMP_LESS, 128, true, GetColor(0, 0, 0), 0);
     SetDrawScreen(DX_SCREEN_BACK);
     DrawExtendGraph(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, confitti_screen_, true);
+
+    SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+}
+
+void GoalScoreDisplayComponent::DrawOutlinedText(
+    const float x,
+    const float y,
+    const std::string& text,
+    const unsigned int color,
+    const float outlineWidth,
+    const unsigned int outlineColor,
+    const int fontHandle
+)
+{
+    for (float offsetXMul = -1; offsetXMul <= 1; offsetXMul += 0.5f)
+    {
+        for (float offsetYMul = -1; offsetYMul <= 1; offsetYMul += 0.5f)
+        {
+            const auto offset = Vec2(offsetXMul, offsetYMul).Normalize().Mul(outlineWidth);
+            DrawStringFToHandle(
+                x + offset.x,
+                y + offset.y,
+                text.c_str(),
+                outlineColor,
+                fontHandle
+            );
+        }
+    }
+
+    DrawStringFToHandle(
+        x,
+        y,
+        text.c_str(),
+        color,
+        fontHandle
+    );
+}
+
+void GoalScoreDisplayComponent::DrawOutlinedTextCentered(
+    const float x,
+    const float y,
+    const std::string& text,
+    const unsigned int color,
+    const float outlineWidth, const unsigned int outlineColor,
+    const int fontHandle)
+{
+    const auto textWidth = static_cast<float>(GetDrawStringWidthToHandle(
+        text.c_str(),
+        static_cast<int>(text.length()),
+        fontHandle
+    ));
+    DrawOutlinedText(x - textWidth * 0.5f, y, text, color, outlineWidth, outlineColor, fontHandle);
 }
 
 void GoalScoreDisplayComponent::DrawStars() const
 {
     static constexpr float delay = 0.6f;
-    auto currentDelay = 0.25f;
+    auto currentDelay = 1.0f;
     const auto star1Delta = GetStarDelta(currentDelay, animation_seconds_);
     currentDelay += delay;
     const auto star2Delta = GetStarDelta(currentDelay, animation_seconds_);
@@ -110,12 +139,12 @@ void GoalScoreDisplayComponent::DrawStars() const
     const auto star3Delta = GetStarDelta(currentDelay, animation_seconds_);
 
     constexpr auto centerX = static_cast<float>(WINDOW_WIDTH) * 0.5f;
-    constexpr auto y = 400;
-    constexpr auto offset = 100;
+    constexpr auto y = 360;
+    constexpr auto offset = 84;
 
     DrawStar({centerX - offset, y}, true, star1Delta);
     DrawStar({centerX + offset, y}, true, star2Delta);
-    DrawStar({centerX, y - 20}, false, star3Delta);
+    DrawStar({centerX, y - 8}, false, star3Delta);
 }
 
 void GoalScoreDisplayComponent::DrawStar(const Vec2 pos, const bool cleared, const float delta) const
@@ -134,6 +163,7 @@ void GoalScoreDisplayComponent::DrawStar(const Vec2 pos, const bool cleared, con
     SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255 * delta));
     DrawStack stack;
     stack.Translate(pos);
+    stack.Push();
     stack.Scale(Math::Lerp(1.75f, 1.0f, delta));
     star_graph_->Draw(stack, cleared ? 0 : 1, 0);
     SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);

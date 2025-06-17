@@ -12,6 +12,7 @@ class TitleWorld final : public StageWorld
 public:
     TitleWorld();
     ~TitleWorld() override;
+    void Init() override;
     void Update(const float& deltaTime) override;
 
     void OnCameraMoveWithMouse(CameraComponent* camera) override;

@@ -5,6 +5,7 @@
 #include <imgui.h>
 #include <spdlog/spdlog.h>
 
+#include "math/Math.h"
 #include "world/DemoWorld.h"
 #include "world/StageSelectWorld.h"
 #include "world/TitleWorld.h"
@@ -12,7 +13,7 @@
 
 Game::Game() = default;
 
-World& Game::GetWorld() const
+World& Game::GetWorld()
 {
     return *world_;
 }
@@ -30,6 +31,14 @@ void Game::Update()
     if (CheckHitKey(KEY_INPUT_3) != 0 && world_->GetType() != WorldType::StageSelect)
     {
         ChangeWorldWithTransition<StageSelectWorld>(TransitionMode::Slide);
+    }
+
+    device_.Update();
+
+    if (!world_->initialized)
+    {
+        world_->Init();
+        world_->initialized = true;
     }
 
     if (!isPaused)
@@ -75,7 +84,7 @@ void Game::UpdateTransition(const float delta)
             isPaused = false;
             world_changed_ = true;
         }
-        const auto curvedProgress = std::clamp((progress * progress) * 2, 0.f, 1.f);
+        const auto curvedProgress = Math::EaseOutQuart(std::clamp(progress, 0.f, 1.f));
         if (world_changed_)
         {
             SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(curvedProgress * 255));
@@ -118,6 +127,11 @@ void Game::UpdateTransition(const float delta)
         }
         last_transition_progress_ = progress;
     }
+}
+
+Device& Game::Device()
+{
+    return device_;
 }
 
 float Game::GetTransitionProgress(const float elapsedTimeMs, const float durationMs)

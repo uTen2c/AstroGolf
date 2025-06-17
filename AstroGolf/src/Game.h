@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 
+#include "Device.h"
 #include "world/World.h"
 
 constexpr auto WINDOW_WIDTH = 1280;
@@ -15,6 +16,7 @@ enum class TransitionMode
 class Game
 {
     inline static float max_transition_delta_ = 1.f;
+    inline static Device device_;
 
     std::unique_ptr<World> world_;
     bool changing_ = false;
@@ -26,6 +28,7 @@ class Game
 
 public:
     inline static std::unique_ptr<Game> instance = nullptr;
+    inline static bool started = false;
     inline static int fps = 0;
     inline static float deltaTime = 0;
     inline static bool shouldShutdown = false;
@@ -33,7 +36,7 @@ public:
     bool isPaused = false;
 
     Game();
-    [[nodiscard]] World& GetWorld() const;
+    [[nodiscard]] World& GetWorld();
 
     void Update();
     void UpdateTransition(float delta);
@@ -63,6 +66,8 @@ public:
         world_changed_ = false;
         isPaused = false;
     }
+
+    [[nodiscard]] static Device& Device();
 
 private:
     [[nodiscard]] static float GetTransitionProgress(float elapsedTimeMs, float durationMs);

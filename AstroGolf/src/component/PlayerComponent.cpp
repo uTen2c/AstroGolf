@@ -72,9 +72,11 @@ void PlayerComponent::UpdateMovement(const float deltaTime)
 
     // 接地法線との角度が135deg以上なら打てない
     static constexpr auto over_rad = -45.0f * Math::deg_to_rad;
-    valid_shot_angle_ = intersectingNormal.Length() > 0
-        && drag_vector_.Length() > 0
-        && intersectingNormal.Dot(drag_vector_.Normalized()) >= over_rad;
+    // FIXME debug
+    // valid_shot_angle_ = intersectingNormal.Length() > 0
+        // && drag_vector_.Length() > 0
+        // && intersectingNormal.Dot(drag_vector_.Normalized()) >= over_rad;
+    valid_shot_angle_ = true;
 
     const auto& movedDistance = lastPos.Distance(transform.translate);
     should_trails_ = movedDistance > 0.2;

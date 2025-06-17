@@ -14,6 +14,18 @@ LRESULT CALLBACK WndProc(const HWND hwnd, const UINT msg, const WPARAM w_param, 
     extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM w_param, LPARAM l_param);
     if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, w_param, l_param))
         return true;
+
+    // ウィンドウ移動時にメインループが止まるので、メニューを開かせて一時停止する
+    switch (msg)
+    {
+    case WM_NCLBUTTONDOWN:
+        spdlog::info("WM_NCLBUTTONDOWN");
+        Game::instance->GetWorld().SetMenuOpen(true);
+        break;
+    default:
+        break;
+    }
+
     return 0;
 }
 

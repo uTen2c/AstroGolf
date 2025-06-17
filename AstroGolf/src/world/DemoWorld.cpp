@@ -13,6 +13,18 @@
 DemoWorld::DemoWorld()
 {
     background_graph_ = std::make_unique<Graph>("background.png", 2048, 2048);
+}
+
+DemoWorld::~DemoWorld() = default;
+
+WorldType DemoWorld::GetType() const
+{
+    return WorldType::Demo;
+}
+
+void DemoWorld::Init()
+{
+    StageWorld::Init();
 
     const auto box1 = std::make_shared<BoxComponent>(NextComponentId(), 500, 50);
     box1->transform.translate = {250, 500};
@@ -54,13 +66,6 @@ DemoWorld::DemoWorld()
     AddComponent(hole);
 
     GetPlayer()->transform.translate = {250, 400};
-}
-
-DemoWorld::~DemoWorld() = default;
-
-WorldType DemoWorld::GetType() const
-{
-    return WorldType::Demo;
 }
 
 void DemoWorld::Update(const float& deltaTime)

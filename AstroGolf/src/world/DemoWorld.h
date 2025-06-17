@@ -11,6 +11,7 @@ public:
     ~DemoWorld() override;
     [[nodiscard]] WorldType GetType() const override;
 
+    void Init() override;
     void Update(const float& deltaTime) override;
     
     std::string GetStageId() const override;

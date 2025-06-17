@@ -15,12 +15,14 @@
 
 World::World()
 {
-    spdlog::info("World init");
-
     menu_button_graph_ = std::make_unique<Graph>("menu_button.png", 72, 72);
     menu_background_graph_ = std::make_unique<Graph>("menu/menu_background.png", 1024, 720);
     menu_buttons_graph_ = std::make_unique<Graph>("menu/buttons.png", 512, 70);
+}
 
+void World::Init()
+{
+    spdlog::info("World init");
     camera_ = std::make_shared<CameraComponent>(NextComponentId());
     player_ = std::make_shared<PlayerComponent>(NextComponentId());
     ballistic_ = std::make_shared<BallisticComponent>(NextComponentId());
@@ -121,7 +123,7 @@ void World::DrawUi()
             Math::InRange(static_cast<float>(mouseY), centerY - halfH, centerY + halfH);
         menu_button_graph_->DrawCenter(centerX, centerY, isHovering ? 1 : 0, 0);
 
-        if (isHovering && (GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
+        if (isHovering && Game::Device().LeftClicked())
         {
             SetMenuOpen(true);
         }
@@ -166,7 +168,7 @@ void World::DrawUi()
             isHovering ? tileY + 1 : tileY
         );
 
-        if (isHovering && (GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
+        if (isHovering && Game::Device().LeftClicked())
         {
             switch (i)
             {
@@ -220,7 +222,7 @@ void World::DrawBallistic()
     ImGui::InputFloat("Duration", &duration, 0.1f, 1);
     ImGui::InputInt("Gap", &gap);
     ImGui::End();
-    
+
     if (!player_->CanShot())
     {
         return;
@@ -235,15 +237,11 @@ void World::DrawBallistic()
     }
 
 
-    // static constexpr float fps = 100.0f;
     static const float frame_sec = 1.0f / fps;
-    // static constexpr float duration_sec = 2.25f;
-    // static constexpr int steps = 10;
-    // static constexpr int gap = 5;
     static const float delta = frame_sec;
 
     ballistic_->transform.translate = player_->transform.translate.Copy().Add(
-        player_->intersectingNormal.Copy().Mul(0.0001));
+        player_->intersectingNormal.Copy().Mul(0.0001f));
     ballistic_->velocity = {};
 
     ballistic_->Reset();
@@ -306,6 +304,7 @@ bool World::AddComponent(const std::shared_ptr<Component>& component)
     }
     component->world = this;
     component_map_.insert(std::make_pair(component->GetId(), component));
+    component->Init();
     return true;
 }
 

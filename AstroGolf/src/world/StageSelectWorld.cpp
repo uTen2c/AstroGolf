@@ -16,17 +16,24 @@ StageSelectWorld::StageSelectWorld()
         preview_graphs_.emplace_back(ptr);
     }
 
+    zoomEnabled = false;
+}
+
+StageSelectWorld::~StageSelectWorld() = default;
+
+void StageSelectWorld::Init()
+{
+    World::Init();
+
     preview_component_ = std::make_shared<StagePreviewComponent>(NextComponentId());
     select_component_ = std::make_shared<StageSelectComponent>(NextComponentId());
 
     AddComponent(preview_component_);
     AddComponent(select_component_);
-
-    zoomEnabled = false;
+    
     GetPlayer()->transform.translate = {10000, 10000};
 }
 
-StageSelectWorld::~StageSelectWorld() = default;
 void StageSelectWorld::Draw()
 {
     World::Draw();

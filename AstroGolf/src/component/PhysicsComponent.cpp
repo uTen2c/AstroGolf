@@ -275,16 +275,17 @@ void PhysicsComponent::Move(const Vec2& delta)
             }
             if (const auto rbc = dynamic_cast<RotatableBoxCollider*>(nearbyComponent->collider.get()))
             {
-                // ReSharper disable once CppUseStructuredBinding
-                const auto result = selfCc->Intersects(moved, worldPos.pos, *rbc);
+                const auto& result = rbc->Intersects(worldPos.pos, moved, *selfCc);
                 if (!result.intersected)
                 {
                     continue;
                 }
 
                 normal = result.normal;
+                const auto diff = rbc->Contains(worldPos.pos, moved)
+                                      ? selfCc->radius + moved.Distance(result.point)
+                                      : selfCc->radius - moved.Distance(result.point);
 
-                const auto diff = selfCc->radius - moved.Distance(result.point);
                 auto negVec = normal;
                 negVec.Mul(diff);
                 moved.Add(negVec);
@@ -420,7 +421,7 @@ void PhysicsComponent::CalcGravity()
         return;
     }
 
-    for (const auto & other : world->GetComponents())
+    for (const auto& other : world->GetComponents())
     {
         if (other == this)
         {

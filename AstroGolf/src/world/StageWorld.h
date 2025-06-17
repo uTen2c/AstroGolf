@@ -12,6 +12,8 @@ class StageWorld : public World
 public:
     StageWorld();
 
+    void Init() override;
+
     [[nodiscard]] virtual std::string GetStageId() const;
 
     void Reload() const;

@@ -2,6 +2,10 @@
 
 #include <spdlog/spdlog.h>
 
+void Component::Init()
+{
+}
+
 void Component::Update(float delta)
 {
 }

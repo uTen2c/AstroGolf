@@ -43,6 +43,7 @@
     <ClCompile Include="src\component\title\TitleSlopeComponent.cpp" />
     <ClCompile Include="src\component\title\TitleWorldGroundComponent.cpp" />
     <ClCompile Include="src\debug\Debug.cpp" />
+    <ClCompile Include="src\Device.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\game\StageManager.cpp" />
     <ClCompile Include="src\graph\Graph.cpp" />
@@ -86,6 +87,7 @@
     <ClInclude Include="src\component\title\TitleSlopeComponent.h" />
     <ClInclude Include="src\component\title\TitleWorldGroundComponent.h" />
     <ClInclude Include="src\debug\Debug.h" />
+    <ClInclude Include="src\Device.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\game\StageManager.h" />
     <ClInclude Include="src\graph\Graph.h" />

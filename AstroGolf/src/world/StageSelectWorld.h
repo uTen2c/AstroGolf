@@ -14,6 +14,7 @@ class StageSelectWorld final : public World
 public:
     StageSelectWorld();
     ~StageSelectWorld() override;
+    void Init() override;
     void Draw() override;
     void DrawUi() override;
     void Update(const float& deltaTime) override;

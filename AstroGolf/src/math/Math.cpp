@@ -12,3 +12,8 @@ Vec2 Math::Lerp(const Vec2& start, const Vec2& end, const float& delta)
         Lerp(start.y, end.y, delta)
     };
 }
+
+float Math::EaseOutQuart(const float delta)
+{
+    return 1.0f - pow(1.0f - delta, 4.0f);
+}

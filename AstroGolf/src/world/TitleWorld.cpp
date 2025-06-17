@@ -21,13 +21,17 @@ TitleWorld::TitleWorld()
     background_graph_ = std::make_unique<Graph>("background.png", 2048, 2048);
     title_graph_ = std::make_unique<Graph>("title.png", 1024, 1024);
 
-    zoomEnabled = false;
+    // zoomEnabled = false;
+}
 
-    GetPlayer()->transform.translate = {500, 270};
-    ResetCamera();
+TitleWorld::~TitleWorld() = default;
+
+void TitleWorld::Init()
+{
+    StageWorld::Init();
 
     const auto ground = std::make_shared<TitleWorldGroundComponent>(NextComponentId());
-    ground->transform.translate = {0, 400};
+    ground->transform.translate = {0, 600};
     AddComponent(ground);
 
     const auto rightSlope = std::make_shared<RotatableBoxComponent>(NextComponentId(), 200, 800);
@@ -57,9 +61,10 @@ TitleWorld::TitleWorld()
     const auto startText = std::make_shared<StartTextComponent>(NextComponentId());
     startText->transform.translate = {0, 128};
     AddComponent(startText);
-}
 
-TitleWorld::~TitleWorld() = default;
+    GetPlayer()->transform.translate = {500, 280};
+    ResetCamera();
+}
 
 void TitleWorld::Update(const float& deltaTime)
 {
@@ -105,7 +110,7 @@ void TitleWorld::ResetCamera() const
 
 Vec2 TitleWorld::ClampCameraPos(const Vec2& pos)
 {
-    // return pos;
+    return pos;
     constexpr auto min = (static_cast<float>(WINDOW_WIDTH) / 2.0f) - 1024;
     const auto max = std::abs(min);
     return {

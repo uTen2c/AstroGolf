@@ -22,8 +22,10 @@ class GoalScoreDisplayComponent final : public Component
     float animation_seconds_ = 0;
     int star_count_ = 0;
     GoalScoreType score_type_ = GoalScoreType::None;
+    int click_start_button_index_ = -1;
 
     std::unique_ptr<Graph> star_graph_;
+    std::unique_ptr<Graph> buttons_graph_;
 
 public:
     explicit GoalScoreDisplayComponent(int id);
@@ -34,6 +36,8 @@ public:
     void DrawConfitti() const;
     void DrawStars() const;
     void DrawStar(Vec2 pos, bool cleared, float delta) const;
+    void DrawButtons();
+    void DrawButton(float x, float y, int buttonIndex, const std::function<void()>& onClick);
     static float GetStarDelta(float delaySeconds, float currentSeconds);
     static void DrawOutlinedText(float x, float y, const std::string& text, unsigned int color, float outlineWidth,
                                  unsigned int outlineColor, int fontHandle);

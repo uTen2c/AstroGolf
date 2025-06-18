@@ -3,9 +3,14 @@
 #include <algorithm>
 #include <DxLib.h>
 #include <imgui.h>
+#include <windows.h>
+#include <spdlog/spdlog.h>
 
 #include "../../Game.h"
+#include "../../math/BoundingBox.h"
 #include "../../math/Math.h"
+#include "../../world/StageWorld.h"
+#include "../../world/StageSelectWorld.h"
 
 GoalScoreDisplayComponent::GoalScoreDisplayComponent(const int id): Component(id)
 {
@@ -14,6 +19,7 @@ GoalScoreDisplayComponent::GoalScoreDisplayComponent(const int id): Component(id
     score_font_handle_ = CreateFontToHandle("Outfit", 128, 7, DX_FONTTYPE_ANTIALIASING_8X8);
     movie_handle_ = LoadGraph("assets/movie/confetti.mp4");
     star_graph_ = std::make_unique<Graph>("stage/challenge_star.png", 72, 72);
+    buttons_graph_ = std::make_unique<Graph>("stage/result_buttons.png", 400, 70);
 
     zIndex = 2000;
 }
@@ -55,6 +61,7 @@ void GoalScoreDisplayComponent::Draw(DrawStack* stack)
 
     DrawConfitti();
     DrawStars();
+    DrawButtons();
 
     DrawOutlinedTextCentered(
         WINDOW_WIDTH * 0.5f, 150,
@@ -167,6 +174,62 @@ void GoalScoreDisplayComponent::DrawStar(const Vec2 pos, const bool cleared, con
     stack.Scale(Math::Lerp(1.75f, 1.0f, delta));
     star_graph_->Draw(stack, cleared ? 0 : 1, 0);
     SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+}
+
+void GoalScoreDisplayComponent::DrawButtons()
+{
+    static constexpr float button_y = WINDOW_HEIGHT - 220;
+    static constexpr float gap = 12;
+
+    // ステージセレクトボタン
+    DrawButton(WINDOW_WIDTH / 2.0f, button_y, 0, []
+    {
+        Game::instance->ChangeWorldWithTransition<StageSelectWorld>(TransitionMode::Circle);
+    });
+
+    // リトライボタン
+    DrawButton(WINDOW_WIDTH / 2.0f, button_y + static_cast<float>(buttons_graph_->height) + gap, 1, [this]
+    {
+        if (const auto stage = dynamic_cast<StageWorld*>(world))
+        {
+            stage->Reload();
+        }
+    });
+
+    if (Game::Device().LeftReleased())
+    {
+        click_start_button_index_ = -1;
+    }
+}
+
+void GoalScoreDisplayComponent::DrawButton(const float x, const float y, const int buttonIndex,
+                                           const std::function<void()>& onClick)
+{
+    int mouseX;
+    int mouseY;
+    GetMousePoint(&mouseX, &mouseY);
+
+    const auto& bb = BoundingBox(buttons_graph_->width, buttons_graph_->height);
+    const bool& contains = bb.Contains(Vec2(x, y), Vec2(mouseX, mouseY));
+    const bool& hovering = contains && !Game::instance->isPaused;
+
+    const float yOffset = hovering ? -3 : 0;
+    const int tileYOffset = hovering ? 1 : 0;
+    buttons_graph_->DrawCenter(x, y + yOffset, 0, buttonIndex * 2 + tileYOffset);
+
+    if (Game::Device().LeftClicked() && hovering && click_start_button_index_ == -1)
+    {
+        click_start_button_index_ = buttonIndex;
+    }
+
+    if (Game::Device().LeftReleased() && hovering && click_start_button_index_ == buttonIndex)
+    {
+        click_start_button_index_ = -1;
+        if (onClick)
+        {
+            onClick();
+        }
+    }
 }
 
 float GoalScoreDisplayComponent::GetStarDelta(const float delaySeconds, const float currentSeconds)

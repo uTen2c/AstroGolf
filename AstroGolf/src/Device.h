@@ -16,6 +16,7 @@ public:
     void Update();
 
     [[nodiscard]] bool LeftClicked() const;
+    [[nodiscard]] bool LeftReleased() const;
     [[nodiscard]] bool LeftClicking() const;
     [[nodiscard]] bool RightClicked() const;
     [[nodiscard]] bool RightClicking() const;

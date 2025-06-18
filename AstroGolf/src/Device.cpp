@@ -22,6 +22,12 @@ bool Device::LeftClicked() const
         && (current_mouse_input_ & MOUSE_INPUT_LEFT) != 0;
 }
 
+bool Device::LeftReleased() const
+{
+    return (last_mouse_input_ & MOUSE_INPUT_LEFT) != 0
+    && (current_mouse_input_ & MOUSE_INPUT_LEFT) == 0;
+}
+
 bool Device::LeftClicking() const
 {
     return (current_mouse_input_ & MOUSE_INPUT_LEFT) != 0;

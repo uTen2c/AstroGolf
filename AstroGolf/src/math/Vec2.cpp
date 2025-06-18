@@ -1,4 +1,6 @@
 #include "Vec2.h"
+#include <cmath>
+#include <limits>
 
 Vec2 Vec2::Copy() const
 {
@@ -60,15 +62,23 @@ Vec2 Vec2::Mul(const Vec2& vec2)
 
 Vec2 Vec2::Div(const float factor)
 {
-    x /= factor;
-    y /= factor;
+    if (factor != 0.0f)
+    {
+        x /= factor;
+        y /= factor;
+    }
+    else
+    {
+        x = 0.0f;
+        y = 0.0f;
+    }
     return *this;
 }
 
 Vec2 Vec2::Div(const Vec2& vec2)
 {
-    x /= vec2.x;
-    y /= vec2.y;
+    x = (vec2.x == 0.0f) ? 0.0f : x / vec2.x;
+    y = (vec2.y == 0.0f) ? 0.0f : y / vec2.y;
     return *this;
 }
 
@@ -154,4 +164,120 @@ Vec2 Vec2::Rotated(const float radians) const
     result.y = x * sinRad + y * cosRad;
 
     return result;
+}
+
+// 四則演算の演算子オーバーロード実装
+Vec2 Vec2::operator+(const Vec2& other) const
+{
+    return Vec2(x + other.x, y + other.y);
+}
+
+Vec2 Vec2::operator-(const Vec2& other) const
+{
+    return Vec2(x - other.x, y - other.y);
+}
+
+Vec2 Vec2::operator*(float factor) const
+{
+    return Vec2(x * factor, y * factor);
+}
+
+Vec2 Vec2::operator*(const Vec2& other) const
+{
+    return Vec2(x * other.x, y * other.y);
+}
+
+Vec2 Vec2::operator/(float factor) const
+{
+    // ゼロ除算チェック
+    if (factor == 0.0f)
+    {
+        return Vec2(0.0f, 0.0f);
+    }
+    return Vec2(x / factor, y / factor);
+}
+
+Vec2 Vec2::operator/(const Vec2& other) const
+{
+    // ゼロ除算チェック
+    const float newX = (other.x == 0.0f) ? 0.0f : x / other.x;
+    const float newY = (other.y == 0.0f) ? 0.0f : y / other.y;
+    return Vec2(newX, newY);
+}
+
+Vec2 Vec2::operator-() const
+{
+    return Vec2(-x, -y);
+}
+
+// 複合代入演算子の実装
+Vec2& Vec2::operator+=(const Vec2& other)
+{
+    x += other.x;
+    y += other.y;
+    return *this;
+}
+
+Vec2& Vec2::operator-=(const Vec2& other)
+{
+    x -= other.x;
+    y -= other.y;
+    return *this;
+}
+
+Vec2& Vec2::operator*=(float factor)
+{
+    x *= factor;
+    y *= factor;
+    return *this;
+}
+
+Vec2& Vec2::operator*=(const Vec2& other)
+{
+    x *= other.x;
+    y *= other.y;
+    return *this;
+}
+
+Vec2& Vec2::operator/=(float factor)
+{
+    // ゼロ除算チェック
+    if (factor != 0.0f)
+    {
+        x /= factor;
+        y /= factor;
+    }
+    else
+    {
+        x = 0.0f;
+        y = 0.0f;
+    }
+    return *this;
+}
+
+Vec2& Vec2::operator/=(const Vec2& other)
+{
+    // ゼロ除算チェック
+    x = (other.x == 0.0f) ? 0.0f : x / other.x;
+    y = (other.y == 0.0f) ? 0.0f : y / other.y;
+    return *this;
+}
+
+// 比較演算子の実装
+bool Vec2::operator==(const Vec2& other) const
+{
+    // 浮動小数点数の比較にはイプシロンを使用
+    constexpr float epsilon = std::numeric_limits<float>::epsilon();
+    return std::abs(x - other.x) < epsilon && std::abs(y - other.y) < epsilon;
+}
+
+bool Vec2::operator!=(const Vec2& other) const
+{
+    return !(*this == other);
+}
+
+// スカラー値が左辺にくる場合の演算子オーバーロード
+Vec2 operator*(float factor, const Vec2& vec)
+{
+    return vec * factor;
 }

@@ -54,6 +54,11 @@ void Game::Update()
     }
 
     UpdateTransition(deltaTime);
+
+    if (device_.debugKey.Pressed())
+    {
+        debugEnabled = !debugEnabled;
+    }
 }
 
 void Game::UpdateTransition(const float delta)

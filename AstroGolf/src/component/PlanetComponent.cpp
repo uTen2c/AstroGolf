@@ -3,6 +3,7 @@
 #include <DxLib.h>
 #include <spdlog/spdlog.h>
 
+#include "../Game.h"
 #include "../math/CircleCollider.h"
 #include "../world/World.h"
 
@@ -29,11 +30,15 @@ void PlanetComponent::Draw(DrawStack* stack)
     const auto posnum = static_cast<int>(max(32 * scale.x, 32));
     DrawCircleAA(pos.x, pos.y, radius * scale.x, posnum, 0xFFFFFFFF, true);
 
-    const auto distance = GetPlayerDistance(world->GetPlayer());
-    const auto textWidth = GetDrawFormatStringWidth("%0.3f", distance);
-    DrawFormatString(static_cast<int>(pos.x),
-                     static_cast<int>(pos.y - static_cast<float>(textWidth) * 0.5f), GetColor(0, 0, 0),
-                     "%0.3f", distance);
+    // デバッグ表示
+    if (Game::debugEnabled)
+    {
+        const auto distance = GetPlayerDistance(world->GetPlayer());
+        const auto textWidth = GetDrawFormatStringWidth("%0.3f", distance);
+        DrawFormatString(static_cast<int>(pos.x),
+                         static_cast<int>(pos.y - static_cast<float>(textWidth) * 0.5f), GetColor(0, 0, 0),
+                         "%0.3f", distance);
+    }
     stack->Pop();
 }
 

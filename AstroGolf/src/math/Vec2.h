@@ -43,7 +43,7 @@ struct Vec2
 
     // 2次元ベクトルの外積を計算する（z成分を返す）
     [[nodiscard]] float Cross(const Vec2& other) const;
-    
+
     [[nodiscard]] float Distance(const Vec2& other) const;
 
     // ベクトルの長さを計算する
@@ -59,7 +59,31 @@ struct Vec2
 
     // ベクトルをラジアン角度で回転させる
     Vec2 Rotate(float radians);
-    
+
     // ラジアン角度で回転した新しいベクトルを返す
     [[nodiscard]] Vec2 Rotated(float radians) const;
+
+    // 四則演算の演算子オーバーロード
+    Vec2 operator+(const Vec2& other) const;
+    Vec2 operator-(const Vec2& other) const;
+    Vec2 operator*(float factor) const;
+    Vec2 operator*(const Vec2& other) const;
+    Vec2 operator/(float factor) const;
+    Vec2 operator/(const Vec2& other) const;
+    Vec2 operator-() const;
+
+    // 複合代入演算子
+    Vec2& operator+=(const Vec2& other);
+    Vec2& operator-=(const Vec2& other);
+    Vec2& operator*=(float factor);
+    Vec2& operator*=(const Vec2& other);
+    Vec2& operator/=(float factor);
+    Vec2& operator/=(const Vec2& other);
+
+    // 比較演算子
+    bool operator==(const Vec2& other) const;
+    bool operator!=(const Vec2& other) const;
 };
+
+// スカラー値が左辺にくる場合の演算子オーバーロード
+Vec2 operator*(float factor, const Vec2& vec);

@@ -1,4 +1,7 @@
 #pragma once
+#include <DxLib.h>
+
+#include "KeyInstance.h"
 
 class Device
 {
@@ -6,12 +9,14 @@ class Device
     int current_mouse_input_ = 0;
 
 public:
+    KeyInstance debugKey = KeyInstance(KEY_INPUT_F3);
+
     Device();
 
     void Update();
 
-    bool LeftClicked() const;
-    bool LeftClicking() const;
-    bool RightClicked() const;
-    bool RightClicking() const;
+    [[nodiscard]] bool LeftClicked() const;
+    [[nodiscard]] bool LeftClicking() const;
+    [[nodiscard]] bool RightClicked() const;
+    [[nodiscard]] bool RightClicking() const;
 };

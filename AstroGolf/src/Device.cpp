@@ -12,6 +12,8 @@ void Device::Update()
 {
     last_mouse_input_ = current_mouse_input_;
     current_mouse_input_ = GetMouseInput();
+
+    debugKey.Update();
 }
 
 bool Device::LeftClicked() const
@@ -28,7 +30,7 @@ bool Device::LeftClicking() const
 bool Device::RightClicked() const
 {
     return (last_mouse_input_ & MOUSE_INPUT_RIGHT) == 0
-    && (current_mouse_input_ & MOUSE_INPUT_RIGHT) != 0;
+        && (current_mouse_input_ & MOUSE_INPUT_RIGHT) != 0;
 }
 
 bool Device::RightClicking() const

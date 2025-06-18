@@ -72,11 +72,9 @@ void PlayerComponent::UpdateMovement(const float deltaTime)
 
     // 接地法線との角度が135deg以上なら打てない
     static constexpr auto over_rad = -45.0f * Math::deg_to_rad;
-    // FIXME debug
-    // valid_shot_angle_ = intersectingNormal.Length() > 0
-        // && drag_vector_.Length() > 0
-        // && intersectingNormal.Dot(drag_vector_.Normalized()) >= over_rad;
-    valid_shot_angle_ = true;
+    valid_shot_angle_ = intersectingNormal.Length() > 0
+        && drag_vector_.Length() > 0
+        && intersectingNormal.Dot(drag_vector_.Normalized()) >= over_rad;
 
     const auto& movedDistance = lastPos.Distance(transform.translate);
     should_trails_ = movedDistance > 0.2;
@@ -117,46 +115,51 @@ void PlayerComponent::Draw(DrawStack* stack)
         // DrawCircleAA(screenPos.x, screenPos.y, 1, 4, GetColor(0, 255, 0), false);
         // DrawCircleAA(screenPos.x, screenPos.y, scaledRadius, scaledPosnum, GetColor(0, 255, 0), false);
 
-        // Gravity sources
-        for (const auto& gravitySource : gravitySources)
+        // デバッグ表示
+        if (Game::debugEnabled)
         {
-            auto vec = screenPos;
-            vec.Add(gravitySource.Copy().Mul(0.5f));
-            DrawLineAA(screenPos.x, screenPos.y, vec.x, vec.y, GetColor(0, 255, 0), 2);
-        }
+            // Gravity sources
+            for (const auto& gravitySource : gravitySources)
+            {
+                auto vec = screenPos;
+                vec.Add(gravitySource.Copy().Mul(0.5f));
+                DrawLineAA(screenPos.x, screenPos.y, vec.x, vec.y, GetColor(0, 255, 0), 2);
+            }
 
-        // Normal
-        {
-            auto copied = screenPos;
-            auto n = intersectingNormal;
-            n.Mul(30.0f);
-            copied.Add(n);
-            DrawLineAA(screenPos.x, screenPos.y, copied.x, copied.y, GetColor(0, 0, 255), 2);
-        }
+            // Normal
+            {
+                auto copied = screenPos;
+                auto n = intersectingNormal;
+                n.Mul(30.0f);
+                copied.Add(n);
+                DrawLineAA(screenPos.x, screenPos.y, copied.x, copied.y, GetColor(0, 0, 255), 2);
+            }
 
-        // Shot vec
-        if (isDragging && drag_vector_.Length() > 0)
-        {
-            const auto offset = radius * 1.5f;
-            auto vec = drag_vector_;
-            const auto arrowStart = screenPos.Copy().Add(vec.Normalized().Mul(offset));
-            auto copied = arrowStart;
-            const auto blue = vec.Length() / max_shot_power * 255;
-            copied.Add(vec.Copy().Normalize().Mul(offset));
-            vec.Mul(2);
-            copied.Add(vec);
+            // Shot vec
+            if (isDragging && drag_vector_.Length() > 0)
+            {
+                const auto offset = radius * 1.5f;
+                auto vec = drag_vector_;
+                const auto arrowStart = screenPos.Copy().Add(vec.Normalized().Mul(offset));
+                auto copied = arrowStart;
+                const auto blue = vec.Length() / max_shot_power * 255;
+                copied.Add(vec.Copy().Normalize().Mul(offset));
+                vec.Mul(2);
+                copied.Add(vec);
 
-            const auto color = GetColor(255, 0, static_cast<int>(blue));
+                const auto color = GetColor(255, 0, static_cast<int>(blue));
 
-            DrawLineAA(arrowStart.x, arrowStart.y, copied.x, copied.y, color, 2);
+                DrawLineAA(arrowStart.x, arrowStart.y, copied.x, copied.y, color, 2);
 
-            const auto leftArrowDir = vec.Copy().Neg().Rotate(30 * Math::deg_to_rad).Normalize();
-            const auto leftArrowPos = copied.Copy().Add(leftArrowDir.Copy().Mul(16));
-            DrawLineAA(copied.x, copied.y, leftArrowPos.x, leftArrowPos.y, color, 2);
+                const auto leftArrowDir = vec.Copy().Neg().Rotate(30 * Math::deg_to_rad).Normalize();
+                const auto leftArrowPos = copied.Copy().Add(leftArrowDir.Copy().Mul(16));
+                DrawLineAA(copied.x, copied.y, leftArrowPos.x, leftArrowPos.y, color, 2);
 
-            const auto rightArrowDir = vec.Copy().Neg().Rotate(-30 * Math::deg_to_rad).Normalize();
-            const auto rightArrowPos = copied.Copy().Add(rightArrowDir.Copy().Mul(16));
-            DrawLineAA(copied.x, copied.y, rightArrowPos.x, rightArrowPos.y, color, 2);
+                const auto rightArrowDir = vec.Copy().Neg().Rotate(-30 * Math::deg_to_rad).Normalize();
+                const auto rightArrowPos = copied.Copy().Add(rightArrowDir.Copy().Mul(16));
+                DrawLineAA(copied.x, copied.y, rightArrowPos.x, rightArrowPos.y, color, 2);
+                
+            }
         }
     }
 

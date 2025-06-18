@@ -4,6 +4,7 @@
 #include <imgui.h>
 #include <spdlog/spdlog.h>
 
+#include "../Game.h"
 #include "../world/World.h"
 
 void CameraComponent::Update(float delta)
@@ -31,6 +32,11 @@ void CameraComponent::Update(float delta)
 
 void CameraComponent::UpdatePos()
 {
+    if (Game::instance->isPaused)
+    {
+        return;
+    }
+    
     int x;
     int y;
 

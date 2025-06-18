@@ -32,6 +32,7 @@ public:
     inline static int fps = 0;
     inline static float deltaTime = 0;
     inline static bool shouldShutdown = false;
+    inline static bool debugEnabled = false;
 
     bool isPaused = false;
 

@@ -110,7 +110,6 @@ void TitleWorld::ResetCamera() const
 
 Vec2 TitleWorld::ClampCameraPos(const Vec2& pos)
 {
-    return pos;
     constexpr auto min = (static_cast<float>(WINDOW_WIDTH) / 2.0f) - 1024;
     const auto max = std::abs(min);
     return {

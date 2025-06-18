@@ -1,0 +1,6 @@
+{
+  "enabledMcpjsonServers": [
+    "microsoft.docs.mcp"
+  ],
+  "enableAllProjectMcpServers": true
+}

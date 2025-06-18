@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "microsoft.docs.mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://learn.microsoft.com/api/mcp"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -19,7 +19,6 @@ LRESULT CALLBACK WndProc(const HWND hwnd, const UINT msg, const WPARAM w_param, 
     switch (msg)
     {
     case WM_NCLBUTTONDOWN:
-        spdlog::info("WM_NCLBUTTONDOWN");
         Game::instance->GetWorld().SetMenuOpen(true);
         break;
     default:

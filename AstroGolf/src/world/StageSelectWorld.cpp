@@ -16,6 +16,7 @@ StageSelectWorld::StageSelectWorld()
         preview_graphs_.emplace_back(ptr);
     }
 
+    menuEnabled = false;
     zoomEnabled = false;
 }
 
@@ -30,18 +31,13 @@ void StageSelectWorld::Init()
 
     AddComponent(preview_component_);
     AddComponent(select_component_);
-    
+
     GetPlayer()->transform.translate = {10000, 10000};
 }
 
 void StageSelectWorld::Draw()
 {
     World::Draw();
-}
-
-void StageSelectWorld::DrawUi()
-{
-    // Nothing
 }
 
 void StageSelectWorld::Update(const float& deltaTime)

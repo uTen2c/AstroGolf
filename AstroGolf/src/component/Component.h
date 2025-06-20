@@ -23,6 +23,11 @@ public:
     std::shared_ptr<Component> parent = nullptr;
     bool initialized = false;
 
+    /**
+     * 一時停止中にもアップデートを行うか
+     */
+    bool updateWhenPaused = false;
+
     explicit Component(const int id): id_(id)
     {
     }

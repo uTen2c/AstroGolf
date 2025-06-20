@@ -21,7 +21,7 @@ TitleWorld::TitleWorld()
     background_graph_ = std::make_unique<Graph>("background.png", 2048, 2048);
     title_graph_ = std::make_unique<Graph>("title.png", 1024, 1024);
 
-    // zoomEnabled = false;
+    zoomEnabled = false;
 }
 
 TitleWorld::~TitleWorld() = default;

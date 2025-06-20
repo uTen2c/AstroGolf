@@ -13,7 +13,7 @@
 
 Game::Game() = default;
 
-World& Game::GetWorld()
+World& Game::GetWorld() const
 {
     return *world_;
 }
@@ -41,17 +41,11 @@ void Game::Update()
         world_->initialized = true;
     }
 
-    if (!isPaused)
-    {
-        world_->Update(deltaTime);
-    }
+    world_->Update(deltaTime);
 
     world_->Draw();
 
-    if (!isPaused)
-    {
-        world_->PostUpdate(deltaTime);
-    }
+    world_->PostUpdate(deltaTime);
 
     UpdateTransition(deltaTime);
 

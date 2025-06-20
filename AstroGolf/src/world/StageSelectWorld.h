@@ -16,7 +16,6 @@ public:
     ~StageSelectWorld() override;
     void Init() override;
     void Draw() override;
-    void DrawUi() override;
     void Update(const float& deltaTime) override;
     [[nodiscard]] WorldType GetType() const override;
 

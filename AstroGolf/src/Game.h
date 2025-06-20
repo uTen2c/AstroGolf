@@ -37,7 +37,7 @@ public:
     bool isPaused = false;
 
     Game();
-    [[nodiscard]] World& GetWorld();
+    [[nodiscard]] World& GetWorld() const;
 
     void Update();
     void UpdateTransition(float delta);

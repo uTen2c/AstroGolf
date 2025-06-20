@@ -1,24 +1,16 @@
 #include "World.h"
 
 #include <algorithm>
-#include <DxLib.h>
 #include <imgui.h>
 #include <ranges>
 #include <spdlog/spdlog.h>
 
-#include "StageSelectWorld.h"
-#include "StageWorld.h"
 #include "../Game.h"
 #include "../game/StageManager.h"
 #include "../graph/Graph.h"
 #include "../math/Math.h"
 
-World::World()
-{
-    menu_button_graph_ = std::make_unique<Graph>("menu_button.png", 72, 72);
-    menu_background_graph_ = std::make_unique<Graph>("menu/menu_background.png", 1024, 720);
-    menu_buttons_graph_ = std::make_unique<Graph>("menu/buttons.png", 512, 70);
-}
+World::World() = default;
 
 void World::Init()
 {
@@ -30,6 +22,12 @@ void World::Init()
     AddComponent(camera_);
     AddComponent(player_);
     AddComponent(ballistic_);
+
+    if (menuEnabled)
+    {
+        menu_ = std::make_shared<MenuComponent>(NextComponentId());
+        AddComponent(menu_);
+    }
 }
 
 void World::Draw()
@@ -66,8 +64,6 @@ void World::Draw()
     }
 
     DrawBallistic();
-
-    DrawUi();
 }
 
 void World::Update(const float& deltaTime)
@@ -79,7 +75,10 @@ void World::Update(const float& deltaTime)
         {
             continue;
         }
-        component->Update(deltaTime);
+        if (!Game::instance->isPaused || component->updateWhenPaused)
+        {
+            component->Update(deltaTime);
+        }
     }
     for (const auto component : components)
     {
@@ -87,7 +86,9 @@ void World::Update(const float& deltaTime)
         {
             continue;
         }
-        if (const auto physComp = dynamic_cast<PhysicsComponent*>(component))
+        if (
+            const auto physComp = dynamic_cast<PhysicsComponent*>(component);
+            physComp && (!Game::instance->isPaused || component->updateWhenPaused))
         {
             physComp->UpdateMovement(deltaTime);
         }
@@ -102,113 +103,11 @@ void World::PostUpdate(const float& deltaTime)
         {
             continue;
         }
-        component->PostUpdate(deltaTime);
-    }
-}
-
-void World::DrawUi()
-{
-    int mouseX;
-    int mouseY;
-    GetMousePoint(&mouseX, &mouseY);
-
-    if (!menu_opened_)
-    {
-        constexpr auto menuButtonPadding = 24;
-        const auto halfW = static_cast<float>(menu_button_graph_->width) * 0.5f;
-        const auto halfH = static_cast<float>(menu_button_graph_->height) * 0.5f;
-        const auto centerX = WINDOW_WIDTH - halfW - menuButtonPadding;
-        const auto centerY = halfH + menuButtonPadding;
-        const auto isHovering = Math::InRange(static_cast<float>(mouseX), centerX - halfW, centerX + halfW) &&
-            Math::InRange(static_cast<float>(mouseY), centerY - halfH, centerY + halfH);
-        menu_button_graph_->DrawCenter(centerX, centerY, isHovering ? 1 : 0, 0);
-
-        if (isHovering && Game::Device().LeftClicked())
+        if (!Game::instance->isPaused || component->updateWhenPaused)
         {
-            SetMenuOpen(true);
+            component->PostUpdate(deltaTime);
         }
     }
-
-    // Esc押したら閉じる
-    if (CheckHitKey(KEY_INPUT_ESCAPE) != 0)
-    {
-        if (!menu_key_pressing_)
-        {
-            SetMenuOpen(!menu_opened_);
-            menu_key_pressing_ = true;
-        }
-    }
-    else
-    {
-        menu_key_pressing_ = false;
-    }
-
-    if (!menu_opened_)
-    {
-        return;
-    }
-
-    menu_background_graph_->Draw(WINDOW_WIDTH - menu_background_graph_->width, 0);
-
-    constexpr auto padding = 24;
-    constexpr auto buttonCount = 3;
-    const auto buttonX = WINDOW_WIDTH - menu_buttons_graph_->width - padding;
-    const auto offsetY = WINDOW_HEIGHT - menu_buttons_graph_->height - padding;
-    for (int i = 0; i <= buttonCount; ++i)
-    {
-        constexpr auto gap = 24;
-        const auto tileY = i * 2;
-        const auto buttonY = offsetY + (i - buttonCount) * (menu_buttons_graph_->height + gap);
-        const auto isHovering = Math::InRange(mouseX, buttonX, buttonX + menu_buttons_graph_->width) &&
-            Math::InRange(mouseY, buttonY, buttonY + menu_buttons_graph_->height);
-        menu_buttons_graph_->Draw(
-            isHovering ? buttonX - 4 : buttonX,
-            buttonY,
-            0,
-            isHovering ? tileY + 1 : tileY
-        );
-
-        if (isHovering && Game::Device().LeftClicked())
-        {
-            switch (i)
-            {
-            // ゲームに戻る
-            case 0:
-                {
-                    SetMenuOpen(false);
-                    break;
-                }
-            // はじめから
-            case 1:
-                {
-                    if (const auto stageWorld = dynamic_cast<StageWorld*>(this))
-                    {
-                        stageWorld->Reload();
-                    }
-                    break;
-                }
-            // ステージセレクト
-            case 2:
-                {
-                    Game::instance->ChangeWorldWithTransition<StageSelectWorld>(TransitionMode::Circle);
-                    break;
-                }
-            // ゲームを閉じる
-            case 3:
-                {
-                    SetWindowVisibleFlag(false);
-                    Game::shouldShutdown = true;
-                    break;
-                }
-            default:
-                break;
-            }
-        }
-    }
-
-    SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
-    menu_transition_delta_ += Game::deltaTime;
 }
 
 static float fps = 100.0f;
@@ -396,9 +295,7 @@ void World::DrawBackground(DrawStack& stack) const
 {
 }
 
-void World::SetMenuOpen(bool open)
+void World::SetMenuOpen(const bool open) const
 {
-    menu_opened_ = open;
-    Game::instance->isPaused = open;
-    menu_transition_delta_ = 0;
+    menu_->SetMenuOpen(open);
 }

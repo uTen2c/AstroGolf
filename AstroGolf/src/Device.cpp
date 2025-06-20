@@ -14,6 +14,7 @@ void Device::Update()
     current_mouse_input_ = GetMouseInput();
 
     debugKey.Update();
+    menuKey.Update();
 }
 
 bool Device::LeftClicked() const

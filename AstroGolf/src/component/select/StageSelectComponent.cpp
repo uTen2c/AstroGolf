@@ -6,7 +6,9 @@
 #include <spdlog/spdlog.h>
 
 #include "../../Game.h"
+#include "../../game/SaveManager.h"
 #include "../../game/StageManager.h"
+#include "../../graph/Graphs.h"
 
 namespace
 {
@@ -24,8 +26,6 @@ namespace
 StageSelectComponent::StageSelectComponent(const int id): Component(id)
 {
     font_handle_ = CreateFontToHandle("M PLUS 1p Medium", FONT_SIZE, 5, DX_FONTTYPE_ANTIALIASING_8X8);
-    inactive_star_graph_ = std::make_unique<Graph>("star_inactive.png", 32, 32);
-    active_star_graph_ = std::make_unique<Graph>("star_active.png", 32, 32);
 }
 
 StageSelectComponent::~StageSelectComponent()
@@ -39,18 +39,23 @@ void StageSelectComponent::Update(float delta)
     const int max = static_cast<int>(StageManager::GetStages().size()) - 1;
     current_center_index_ = std::clamp(current_center_index_ + dir, 0, max);
 
-    if (mouse_hovering_index_ != -1 && (GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
+    if (Game::Device().LeftClicked() && mouse_hovering_index_ != -1 && clicked_index_ == -1)
     {
-        if (mouse_clicked_)
-        {
-            return;
-        }
-        OnSelect(mouse_hovering_index_);
+        clicked_index_ = mouse_hovering_index_;
         mouse_clicked_ = true;
     }
     else
     {
         mouse_clicked_ = false;
+    }
+
+    if (Game::Device().LeftReleased())
+    {
+        if (mouse_hovering_index_ != -1 && mouse_hovering_index_ == clicked_index_)
+        {
+            OnSelect(clicked_index_);
+        }
+        clicked_index_ = -1;
     }
 }
 
@@ -65,11 +70,15 @@ void StageSelectComponent::Draw(DrawStack* stack)
     {
         const auto startY = i - current_center_index_ + 3;
         const auto y = LAYOUT_Y_PADDING + startY * (BUTTON_HEIGHT + LAYOUT_Y_GAP);
-        const auto selected = mouse_hovering_index_ == -1
+        const auto selected = focused_index_ == -1
                                   ? i == current_center_index_
-                                  : i == mouse_hovering_index_;
+                                  : i == focused_index_;
         const auto scale = selected ? 1.0f : 0.8f;
-        DrawButton(LAYOUT_X_PADDING, static_cast<float>(y), scale, stages[i].name, selected, i);
+
+        const auto& stage = stages[i];
+        const auto& progress = SaveManager::GetProgresses()[stage.id];
+        DrawButton(LAYOUT_X_PADDING, static_cast<float>(y), scale, stage.name, selected,
+                   progress.clearedChallenges.size());
 
         if (mouseX < LAYOUT_X_PADDING || mouseX > LAYOUT_X_PADDING + BUTTON_WIDTH)
         {
@@ -82,9 +91,10 @@ void StageSelectComponent::Draw(DrawStack* stack)
 
         hoveringIndex = i;
     }
+
+    mouse_hovering_index_ = hoveringIndex;
     if (hoveringIndex != -1)
     {
-        mouse_hovering_index_ = hoveringIndex;
         focused_index_ = hoveringIndex;
     }
 }
@@ -125,15 +135,23 @@ void StageSelectComponent::DrawButton(
 
     for (int i = 0; i < 3; ++i)
     {
-        const auto& graph = 2 - i < stars ? active_star_graph_ : inactive_star_graph_;
         constexpr auto starGap = 8;
-        const auto starX = scaledX + scaledWidth - i * (inactive_star_graph_->width + starGap);
-        graph->DrawCenter(starX, scaledY);
+        const auto starX = scaledX + scaledWidth - i * (Graphs::starsGraph->width + starGap);
+        Graphs::starsGraph->DrawCenter(starX, scaledY, 2 - i < stars ? 1 : 0);
     }
 }
 
 int StageSelectComponent::CheckMoveKey(float deltaTime)
 {
+    int mouseX;
+    int mouseY;
+    GetMousePoint(&mouseX, &mouseY);
+
+    if (mouseX > BUTTON_WIDTH + LAYOUT_X_PADDING * 2)
+    {
+        return 0;
+    }
+
     auto wheelRotVol = GetMouseWheelRotVol();
     wheelRotVol *= -1;
 

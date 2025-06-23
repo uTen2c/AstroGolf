@@ -300,5 +300,8 @@ void World::DrawBackground(DrawStack& stack) const
 
 void World::SetMenuOpen(const bool open) const
 {
-    menu_->SetMenuOpen(open);
+    if (menu_)
+    {
+        menu_->SetMenuOpen(open);
+    }
 }

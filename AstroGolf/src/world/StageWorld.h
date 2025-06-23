@@ -20,7 +20,7 @@ public:
 
     void OnGoal() override;
 
-    void UpdateGoalText() const;
+    void UpdateGoalText(int clearedChallengeCount) const;
 
     [[nodiscard]] bool IsGoaled() const;
 

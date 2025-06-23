@@ -5,10 +5,9 @@
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
+#include "game/SaveManager.h"
 #include "game/StageManager.h"
 #include "graph/Graphs.h"
-#include "world/SplashScreenWorld.h"
-#include "world/TitleWorld.h"
 
 // ReSharper disable once CppInconsistentNaming
 LRESULT CALLBACK WndProc(const HWND hwnd, const UINT msg, const WPARAM w_param, const LPARAM l_param)
@@ -20,11 +19,7 @@ LRESULT CALLBACK WndProc(const HWND hwnd, const UINT msg, const WPARAM w_param, 
     // ウィンドウ移動時にメインループが止まるので、メニューを開かせて一時停止する
     switch (msg)
     {
-    case WM_CLOSE:
-        spdlog::info("WM_CLOSE");
-        break;
     case WM_NCLBUTTONDOWN:
-        spdlog::info("WM_NCLBUTTONDOWN");
         Game::instance->GetWorld().SetMenuOpen(true);
         break;
     default:
@@ -38,6 +33,7 @@ static void LoadFonts()
 {
     spdlog::info("Loading fonts...");
     AddFontResourceExA("assets/fonts/MPLUS1p-Medium.ttf", FR_PRIVATE, nullptr);
+    AddFontResourceExA("assets/fonts/MPLUS1p-Bold.ttf", FR_PRIVATE, nullptr);
     AddFontResourceExA("assets/fonts/Outfit-Bold.ttf", FR_PRIVATE, nullptr);
     spdlog::info("Fonts loaded");
 }
@@ -76,6 +72,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     {
         return -1;
     }
+
+    SaveManager::Load();
 
     Game::instance = std::make_unique<Game>();
     // Game::instance->ChangeWorld<SplashScreenWorld>();
@@ -138,8 +136,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         }
     }
 
-    spdlog::info("SHUTDOWN");
-    
+    SaveManager::Save();
+
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();

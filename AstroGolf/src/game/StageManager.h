@@ -15,6 +15,8 @@ enum class GoalChallengeType : std::uint8_t
     GoalHoleInOne,
     GoalExcellent,
     Goal,
+
+    NoBound, // バウンドせずにゴール
 };
 
 NLOHMANN_JSON_SERIALIZE_ENUM(
@@ -23,6 +25,7 @@ NLOHMANN_JSON_SERIALIZE_ENUM(
     {GoalChallengeType::GoalHoleInOne, "GoalHoleInOne"},
     {GoalChallengeType::GoalExcellent, "GoalExcellent"},
     {GoalChallengeType::Goal, "Goal"},
+    {GoalChallengeType::NoBound, "NoBound"},
     })
 
 struct Stage
@@ -48,6 +51,8 @@ public:
     static const std::vector<Stage>& GetStages() { return stages_; }
     static std::unique_ptr<World> CreateWorld(const std::string& id);
     static void OnRegisterWorlds();
+
+    static std::string GetChallengeMessage(GoalChallengeType type);
 
 private:
     static void RegisterWorld(const std::string& id, const std::function<std::unique_ptr<World>()>& worldFactory);

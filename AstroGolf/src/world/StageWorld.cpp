@@ -4,6 +4,7 @@
 
 #include "../Game.h"
 #include "../component/misc/GoalScoreDisplayComponent.h"
+#include "../game/SaveManager.h"
 #include "../game/StageManager.h"
 
 StageWorld::StageWorld() = default;
@@ -66,28 +67,17 @@ void StageWorld::OnGoal()
         }
     }
 
-    spdlog::info("clear");
-    for (const auto & clearedChallenge : clearedChallenges)
+    SaveManager::ClearStage(stageId);
+    for (const auto& clearedChallenge : clearedChallenges)
     {
-        switch (clearedChallenge) {
-        case GoalChallengeType::GoalHoleInOne:
-            spdlog::info("GoalChallengeType::GoalHoleInOne");
-            break;
-        case GoalChallengeType::GoalExcellent:
-            spdlog::info("GoalChallengeType::GoalExcellent");
-            break;
-        case GoalChallengeType::Goal:
-            spdlog::info("GoalChallengeType::Goal");
-            break;
-        }
+        SaveManager::ClearChallenge(stageId, clearedChallenge);
     }
 
     goaled_ = true;
-    UpdateGoalText(); 
-
+    UpdateGoalText(clearedChallenges.size());
 }
 
-void StageWorld::UpdateGoalText() const
+void StageWorld::UpdateGoalText(int clearedChallengeCount) const
 {
     const auto& player = GetPlayer();
     if (
@@ -109,6 +99,8 @@ void StageWorld::UpdateGoalText() const
     {
         goal_score_display_->SetScoreType(GoalScoreType::Good);
     }
+
+    goal_score_display_->SetStarCount(clearedChallengeCount);
 }
 
 bool StageWorld::IsGoaled() const

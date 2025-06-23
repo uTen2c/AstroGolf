@@ -24,7 +24,7 @@
     "name": "プレースホルダー",
     "preview": "placeholder.png",
     "challenges": [
-      "GoalHoleInOne",
+      "NoBound",
       "GoalExcellent",
       "Goal"
     ]

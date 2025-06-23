@@ -19,8 +19,6 @@
 
 TitleWorld::TitleWorld()
 {
-    spdlog::info("constructor");
-
     zoomEnabled = false;
 }
 

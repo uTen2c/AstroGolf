@@ -11,8 +11,7 @@ class StageSelectComponent final : public Component
     int focused_index_ = 0;
     int mouse_hovering_index_ = -1;
     bool mouse_clicked_ = false;
-    std::unique_ptr<Graph> inactive_star_graph_;
-    std::unique_ptr<Graph> active_star_graph_;
+    int clicked_index_ = -1;
 
 public:
     explicit StageSelectComponent(int id);

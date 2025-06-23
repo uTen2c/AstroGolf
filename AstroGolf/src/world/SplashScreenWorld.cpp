@@ -51,9 +51,9 @@ void SplashScreenWorld::Draw()
     {
         const auto delta = std::clamp((duration_ - 3) / 1.0f, 0.0f, 1.0f);
         const auto curvedDelta = Math::EaseOutQuad(delta);
-        stack.Translate(Vec2(0, -720) * curvedDelta);
+        SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255 * (1 - curvedDelta)));
         stack.Push();
-        stack.Scale(Math::Lerp(1.0f, 0.5f, curvedDelta));
+        stack.Scale(Math::Lerp(1.0f, 0.9f, curvedDelta));
         bgAlpha = curvedDelta;
     }
     else

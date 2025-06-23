@@ -152,9 +152,9 @@ void GoalScoreDisplayComponent::DrawStars() const
     constexpr auto y = 360;
     constexpr auto offset = 84;
 
-    DrawStar({centerX - offset, y}, true, star1Delta);
-    DrawStar({centerX + offset, y}, true, star2Delta);
-    DrawStar({centerX, y - 8}, false, star3Delta);
+    DrawStar({centerX - offset, y}, star_count_ >= 1, star1Delta);
+    DrawStar({centerX + offset, y}, star_count_ >= 2, star2Delta);
+    DrawStar({centerX, y - 8}, star_count_ >= 3, star3Delta);
 }
 
 void GoalScoreDisplayComponent::DrawStar(const Vec2 pos, const bool cleared, const float delta) const
@@ -263,7 +263,7 @@ int GoalScoreDisplayComponent::GetStarCount() const
     return star_count_;
 }
 
-void GoalScoreDisplayComponent::SetStarCount(int starCount)
+void GoalScoreDisplayComponent::SetStarCount(const int starCount)
 {
     star_count_ = std::clamp(starCount, 0, 3);
 }

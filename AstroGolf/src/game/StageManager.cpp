@@ -72,6 +72,22 @@ void StageManager::OnRegisterWorlds()
     });
 }
 
+std::string StageManager::GetChallengeMessage(GoalChallengeType type)
+{
+    switch (type)
+    {
+    case GoalChallengeType::GoalHoleInOne:
+        return "ホールインワンする";
+    case GoalChallengeType::GoalExcellent:
+        return "3打以内でゴールする";
+    case GoalChallengeType::Goal:
+        return "ゴールする";
+    case GoalChallengeType::NoBound:
+        return "バウンドせずにゴールする";
+    }
+    return "";
+}
+
 void StageManager::RegisterWorld(const std::string& id, const std::function<std::unique_ptr<World>()>& worldFactory)
 {
     if (factories_.contains(id))

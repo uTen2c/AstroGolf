@@ -52,6 +52,8 @@ void SplashScreenWorld::Draw()
         const auto delta = std::clamp((duration_ - 3) / 1.0f, 0.0f, 1.0f);
         const auto curvedDelta = Math::EaseOutQuad(delta);
         stack.Translate(Vec2(0, -720) * curvedDelta);
+        stack.Push();
+        stack.Scale(Math::Lerp(1.0f, 0.5f, curvedDelta));
         bgAlpha = curvedDelta;
     }
     else
@@ -77,7 +79,6 @@ void SplashScreenWorld::Update(const float& deltaTime)
 
     if (duration_ >= 4 && !finished_)
     {
-        // Game::instance->ChangeWorldWithTransition<TitleWorld>(TransitionMode::Slide);
         Game::instance->ChangeWorld<TitleWorld>();
         finished_ = true;
     }

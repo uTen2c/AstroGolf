@@ -6,7 +6,6 @@ class Graph;
 
 class TitleWorld final : public StageWorld
 {
-    std::unique_ptr<Graph> title_graph_;
     float opening_seconds_ = 0;
 
 public:

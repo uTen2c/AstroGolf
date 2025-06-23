@@ -20,7 +20,6 @@
 TitleWorld::TitleWorld()
 {
     spdlog::info("constructor");
-    title_graph_ = std::make_unique<Graph>("title.png", 1024, 1024);
 
     zoomEnabled = false;
 }
@@ -100,7 +99,7 @@ void TitleWorld::DrawBackground(DrawStack& stack) const
     Graphs::stageBackground->Draw(0, 0);
     // title_graph_->DrawCenter(WINDOW_WIDTH * 0.5f, 200.0f);
     const auto titleY = max(-GetCamera().transform.translate.y + 200.0f, 200);
-    title_graph_->DrawCenter(WINDOW_WIDTH * 0.5f, titleY);
+    Graphs::titleGraph->DrawCenter(WINDOW_WIDTH * 0.5f, titleY);
 }
 
 void TitleWorld::UpdateCamera(const float& deltaTime) const

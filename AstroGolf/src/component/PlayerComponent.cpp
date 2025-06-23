@@ -209,12 +209,12 @@ void PlayerComponent::UpdateShot()
 
     GetMousePoint(&x, &y);
 
-    const auto clicking = (GetMouseInput() & MOUSE_INPUT_LEFT) != 0;
+    const auto clicking = Game::Device().LeftClicking();
     if (!isDragging && clicking)
     {
         if (
             const auto distance = screen_pos_.Distance({static_cast<float>(x), static_cast<float>(y)});
-            distance > radius + 16
+            distance > radius + 64
         )
         {
             return;

@@ -45,6 +45,10 @@ PhysicsComponent::PhysicsComponent(const int id): Component(id)
     collider = std::make_unique<NullCollider>();
 }
 
+void PhysicsComponent::OnCollide(PhysicsComponent* other)
+{
+}
+
 void PhysicsComponent::Update(const float deltaTime)
 {
     Component::Update(deltaTime);
@@ -119,6 +123,7 @@ void PhysicsComponent::Move(const Vec2& delta)
 
             const auto& worldPos = nearbyComponent->GetWorldPos();
 
+            // ゴールホールは特殊な処理をするので、先に判定する
             if (const auto hole = dynamic_cast<HoleCollider*>(nearbyComponent->collider.get()))
             {
                 if (
@@ -143,6 +148,9 @@ void PhysicsComponent::Move(const Vec2& delta)
                 auto negVec = normal;
                 negVec.Mul(diff);
                 moved.Add(negVec);
+
+                OnCollide(nearbyComponent);
+                
                 break;
             }
         }
@@ -290,6 +298,8 @@ void PhysicsComponent::Move(const Vec2& delta)
                 negVec.Mul(diff);
                 moved.Add(negVec);
             }
+
+            OnCollide(nearbyComponent);
         }
     }
 

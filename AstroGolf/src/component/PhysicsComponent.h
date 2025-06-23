@@ -34,4 +34,8 @@ public:
     [[nodiscard]] Vec2 GetMergedGravityVelocity() const;
 
     void CalcGravity();
+
+protected:
+    // 現在コライダーがBoundingBoxだと機能しない
+    virtual void OnCollide(PhysicsComponent* other);
 };

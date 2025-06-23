@@ -9,10 +9,6 @@ class MenuComponent final : public Component
     int clicked_index_ = -1;
     float menu_transition_delta_ = 0;
 
-    std::unique_ptr<Graph> menu_button_graph_;
-    std::unique_ptr<Graph> menu_background_graph_;
-    std::unique_ptr<Graph> menu_buttons_graph_;
-
 public:
     explicit MenuComponent(int id);
 

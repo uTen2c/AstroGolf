@@ -14,11 +14,12 @@
 #include "../component/title/StartTextComponent.h"
 #include "../component/title/TitleWorldGroundComponent.h"
 #include "../game/StageManager.h"
+#include "../graph/Graphs.h"
 #include "../math/Math.h"
 
 TitleWorld::TitleWorld()
 {
-    background_graph_ = std::make_unique<Graph>("background.png", 2048, 2048);
+    spdlog::info("constructor");
     title_graph_ = std::make_unique<Graph>("title.png", 1024, 1024);
 
     zoomEnabled = false;
@@ -62,8 +63,8 @@ void TitleWorld::Init()
     startText->transform.translate = {0, 128};
     AddComponent(startText);
 
-    GetPlayer()->transform.translate = {500, 280};
-    ResetCamera();
+    GetPlayer()->transform.translate = {500, 0};
+    // ResetCamera();
 }
 
 void TitleWorld::Update(const float& deltaTime)
@@ -71,6 +72,8 @@ void TitleWorld::Update(const float& deltaTime)
     World::Update(deltaTime);
 
     UpdateCamera(deltaTime);
+
+    opening_seconds_ += deltaTime;
 }
 
 void TitleWorld::OnCameraMoveWithMouse(CameraComponent* camera)
@@ -88,10 +91,16 @@ std::string TitleWorld::GetStageId() const
     return StageManager::titleId;
 }
 
+void TitleWorld::LoadResources()
+{
+}
+
 void TitleWorld::DrawBackground(DrawStack& stack) const
 {
-    background_graph_->Draw(0, 0);
-    title_graph_->DrawCenter(WINDOW_WIDTH * 0.5f, 200.0f);
+    Graphs::stageBackground->Draw(0, 0);
+    // title_graph_->DrawCenter(WINDOW_WIDTH * 0.5f, 200.0f);
+    const auto titleY = max(-GetCamera().transform.translate.y + 200.0f, 200);
+    title_graph_->DrawCenter(WINDOW_WIDTH * 0.5f, titleY);
 }
 
 void TitleWorld::UpdateCamera(const float& deltaTime) const
@@ -99,6 +108,13 @@ void TitleWorld::UpdateCamera(const float& deltaTime) const
     auto& camera = GetCamera();
     const auto player = GetPlayer();
     const auto focusPos = player->transform.translate.Copy().Add({0, -300});
+
+    if (GetOpeningDelta() < 0.5f)
+    {
+        camera.transform.translate = focusPos + Vec2(0, -720);
+        return;
+    }
+
     camera.transform.translate = Math::Lerp(camera.transform.translate, ClampCameraPos(focusPos), deltaTime * 3.0f);
 }
 
@@ -116,6 +132,12 @@ Vec2 TitleWorld::ClampCameraPos(const Vec2& pos)
         std::clamp(pos.x, min, max),
         std::clamp(pos.y, 0.0f, 32.0f),
     };
+}
+
+float TitleWorld::GetOpeningDelta() const
+{
+    static constexpr float max_duration = 0.25f;
+    return std::clamp(opening_seconds_, 0.0f, max_duration) / max_duration;
 }
 
 WorldType TitleWorld::GetType() const

@@ -7,11 +7,15 @@
 
 #include "math/Math.h"
 #include "world/DemoWorld.h"
+#include "world/SplashScreenWorld.h"
 #include "world/StageSelectWorld.h"
 #include "world/TitleWorld.h"
 
 
-Game::Game() = default;
+Game::Game()
+{
+    world_ = std::make_unique<SplashScreenWorld>();
+}
 
 World& Game::GetWorld() const
 {
@@ -59,6 +63,14 @@ void Game::UpdateTransition(const float delta)
 {
     if (!changing_)
     {
+        return;
+    }
+
+    if (transition_mode_ == TransitionMode::Instant)
+    {
+        world_ = std::move(transition_world_);
+        world_changed_ = true;
+        changing_ = false;
         return;
     }
 
@@ -120,7 +132,7 @@ void Game::UpdateTransition(const float delta)
 
                 stack.Translate(world_->GetPlayer()->transform.translate);
                 const auto center = stack.GetScreenPos();
-                const auto posnum = static_cast<int>(64 * progress);
+                const auto posnum = max(static_cast<int>(64 * progress), 16);
                 DrawCircleAA(center.x, center.y, WINDOW_WIDTH * progress * 0.75f, posnum, 0);
             }
         }

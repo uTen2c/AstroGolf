@@ -8,7 +8,6 @@ class StageSelectWorld final : public World
 {
     std::shared_ptr<StagePreviewComponent> preview_component_;
     std::shared_ptr<StageSelectComponent> select_component_;
-    std::unique_ptr<Graph> background_graph_;
     std::vector<std::shared_ptr<Graph>> preview_graphs_ = {};
 
 public:

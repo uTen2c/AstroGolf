@@ -40,7 +40,6 @@
     <ClCompile Include="src\component\SimpleSquareComponent.cpp" />
     <ClCompile Include="src\component\TestSquareComponent.cpp" />
     <ClCompile Include="src\component\title\StartTextComponent.cpp" />
-    <ClCompile Include="src\component\title\TitleComponent.cpp" />
     <ClCompile Include="src\component\title\TitleSlopeComponent.cpp" />
     <ClCompile Include="src\component\title\TitleWorldGroundComponent.cpp" />
     <ClCompile Include="src\debug\Debug.cpp" />
@@ -59,7 +58,10 @@
     <ClCompile Include="src\math\RotatableBoxCollider.cpp" />
     <ClCompile Include="src\math\Transform.cpp" />
     <ClCompile Include="src\math\Vec2.cpp" />
+    <ClCompile Include="src\random\Random.cpp" />
+    <ClCompile Include="src\sound\Sound.cpp" />
     <ClCompile Include="src\world\DemoWorld.cpp" />
+    <ClCompile Include="src\world\SplashScreenWorld.cpp" />
     <ClCompile Include="src\world\StageSelectWorld.cpp" />
     <ClCompile Include="src\world\StageWorld.cpp" />
     <ClCompile Include="src\world\TitleWorld.cpp" />
@@ -86,7 +88,6 @@
     <ClInclude Include="src\component\SimpleSquareComponent.h" />
     <ClInclude Include="src\component\TestSquareComponent.h" />
     <ClInclude Include="src\component\title\StartTextComponent.h" />
-    <ClInclude Include="src\component\title\TitleComponent.h" />
     <ClInclude Include="src\component\title\TitleSlopeComponent.h" />
     <ClInclude Include="src\component\title\TitleWorldGroundComponent.h" />
     <ClInclude Include="src\debug\Debug.h" />
@@ -94,6 +95,7 @@
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\game\StageManager.h" />
     <ClInclude Include="src\graph\Graph.h" />
+    <ClInclude Include="src\graph\Graphs.h" />
     <ClInclude Include="src\KeyInstance.h" />
     <ClInclude Include="src\math\BoundingBox.h" />
     <ClInclude Include="src\math\CircleCollider.h" />
@@ -105,7 +107,10 @@
     <ClInclude Include="src\math\RotatableBoxCollider.h" />
     <ClInclude Include="src\math\Transform.h" />
     <ClInclude Include="src\math\Vec2.h" />
+    <ClInclude Include="src\random\Random.h" />
+    <ClInclude Include="src\sound\Sound.h" />
     <ClInclude Include="src\world\DemoWorld.h" />
+    <ClInclude Include="src\world\SplashScreenWorld.h" />
     <ClInclude Include="src\world\StageSelectWorld.h" />
     <ClInclude Include="src\world\StageWorld.h" />
     <ClInclude Include="src\world\TitleWorld.h" />
@@ -117,6 +122,9 @@
   <ItemGroup>
     <Content Include="assets\fonts\MPLUS1p-Medium.ttf" />
     <Content Include="assets\fonts\Outfit-Bold.ttf" />
+    <Content Include="assets\sound\dropping_in_hole.mp3" />
+    <Content Include="assets\sound\shot_1.mp3" />
+    <Content Include="assets\sound\shot_2.mp3" />
     <Content Include="assets\stages.json" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

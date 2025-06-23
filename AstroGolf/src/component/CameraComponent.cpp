@@ -12,7 +12,7 @@ void CameraComponent::Update(float delta)
     UpdatePos();
     UpdateZoom();
 
-    if (world->GetType() != WorldType::StageSelect)
+    if (Game::debugEnabled && world->GetType() != WorldType::StageSelect)
     {
         ImGui::Begin("Camera", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 

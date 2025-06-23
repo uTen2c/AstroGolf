@@ -1,4 +1,6 @@
 #pragma once
+#include <DxLib.h>
+
 #include "PhysicsComponent.h"
 
 class PlayerComponent final : public PhysicsComponent
@@ -10,6 +12,8 @@ class PlayerComponent final : public PhysicsComponent
     int trail_screen_;
     bool should_trails_ = false;
     int shot_count_ = 0;
+    float last_move_speed_ = 0;
+    int last_hole_sound_at_ = GetNowCount();
 
 public:
     Vec2 intersectingNormal;
@@ -37,4 +41,9 @@ private:
     void UpdateDebugMove();
 
     void DrawTrail(DrawStack* stack);
+
+    static void PlayShotSound();
+
+protected:
+    void OnCollide(PhysicsComponent*) override;
 };

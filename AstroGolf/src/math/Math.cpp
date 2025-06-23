@@ -17,3 +17,8 @@ float Math::EaseOutQuart(const float delta)
 {
     return 1.0f - pow(1.0f - delta, 4.0f);
 }
+
+float Math::EaseOutQuad(const float x)
+{
+    return 1.0f - (1.0f - x) * (1.0f - x);
+}

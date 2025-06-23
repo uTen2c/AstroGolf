@@ -4,8 +4,6 @@
 
 class DemoWorld final : public StageWorld
 {
-    std::unique_ptr<Graph> background_graph_;
-
 public:
     DemoWorld();
     ~DemoWorld() override;
@@ -13,7 +11,7 @@ public:
 
     void Init() override;
     void Update(const float& deltaTime) override;
-    
+
     std::string GetStageId() const override;
 
 protected:

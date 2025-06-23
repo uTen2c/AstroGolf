@@ -9,6 +9,7 @@ constexpr auto WINDOW_HEIGHT = 720;
 
 enum class TransitionMode
 {
+    Instant,
     Slide,
     Circle,
 };
@@ -33,6 +34,7 @@ public:
     inline static float deltaTime = 0;
     inline static bool shouldShutdown = false;
     inline static bool debugEnabled = false;
+    inline static float soundVolume = 1.0f;
 
     bool isPaused = false;
 
@@ -46,7 +48,9 @@ public:
     void ChangeWorld(Args&&... args)
     {
         static_assert(std::is_base_of_v<World, T>, "T must inherit from World");
-        world_ = std::make_unique<T>(std::forward<Args>(args)...);
+        changing_ = true;
+        transition_mode_ = TransitionMode::Instant;
+        transition_world_ = std::make_unique<T>(std::forward<Args>(args)...);
         isPaused = false;
     }
 

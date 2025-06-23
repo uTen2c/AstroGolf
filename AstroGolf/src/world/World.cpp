@@ -116,11 +116,14 @@ static int gap = 4;
 
 void World::DrawBallistic()
 {
-    ImGui::Begin("Ballistic");
-    ImGui::InputFloat("Frame rate", &fps, 0.1f, 1);
-    ImGui::InputFloat("Duration", &duration, 0.1f, 1);
-    ImGui::InputInt("Gap", &gap);
-    ImGui::End();
+    if (Game::debugEnabled)
+    {
+        ImGui::Begin("Ballistic");
+        ImGui::InputFloat("Frame rate", &fps, 0.1f, 1);
+        ImGui::InputFloat("Duration", &duration, 0.1f, 1);
+        ImGui::InputInt("Gap", &gap);
+        ImGui::End();
+    }
 
     if (!player_->CanShot())
     {

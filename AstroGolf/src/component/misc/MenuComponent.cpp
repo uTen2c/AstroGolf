@@ -9,14 +9,26 @@
 #include "../../world/StageSelectWorld.h"
 #include "../../world/StageWorld.h"
 
+namespace
+{
+    bool graph_initialized = false;
+    std::unique_ptr<Graph> menu_button_graph;
+    std::unique_ptr<Graph> menu_background_graph;
+    std::unique_ptr<Graph> menu_buttons_graph;
+}
+
 MenuComponent::MenuComponent(const int id): Component(id)
 {
-    zIndex = 1500;
+    zIndex = 3000;
     updateWhenPaused = true;
 
-    menu_button_graph_ = std::make_unique<Graph>("menu_button.png", 72, 72);
-    menu_background_graph_ = std::make_unique<Graph>("menu/menu_background.png", 1024, 720);
-    menu_buttons_graph_ = std::make_unique<Graph>("menu/buttons.png", 512, 70);
+    if (!graph_initialized)
+    {
+        menu_button_graph = std::make_unique<Graph>("menu_button.png", 72, 72);
+        menu_background_graph = std::make_unique<Graph>("menu/menu_background.png", 1024, 720);
+        menu_buttons_graph = std::make_unique<Graph>("menu/buttons.png", 512, 70);
+        graph_initialized = true;
+    }
 }
 
 void MenuComponent::SetMenuOpen(const bool open)
@@ -54,13 +66,13 @@ void MenuComponent::DrawMenuButton()
     GetMousePoint(&mouseX, &mouseY);
 
     constexpr auto menuButtonPadding = 24;
-    const auto halfW = static_cast<float>(menu_button_graph_->width) * 0.5f;
-    const auto halfH = static_cast<float>(menu_button_graph_->height) * 0.5f;
+    const auto halfW = static_cast<float>(menu_button_graph->width) * 0.5f;
+    const auto halfH = static_cast<float>(menu_button_graph->height) * 0.5f;
     const auto centerX = WINDOW_WIDTH - halfW - menuButtonPadding;
     const auto centerY = halfH + menuButtonPadding;
     const auto hovering = Math::InRange(static_cast<float>(mouseX), centerX - halfW, centerX + halfW) &&
         Math::InRange(static_cast<float>(mouseY), centerY - halfH, centerY + halfH);
-    menu_button_graph_->DrawCenter(centerX, centerY, hovering ? 1 : 0, 0);
+    menu_button_graph->DrawCenter(centerX, centerY, hovering ? 1 : 0, 0);
 
     if (Game::Device().LeftClicked() && hovering && !menu_button_clicked_)
     {
@@ -71,7 +83,6 @@ void MenuComponent::DrawMenuButton()
     {
         menu_button_clicked_ = false;
         SetMenuOpen(true);
-        spdlog::info("Open");
     }
 }
 
@@ -86,12 +97,12 @@ void MenuComponent::DrawMenu()
     int mouseY;
     GetMousePoint(&mouseX, &mouseY);
 
-    menu_background_graph_->Draw(WINDOW_WIDTH - menu_background_graph_->width, 0);
+    menu_background_graph->Draw(WINDOW_WIDTH - menu_background_graph->width, 0);
 
     constexpr float padding = 24;
-    const float buttonX = WINDOW_WIDTH - menu_buttons_graph_->width - padding;
-    const float baseY = WINDOW_HEIGHT - menu_buttons_graph_->height - padding;
-    const float gap = menu_buttons_graph_->height + 24;
+    const float buttonX = WINDOW_WIDTH - menu_buttons_graph->width - padding;
+    const float baseY = WINDOW_HEIGHT - menu_buttons_graph->height - padding;
+    const float gap = menu_buttons_graph->height + 24;
 
 
     float offset = gap * -3;
@@ -107,8 +118,9 @@ void MenuComponent::DrawMenu()
     // はじめから
     DrawMenuItem(buttonX, baseY + offset, 1, [this]
     {
-        if (const auto stageWorld = dynamic_cast<StageWorld*>(this))
+        if (const auto stageWorld = dynamic_cast<StageWorld*>(world))
         {
+            spdlog::info("stageWorld");
             stageWorld->Reload();
         }
     });
@@ -146,13 +158,13 @@ void MenuComponent::DrawMenuItem(const float x, const float y, const int buttonI
     GetMousePoint(&mouseX, &mouseY);
 
     const auto tileY = buttonIndex * 2;
-    const auto& bb = BoundingBox(menu_buttons_graph_->width, menu_buttons_graph_->height);
+    const auto& bb = BoundingBox(menu_buttons_graph->width, menu_buttons_graph->height);
     const bool& hovering = bb.Contains(
-        Vec2(x, y) + Vec2(menu_buttons_graph_->width / 2.0f, menu_buttons_graph_->height / 2.0f),
+        Vec2(x, y) + Vec2(menu_buttons_graph->width / 2.0f, menu_buttons_graph->height / 2.0f),
         Vec2(mouseX, mouseY)
     );
 
-    menu_buttons_graph_->Draw(
+    menu_buttons_graph->Draw(
         hovering ? x - 4 : x,
         y,
         0,

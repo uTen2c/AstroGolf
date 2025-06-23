@@ -4,15 +4,23 @@
 #include <imgui.h>
 #include <spdlog/spdlog.h>
 
+#include "GoalHoleComponent.h"
 #include "../Game.h"
 #include "../math/CircleCollider.h"
 #include "../math/Math.h"
+#include "../random/Random.h"
+#include "../sound/Sound.h"
 
 namespace
 {
     constexpr float max_shot_power = 100.0f;
     constexpr float shot_dead_zone = 20.0f;
     constexpr float shot_power_multiplier = 20.0f;
+
+    bool sounds_initialized = false;
+    std::unique_ptr<Sound> shot1_sound;
+    std::unique_ptr<Sound> shot2_sound;
+    std::unique_ptr<Sound> dropping_in_hole_sound;
 }
 
 PlayerComponent::PlayerComponent(const int id): PhysicsComponent(id)
@@ -21,6 +29,14 @@ PlayerComponent::PlayerComponent(const int id): PhysicsComponent(id)
     zIndex = 1100;
     shot_start_transform_ = transform;
     trail_screen_ = MakeScreen(WINDOW_WIDTH, WINDOW_HEIGHT, true);
+
+    if (!sounds_initialized)
+    {
+        shot1_sound = std::make_unique<Sound>("shot_1.mp3");
+        shot2_sound = std::make_unique<Sound>("shot_2.mp3");
+        dropping_in_hole_sound = std::make_unique<Sound>("dropping_in_hole.mp3");
+        sounds_initialized = true;
+    }
 }
 
 PlayerComponent::~PlayerComponent()
@@ -77,6 +93,7 @@ void PlayerComponent::UpdateMovement(const float deltaTime)
         && intersectingNormal.Dot(drag_vector_.Normalized()) >= over_rad;
 
     const auto& movedDistance = lastPos.Distance(transform.translate);
+    last_move_speed_ = movedDistance;
     should_trails_ = movedDistance > 0.2;
 }
 
@@ -85,7 +102,7 @@ void PlayerComponent::Draw(DrawStack* stack)
     stack->Push();
     ApplyDrawStack(stack);
 
-    if (world->GetType() != WorldType::StageSelect)
+    if (Game::debugEnabled && world->GetType() != WorldType::StageSelect)
     {
         ImGui::Begin("Player", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
         ImGui::SeparatorText("Transform");
@@ -158,7 +175,6 @@ void PlayerComponent::Draw(DrawStack* stack)
                 const auto rightArrowDir = vec.Copy().Neg().Rotate(-30 * Math::deg_to_rad).Normalize();
                 const auto rightArrowPos = copied.Copy().Add(rightArrowDir.Copy().Mul(16));
                 DrawLineAA(copied.x, copied.y, rightArrowPos.x, rightArrowPos.y, color, 2);
-                
             }
         }
     }
@@ -221,6 +237,7 @@ void PlayerComponent::UpdateShot()
         if (CanShot())
         {
             velocity = shotVec;
+            PlayShotSound();
             shot_count_++;
         }
         drag_vector_ = {};
@@ -312,4 +329,26 @@ void PlayerComponent::DrawTrail(DrawStack* stack)
     GraphFilter(trail_screen_, DX_GRAPH_FILTER_GAUSS, 32, 100);
     DrawExtendGraph(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, trail_screen_, true);
     SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+}
+
+void PlayerComponent::PlayShotSound()
+{
+    const auto& sound = Random::GetInstance().Bool() ? shot1_sound : shot2_sound;
+    sound->Play();
+}
+
+void PlayerComponent::OnCollide(PhysicsComponent* other)
+{
+    if (const auto hole = dynamic_cast<GoalHoleComponent*>(other))
+    {
+        const auto durationMs = GetNowCount() - last_hole_sound_at_;
+        if (last_move_speed_ >= 0.3 && durationMs > 50)
+        {
+            last_hole_sound_at_ = GetNowCount();
+            dropping_in_hole_sound->volume = std::clamp((last_move_speed_ - 0.3f) / 0.3f, 0.0f, 1.0f);
+            // spdlog::info("hole {} {}", last_move_speed_, dropping_in_hole_sound->volume);
+            spdlog::info("{}", durationMs);
+            dropping_in_hole_sound->Play();
+        }
+    }
 }

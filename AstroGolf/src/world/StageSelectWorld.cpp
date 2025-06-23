@@ -5,11 +5,10 @@
 
 #include "../component/select/StageSelectComponent.h"
 #include "../game/StageManager.h"
+#include "../graph/Graphs.h"
 
 StageSelectWorld::StageSelectWorld()
 {
-    background_graph_ = std::make_unique<Graph>("background.png", 2048, 2048);
-
     for (const auto& stage : StageManager::GetStages())
     {
         const auto ptr = std::make_shared<Graph>(std::format("preview/{}", stage.preview), 1024, 1024);
@@ -66,5 +65,5 @@ WorldType StageSelectWorld::GetType() const
 
 void StageSelectWorld::DrawBackground(DrawStack& stack) const
 {
-    background_graph_->Draw(0, 0);
+    Graphs::stageBackground->Draw(0, 0);
 }

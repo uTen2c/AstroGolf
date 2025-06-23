@@ -34,19 +34,22 @@ GoalScoreDisplayComponent::~GoalScoreDisplayComponent()
 
 void GoalScoreDisplayComponent::Update(const float delta)
 {
-    ImGui::Begin("Type");
-
-    if (ImGui::Button("Hole-in-One"))
+    if (Game::debugEnabled)
     {
-        SetScoreType(GoalScoreType::HoleInOne);
-    }
+        ImGui::Begin("Type");
 
-    if (ImGui::Button("Reset"))
-    {
-        SetScoreType(GoalScoreType::None);
-    }
+        if (ImGui::Button("Hole-in-One"))
+        {
+            SetScoreType(GoalScoreType::HoleInOne);
+        }
 
-    ImGui::End();
+        if (ImGui::Button("Reset"))
+        {
+            SetScoreType(GoalScoreType::None);
+        }
+
+        ImGui::End();
+    }
 
     Component::Update(delta);
     animation_seconds_ += delta;

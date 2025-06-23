@@ -3,17 +3,14 @@
 #include "../component/BoxComponent.h"
 #include "../component/GoalHoleComponent.h"
 #include "../component/RotatableBoxComponent.h"
-#include "../component/misc/GoalScoreDisplayComponent.h"
 #include "../component/object/SatelliteParentComponent.h"
 #include "../component/planet/DemoPlanet2Component.h"
 #include "../component/planet/DemoPlanetComponent.h"
 #include "../game/StageManager.h"
+#include "../graph/Graphs.h"
 #include "../math/Math.h"
 
-DemoWorld::DemoWorld()
-{
-    background_graph_ = std::make_unique<Graph>("background.png", 2048, 2048);
-}
+DemoWorld::DemoWorld() = default;
 
 DemoWorld::~DemoWorld() = default;
 
@@ -81,7 +78,7 @@ std::string DemoWorld::GetStageId() const
 
 void DemoWorld::DrawBackground(DrawStack& stack) const
 {
-    background_graph_->Draw(0, 0);
+    Graphs::stageBackground->Draw(0, 0);
 }
 
 void DemoWorld::UpdateCamera(const float& deltaTime) const

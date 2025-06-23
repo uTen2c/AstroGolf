@@ -22,4 +22,6 @@ public:
     {
         return min <= value && value <= max;
     }
+
+    static float EaseOutQuad(const float x);
 };

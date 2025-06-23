@@ -13,6 +13,7 @@
 
 enum class WorldType
 {
+    Splash,
     Title,
     Demo,
     StageSelect,

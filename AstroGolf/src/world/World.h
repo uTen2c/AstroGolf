@@ -25,6 +25,8 @@ class World
     bool menu_opened_ = false;
     bool menu_key_pressing_ = false;
 
+    std::vector<std::shared_ptr<Component>> add_queue_ = {};
+    std::vector<int> remove_queue_ = {};
     std::map<int, std::shared_ptr<Component>> component_map_ = {};
 
     std::shared_ptr<CameraComponent> camera_;
@@ -93,4 +95,5 @@ public:
 
 protected:
     virtual void DrawBackground(DrawStack& stack) const;
+    virtual void PostDraw(DrawStack& stack) const;
 };

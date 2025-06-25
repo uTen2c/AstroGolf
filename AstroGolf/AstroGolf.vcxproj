@@ -27,6 +27,7 @@
     <ClCompile Include="src\component\GoalHoleComponent.cpp" />
     <ClCompile Include="src\component\misc\BallisticComponent.cpp" />
     <ClCompile Include="src\component\misc\GoalScoreDisplayComponent.cpp" />
+    <ClCompile Include="src\component\misc\GroundParticleComponent.cpp" />
     <ClCompile Include="src\component\misc\MenuComponent.cpp" />
     <ClCompile Include="src\component\object\SatelliteParentComponent.cpp" />
     <ClCompile Include="src\component\PhysicsComponent.cpp" />
@@ -76,6 +77,7 @@
     <ClInclude Include="src\component\GoalHoleComponent.h" />
     <ClInclude Include="src\component\misc\BallisticComponent.h" />
     <ClInclude Include="src\component\misc\GoalScoreDisplayComponent.h" />
+    <ClInclude Include="src\component\misc\GroundParticleComponent.h" />
     <ClInclude Include="src\component\misc\MenuComponent.h" />
     <ClInclude Include="src\component\object\SatelliteParentComponent.h" />
     <ClInclude Include="src\component\PhysicsComponent.h" />

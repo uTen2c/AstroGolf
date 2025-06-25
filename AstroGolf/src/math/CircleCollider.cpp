@@ -19,7 +19,7 @@ IntersectingResult CircleCollider::Intersects(const Vec2& origin, const Vec2& ot
         }
 
         const auto normal = otherOrigin.Copy().Sub(origin);
-        return {true, normal};
+        return {.intersected = true, .normal = normal, .point = otherOrigin + normal * cc->radius};
     }
 
     // 円と矩形の衝突判定

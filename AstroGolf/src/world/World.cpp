@@ -64,10 +64,28 @@ void World::Draw()
     }
 
     DrawBallistic();
+
+    PostDraw(stack);
 }
 
 void World::Update(const float& deltaTime)
 {
+    if (!add_queue_.empty())
+    {
+        for (const auto& component : add_queue_)
+        {
+            component->world = this;
+            component_map_.insert(std::make_pair(component->GetId(), component));
+        }
+
+        for (const auto& component : add_queue_)
+        {
+            component->Init();
+        }
+
+        add_queue_.clear();
+    }
+
     const auto components = GetComponents();
     for (const auto component : components)
     {
@@ -82,7 +100,7 @@ void World::Update(const float& deltaTime)
     }
     for (const auto component : components)
     {
-        if (dynamic_cast<BallisticComponent*>(component))
+        if (component && dynamic_cast<BallisticComponent*>(component))
         {
             continue;
         }
@@ -108,6 +126,13 @@ void World::PostUpdate(const float& deltaTime)
             component->PostUpdate(deltaTime);
         }
     }
+
+    for (int id : remove_queue_)
+    {
+        component_map_.erase(id);
+    }
+
+    remove_queue_.clear();
 }
 
 static float fps = 100.0f;
@@ -204,9 +229,10 @@ bool World::AddComponent(const std::shared_ptr<Component>& component)
         spdlog::warn("Failed to add component. ID {} already exists", component->GetId());
         return false;
     }
-    component->world = this;
-    component_map_.insert(std::make_pair(component->GetId(), component));
-    component->Init();
+    add_queue_.emplace_back(component);
+    // component->world = this;
+    // component_map_.insert(std::make_pair(component->GetId(), component));
+    // component->Init();
     return true;
 }
 
@@ -217,7 +243,7 @@ bool World::RemoveComponent(const int id)
         return false;
     }
 
-    component_map_.erase(id);
+    remove_queue_.emplace_back(id);
     return true;
 }
 
@@ -295,6 +321,10 @@ bool World::CanPlayerShot()
 }
 
 void World::DrawBackground(DrawStack& stack) const
+{
+}
+
+void World::PostDraw(DrawStack& stack) const
 {
 }
 

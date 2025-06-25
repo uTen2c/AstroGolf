@@ -45,10 +45,6 @@ PhysicsComponent::PhysicsComponent(const int id): Component(id)
     collider = std::make_unique<NullCollider>();
 }
 
-void PhysicsComponent::OnCollide(PhysicsComponent* other)
-{
-}
-
 void PhysicsComponent::Update(const float deltaTime)
 {
     Component::Update(deltaTime);
@@ -149,8 +145,8 @@ void PhysicsComponent::Move(const Vec2& delta)
                 negVec.Mul(diff);
                 moved.Add(negVec);
 
-                OnCollide(nearbyComponent);
-                
+                OnCollide(nearbyComponent, result);
+
                 break;
             }
         }
@@ -185,13 +181,14 @@ void PhysicsComponent::Move(const Vec2& delta)
 
             if (const auto cc = dynamic_cast<CircleCollider*>(nearbyComponent->collider.get()))
             {
-                const auto otherPos = worldPos.pos;
-                const auto distance = otherPos.Distance(moved);
-
-                if (distance >= selfCc->radius + cc->radius)
+                const auto& result = cc->Intersects(worldPos.pos, moved, *selfCc);
+                if (!result.intersected)
                 {
                     continue;
                 }
+                
+                const auto otherPos = worldPos.pos;
+                const auto distance = otherPos.Distance(moved);
 
                 auto negVec = moved;
                 negVec.Sub(otherPos);
@@ -203,6 +200,9 @@ void PhysicsComponent::Move(const Vec2& delta)
                 moved.Add(negVec);
 
                 normal = negVec.Normalized();
+
+                OnCollide(nearbyComponent, result);
+
             }
             if (const auto bb = dynamic_cast<BoundingBox*>(nearbyComponent->collider.get()))
             {
@@ -297,9 +297,8 @@ void PhysicsComponent::Move(const Vec2& delta)
                 auto negVec = normal;
                 negVec.Mul(diff);
                 moved.Add(negVec);
+                OnCollide(nearbyComponent, result);
             }
-
-            OnCollide(nearbyComponent);
         }
     }
 
@@ -442,4 +441,8 @@ void PhysicsComponent::CalcGravity()
             planet->ApplyGravity(this);
         }
     }
+}
+
+void PhysicsComponent::OnCollide(PhysicsComponent* other, const IntersectingResult& result)
+{
 }

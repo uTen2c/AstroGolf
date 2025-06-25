@@ -2,14 +2,17 @@
 
 #include <DxLib.h>
 #include <imgui.h>
+#include <memory>
 #include <spdlog/spdlog.h>
 
 #include "GoalHoleComponent.h"
 #include "../Game.h"
+#include "../graph/Graphs.h"
 #include "../math/CircleCollider.h"
 #include "../math/Math.h"
 #include "../random/Random.h"
 #include "../sound/Sound.h"
+#include "misc/GroundParticleComponent.h"
 
 namespace
 {
@@ -94,6 +97,7 @@ void PlayerComponent::UpdateMovement(const float deltaTime)
 
     const auto& movedDistance = lastPos.Distance(transform.translate);
     last_move_speed_ = movedDistance;
+    last_move_speed_vec_ = transform.translate - lastPos;
     should_trails_ = movedDistance > 0.2;
 }
 
@@ -132,6 +136,22 @@ void PlayerComponent::Draw(DrawStack* stack)
         // DrawCircleAA(screenPos.x, screenPos.y, 1, 4, GetColor(0, 255, 0), false);
         // DrawCircleAA(screenPos.x, screenPos.y, scaledRadius, scaledPosnum, GetColor(0, 255, 0), false);
 
+        if (drag_vector_.Length() > 0)
+        {
+            const auto ratio = round((drag_vector_.Length() / max_shot_power) * 100) / 100.0f;
+            // 1pxとかになると見栄えが悪いので最低8pxにする
+            const auto height = std::max<float>(Graphs::playerPowerInficator->height * ratio, 8);
+            const auto offset = radius * 1.5f;
+            stack->Push();
+            stack->Translate(drag_vector_.Normalized().Mul(offset));
+            const auto& pos = stack->GetScreenPos();
+            const auto rot = drag_vector_.Normalized().SignedAngle({0, -1}) * -1;
+            const auto srcX = CanShot() ? 0 : 12;
+            DrawRectRotaGraph3F(pos.x, pos.y, srcX, 0, 12, height, static_cast<float>(12) * 0.5f, height, 1, 1, rot,
+                                Graphs::playerPowerInficator->handle, true);
+            stack->Pop();
+        }
+
         // デバッグ表示
         if (Game::debugEnabled)
         {
@@ -155,7 +175,7 @@ void PlayerComponent::Draw(DrawStack* stack)
             // Shot vec
             if (isDragging && drag_vector_.Length() > 0)
             {
-                const auto offset = radius * 1.5f;
+                const auto offset = radius * 1.5f + Graphs::playerPowerInficator->height / 2;
                 auto vec = drag_vector_;
                 const auto arrowStart = screenPos.Copy().Add(vec.Normalized().Mul(offset));
                 auto copied = arrowStart;
@@ -337,12 +357,22 @@ void PlayerComponent::PlayShotSound()
     sound->Play();
 }
 
-void PlayerComponent::OnCollide(PhysicsComponent* other)
+void PlayerComponent::OnCollide(PhysicsComponent* other, const IntersectingResult& result)
 {
+    const auto sp = last_move_speed_vec_ * result.normal;
+    if (sp.Length() >= 1.5)
+    {
+        // const auto particle = std::make_shared<GroundParticleComponent>(world->NextComponentId());
+        // particle->transform.translate = result.point;
+        // particle->normal = result.normal;
+        // particle->speed = sp.Length();
+        // world->AddComponent(particle);
+    }
+
     if (const auto hole = dynamic_cast<GoalHoleComponent*>(other))
     {
         const auto durationMs = GetNowCount() - last_hole_sound_at_;
-        if (last_move_speed_ >= 0.3 && durationMs > 50)
+        if (sp.Length() >= 1.3 && durationMs > 50)
         {
             last_hole_sound_at_ = GetNowCount();
             dropping_in_hole_sound->volume = std::clamp((last_move_speed_ - 0.3f) / 0.3f, 0.0f, 1.0f);

@@ -7,6 +7,11 @@ class Graph;
 class TitleWorld final : public StageWorld
 {
     float opening_seconds_ = 0;
+    bool should_show_cursor_hint_ = false;
+    float cursor_animation_seconds_ = 0;
+    float cursor_animation_delta_ = 0;
+    float cursor_fade_in_delta_ = 0;
+    int cursor_hint_font_handle_;
 
 public:
     TitleWorld();
@@ -19,10 +24,9 @@ public:
 
     std::string GetStageId() const override;
 
-    static void LoadResources();
-
 protected:
     void DrawBackground(DrawStack& stack) const override;
+    void PostDraw(DrawStack& stack) const override;
 
 private:
     void UpdateCamera(const float& deltaTime) const;

@@ -141,6 +141,12 @@ float Vec2::Angle(const Vec2& other) const
     return std::acos(dot / length);
 }
 
+float Vec2::SignedAngle(const Vec2& other) const
+{
+    // atan2を使用して符号付き角度を計算
+    return std::atan2(Cross(other), Dot(other));
+}
+
 Vec2 Vec2::Rotate(const float radians)
 {
     const float cosRad = std::cos(radians);

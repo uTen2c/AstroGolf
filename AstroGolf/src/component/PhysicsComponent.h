@@ -37,5 +37,5 @@ public:
 
 protected:
     // 現在コライダーがBoundingBoxだと機能しない
-    virtual void OnCollide(PhysicsComponent* other);
+    virtual void OnCollide(PhysicsComponent* other, const IntersectingResult& result);
 };

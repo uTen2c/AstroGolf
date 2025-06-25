@@ -20,9 +20,14 @@
 TitleWorld::TitleWorld()
 {
     zoomEnabled = false;
+
+    cursor_hint_font_handle_ = CreateFontToHandle("M PLUS 1p Medium", 24, 5, DX_FONTTYPE_ANTIALIASING_8X8);
 }
 
-TitleWorld::~TitleWorld() = default;
+TitleWorld::~TitleWorld()
+{
+    DeleteFontToHandle(cursor_hint_font_handle_);
+}
 
 void TitleWorld::Init()
 {
@@ -71,6 +76,24 @@ void TitleWorld::Update(const float& deltaTime)
     UpdateCamera(deltaTime);
 
     opening_seconds_ += deltaTime;
+
+    // 表示されてから5秒間はカーソルのヒントを表示しない
+    should_show_cursor_hint_ = opening_seconds_ > 5;
+
+    if (should_show_cursor_hint_)
+    {
+        static constexpr auto max_cursor_seconds = 2.0f;
+        if (cursor_animation_seconds_ >= max_cursor_seconds)
+        {
+            cursor_animation_seconds_ = 0;
+        }
+        else
+        {
+            cursor_animation_seconds_ = min(cursor_animation_seconds_ + deltaTime, max_cursor_seconds);
+        }
+        cursor_animation_delta_ = cursor_animation_seconds_ / max_cursor_seconds;
+        cursor_fade_in_delta_ = max(min(cursor_fade_in_delta_ + cursor_animation_delta_, 1.0f), cursor_fade_in_delta_);
+    }
 }
 
 void TitleWorld::OnCameraMoveWithMouse(CameraComponent* camera)
@@ -88,16 +111,55 @@ std::string TitleWorld::GetStageId() const
     return StageManager::titleId;
 }
 
-void TitleWorld::LoadResources()
-{
-}
-
 void TitleWorld::DrawBackground(DrawStack& stack) const
 {
     Graphs::stageBackground->Draw(0, 0);
     // title_graph_->DrawCenter(WINDOW_WIDTH * 0.5f, 200.0f);
     const auto titleY = max(-GetCamera().transform.translate.y + 200.0f, 200);
     Graphs::titleGraph->DrawCenter(WINDOW_WIDTH * 0.5f, titleY);
+}
+
+void TitleWorld::PostDraw(DrawStack& stack) const
+{
+    if (Game::instance->isPaused || !should_show_cursor_hint_)
+    {
+        return;
+    }
+
+    const auto& player = GetPlayer();
+    if (player->GetShotCount() > 0 || player->isDragging)
+    {
+        return;
+    }
+
+    SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255 * cursor_fade_in_delta_));
+
+
+    stack.Push();
+
+    stack.Translate({player->transform.translate.x + 50, 308});
+
+    stack.Push();
+
+    const auto offsetX = Math::Lerp(0, 64, Math::EaseOutQuad(cursor_animation_delta_));
+    stack.Translate({offsetX, offsetX / 2});
+    Graphs::titleCursorGraph->Draw(stack);
+
+    stack.Pop();
+
+    stack.Push();
+
+    stack.Translate({Graphs::titleCursorGraph->width * 1.5f, -8});
+    const auto& screenPos = stack.GetScreenPos();
+    static constexpr auto hint = "ボールをドラッグしてショット";
+    // DrawStringFToHandle(screenPos.x, screenPos.y, hint, GetColor(255, 255, 255), cursor_hint_font_handle_);
+
+
+    stack.Pop();
+
+    stack.Pop();
+
+    SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void TitleWorld::UpdateCamera(const float& deltaTime) const

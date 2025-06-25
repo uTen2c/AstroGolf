@@ -13,6 +13,7 @@ class PlayerComponent final : public PhysicsComponent
     bool should_trails_ = false;
     int shot_count_ = 0;
     float last_move_speed_ = 0;
+    Vec2 last_move_speed_vec_;
     int last_hole_sound_at_ = GetNowCount();
 
 public:
@@ -45,5 +46,5 @@ private:
     static void PlayShotSound();
 
 protected:
-    void OnCollide(PhysicsComponent*) override;
+    void OnCollide(PhysicsComponent* other, const IntersectingResult& result) override;
 };

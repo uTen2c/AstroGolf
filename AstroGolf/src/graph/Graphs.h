@@ -12,7 +12,9 @@ public:
     inline static std::unique_ptr<Graph> titleGraph;
     inline static std::unique_ptr<Graph> titleGroundGraph;
     inline static std::unique_ptr<Graph> titleGrassesGraph;
+    inline static std::unique_ptr<Graph> titleCursorGraph;
     inline static std::unique_ptr<Graph> starsGraph;
+    inline static std::unique_ptr<Graph> playerPowerInficator;
 
     static void Load()
     {
@@ -20,6 +22,8 @@ public:
         titleGraph = std::make_unique<Graph>("title.png", 1024, 1024);
         titleGroundGraph = std::make_unique<Graph>("title_ground.png", 2048, 2048);
         titleGrassesGraph = std::make_unique<Graph>("grasses.png", 2048, 2048);
+        titleCursorGraph = std::make_unique<Graph>("title/cursor.png", 64, 64);
         starsGraph = std::make_unique<Graph>("stars.png", 32, 32);
+        playerPowerInficator = std::make_unique<Graph>("power_indicator.png", 12, 128);
     }
 };

@@ -57,6 +57,9 @@ struct Vec2
 
     [[nodiscard]] float Angle(const Vec2& other) const;
 
+    // 2つのベクトル間の符号付き角度を計算する（-π から π の範囲）
+    [[nodiscard]] float SignedAngle(const Vec2& other) const;
+
     // ベクトルをラジアン角度で回転させる
     Vec2 Rotate(float radians);
 

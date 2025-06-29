@@ -320,12 +320,21 @@ bool World::CanPlayerShot()
     return true;
 }
 
-void World::DrawBackground(DrawStack& stack) const
+void World::DrawBackground(DrawStack& stack)
 {
 }
 
 void World::PostDraw(DrawStack& stack) const
 {
+}
+
+Vec2 World::GetWorldPos(const Vec2& screenPos) const
+{
+    // カメラの位置を補正する
+    Vec2 pos;
+    pos += camera_->transform.translate;
+    pos += (screenPos + Vec2(-640, -360)) / camera_->zoom;
+    return pos;
 }
 
 void World::SetMenuOpen(const bool open) const

@@ -5,6 +5,7 @@
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
+#include "editor/PlanetGraphs.h"
 #include "game/SaveManager.h"
 #include "game/StageManager.h"
 #include "graph/Graphs.h"
@@ -66,6 +67,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     }
 
     Graphs::Load();
+    PlanetGraphs::Load();
     LoadFonts();
 
     if (!StageManager::LoadStages())

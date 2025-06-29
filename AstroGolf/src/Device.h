@@ -11,6 +11,7 @@ class Device
 public:
     KeyInstance debugKey = KeyInstance(KEY_INPUT_F3);
     KeyInstance menuKey = KeyInstance(KEY_INPUT_ESCAPE);
+    KeyInstance ctrlKey = KeyInstance(KEY_INPUT_LCONTROL);
 
     Device();
 

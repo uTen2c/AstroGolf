@@ -111,7 +111,7 @@ std::string TitleWorld::GetStageId() const
     return StageManager::titleId;
 }
 
-void TitleWorld::DrawBackground(DrawStack& stack) const
+void TitleWorld::DrawBackground(DrawStack& stack)
 {
     Graphs::stageBackground->Draw(0, 0);
     // title_graph_->DrawCenter(WINDOW_WIDTH * 0.5f, 200.0f);

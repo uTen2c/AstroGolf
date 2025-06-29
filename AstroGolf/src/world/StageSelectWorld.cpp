@@ -90,7 +90,7 @@ WorldType StageSelectWorld::GetType() const
     return WorldType::StageSelect;
 }
 
-void StageSelectWorld::DrawBackground(DrawStack& stack) const
+void StageSelectWorld::DrawBackground(DrawStack& stack)
 {
     Graphs::stageBackground->Draw(0, 0);
 }

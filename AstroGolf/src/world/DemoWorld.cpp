@@ -76,7 +76,7 @@ std::string DemoWorld::GetStageId() const
     return StageManager::demoId;
 }
 
-void DemoWorld::DrawBackground(DrawStack& stack) const
+void DemoWorld::DrawBackground(DrawStack& stack)
 {
     Graphs::stageBackground->Draw(0, 0);
 }

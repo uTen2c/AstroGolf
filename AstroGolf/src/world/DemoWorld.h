@@ -15,7 +15,7 @@ public:
     std::string GetStageId() const override;
 
 protected:
-    void DrawBackground(DrawStack& stack) const override;
+    void DrawBackground(DrawStack& stack) override;
 
 private:
     void UpdateCamera(const float& deltaTime) const;

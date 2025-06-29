@@ -32,6 +32,7 @@
     <ClCompile Include="src\component\object\SatelliteParentComponent.cpp" />
     <ClCompile Include="src\component\PhysicsComponent.cpp" />
     <ClCompile Include="src\component\PlanetComponent.cpp" />
+    <ClCompile Include="src\component\planet\CommonPlanetComponent.cpp" />
     <ClCompile Include="src\component\planet\DemoPlanet2Component.cpp" />
     <ClCompile Include="src\component\planet\DemoPlanetComponent.cpp" />
     <ClCompile Include="src\component\PlayerComponent.cpp" />
@@ -45,6 +46,9 @@
     <ClCompile Include="src\component\title\TitleWorldGroundComponent.cpp" />
     <ClCompile Include="src\debug\Debug.cpp" />
     <ClCompile Include="src\Device.cpp" />
+    <ClCompile Include="src\editor\PlanetGraphs.cpp" />
+    <ClCompile Include="src\editor\StageDefine.cpp" />
+    <ClCompile Include="src\editor\StageFileManager.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\game\SaveManager.cpp" />
     <ClCompile Include="src\game\StageManager.cpp" />
@@ -63,6 +67,7 @@
     <ClCompile Include="src\random\Random.cpp" />
     <ClCompile Include="src\sound\Sound.cpp" />
     <ClCompile Include="src\world\DemoWorld.cpp" />
+    <ClCompile Include="src\world\EditorWorld.cpp" />
     <ClCompile Include="src\world\SplashScreenWorld.cpp" />
     <ClCompile Include="src\world\StageSelectWorld.cpp" />
     <ClCompile Include="src\world\StageWorld.cpp" />
@@ -82,6 +87,7 @@
     <ClInclude Include="src\component\object\SatelliteParentComponent.h" />
     <ClInclude Include="src\component\PhysicsComponent.h" />
     <ClInclude Include="src\component\PlanetComponent.h" />
+    <ClInclude Include="src\component\planet\CommonPlanetComponent.h" />
     <ClInclude Include="src\component\planet\DemoPlanet2Component.h" />
     <ClInclude Include="src\component\planet\DemoPlanetComponent.h" />
     <ClInclude Include="src\component\PlayerComponent.h" />
@@ -95,11 +101,15 @@
     <ClInclude Include="src\component\title\TitleWorldGroundComponent.h" />
     <ClInclude Include="src\debug\Debug.h" />
     <ClInclude Include="src\Device.h" />
+    <ClInclude Include="src\editor\PlanetGraphs.h" />
+    <ClInclude Include="src\editor\StageDefine.h" />
+    <ClInclude Include="src\editor\StageFileManager.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\game\SaveManager.h" />
     <ClInclude Include="src\game\StageManager.h" />
     <ClInclude Include="src\graph\Graph.h" />
     <ClInclude Include="src\graph\Graphs.h" />
+    <ClInclude Include="src\ImGuiExtension.h" />
     <ClInclude Include="src\KeyInstance.h" />
     <ClInclude Include="src\math\BoundingBox.h" />
     <ClInclude Include="src\math\CircleCollider.h" />
@@ -114,6 +124,7 @@
     <ClInclude Include="src\random\Random.h" />
     <ClInclude Include="src\sound\Sound.h" />
     <ClInclude Include="src\world\DemoWorld.h" />
+    <ClInclude Include="src\world\EditorWorld.h" />
     <ClInclude Include="src\world\SplashScreenWorld.h" />
     <ClInclude Include="src\world\StageSelectWorld.h" />
     <ClInclude Include="src\world\StageWorld.h" />
@@ -131,6 +142,7 @@
     <Content Include="assets\sound\shot_1.mp3" />
     <Content Include="assets\sound\shot_2.mp3" />
     <Content Include="assets\stages.json" />
+    <Content Include="assets\stage\demo.json" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

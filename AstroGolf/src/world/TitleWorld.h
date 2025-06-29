@@ -25,7 +25,7 @@ public:
     std::string GetStageId() const override;
 
 protected:
-    void DrawBackground(DrawStack& stack) const override;
+    void DrawBackground(DrawStack& stack) override;
     void PostDraw(DrawStack& stack) const override;
 
 private:

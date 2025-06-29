@@ -21,5 +21,5 @@ public:
     [[nodiscard]] WorldType GetType() const override;
 
 protected:
-    void DrawBackground(DrawStack& stack) const override;
+    void DrawBackground(DrawStack& stack) override;
 };

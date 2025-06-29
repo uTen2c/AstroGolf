@@ -7,6 +7,7 @@
 
 #include "math/Math.h"
 #include "world/DemoWorld.h"
+#include "world/EditorWorld.h"
 #include "world/SplashScreenWorld.h"
 #include "world/StageSelectWorld.h"
 #include "world/TitleWorld.h"
@@ -35,6 +36,10 @@ void Game::Update()
     if (CheckHitKey(KEY_INPUT_3) != 0 && world_->GetType() != WorldType::StageSelect)
     {
         ChangeWorldWithTransition<StageSelectWorld>(TransitionMode::Slide);
+    }
+    if (CheckHitKey(KEY_INPUT_4) != 0 && world_->GetType() != WorldType::Editor)
+    {
+        ChangeWorldWithTransition<EditorWorld>(TransitionMode::Slide);
     }
 
     device_.Update();

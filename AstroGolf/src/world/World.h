@@ -17,6 +17,7 @@ enum class WorldType
     Title,
     Demo,
     StageSelect,
+    Editor,
 };
 
 class World
@@ -94,6 +95,8 @@ public:
     void SetMenuOpen(bool open) const;
 
 protected:
-    virtual void DrawBackground(DrawStack& stack) const;
+    virtual void DrawBackground(DrawStack& stack);
     virtual void PostDraw(DrawStack& stack) const;
+
+    [[nodiscard]] Vec2 GetWorldPos(const Vec2& screenPos) const;
 };

@@ -147,16 +147,6 @@ void TitleWorld::PostDraw(DrawStack& stack) const
 
     stack.Pop();
 
-    stack.Push();
-
-    stack.Translate({Graphs::titleCursorGraph->width * 1.5f, -8});
-    const auto& screenPos = stack.GetScreenPos();
-    static constexpr auto hint = "ボールをドラッグしてショット";
-    // DrawStringFToHandle(screenPos.x, screenPos.y, hint, GetColor(255, 255, 255), cursor_hint_font_handle_);
-
-
-    stack.Pop();
-
     stack.Pop();
 
     SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);

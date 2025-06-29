@@ -14,4 +14,9 @@ public:
     CommonPlanetComponent(int id, float radius, std::string graphId);
     void Update(float deltaTime) override;
     void Draw(DrawStack* stack) override;
+
+    [[nodiscard]] std::string GraphId() const
+    {
+        return graph_id_;
+    }
 };

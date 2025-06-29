@@ -10,4 +10,5 @@ public:
     Vec2 scale = {1, 1};
 
     void ApplyDrawStack(DrawStack* stack) const;
+    void ApplyDrawStack(DrawStack& stack) const;
 };

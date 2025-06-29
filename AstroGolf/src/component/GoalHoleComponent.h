@@ -4,8 +4,6 @@
 
 class GoalHoleComponent : public PhysicsComponent
 {
-    std::unique_ptr<Graph> hole_graph_;
-    std::unique_ptr<Graph> flag_graph_;
     float check_duration_sec_;
     bool goaled_ = false;
     

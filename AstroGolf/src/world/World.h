@@ -18,6 +18,7 @@ enum class WorldType
     Demo,
     StageSelect,
     Editor,
+    Play,
 };
 
 class World
@@ -96,7 +97,7 @@ public:
 
 protected:
     virtual void DrawBackground(DrawStack& stack);
-    virtual void PostDraw(DrawStack& stack) const;
+    virtual void PostDraw(DrawStack& stack);
 
     [[nodiscard]] Vec2 GetWorldPos(const Vec2& screenPos) const;
 };

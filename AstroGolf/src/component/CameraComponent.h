@@ -10,6 +10,7 @@ class CameraComponent final : public Component
 
 public:
     float zoom = 1.0f;
+    bool draggable = true;
 
     explicit CameraComponent(const int id)
         : Component(id), drag_start_pos_x_(0), drag_start_pos_y_(0)

@@ -1,17 +1,17 @@
 #pragma once
 #include <memory>
 
+#include "ColliderComponent.h"
 #include "Component.h"
 #include "../math/Collider.h"
 #include "../math/RotatableBoxCollider.h"
 
-class PhysicsComponent : public Component
+class PhysicsComponent : public ColliderComponent
 {
 protected:
     bool intersecting_ = false;
 
 public:
-    std::unique_ptr<Collider> collider;
     std::unique_ptr<RotatableBoxCollider> goal_collider_;
     Vec2 velocity = {0, 0};
 
@@ -21,7 +21,10 @@ public:
     float mass = 1;
     bool isStatic = false;
 
-    explicit PhysicsComponent(int id);
+    explicit PhysicsComponent(const int id)
+        : ColliderComponent(id)
+    {
+    }
 
     void Update(float deltaTime) override;
     virtual void UpdateMovement(float deltaTime);

@@ -31,7 +31,7 @@ void PlanetComponent::Draw(DrawStack* stack)
     DrawCircleAA(pos.x, pos.y, radius * scale.x, posnum, 0xFFFFFFFF, true);
 
     // デバッグ表示
-    if (Game::debugEnabled)
+    if (Game::debugEnabled || world->GetType() == WorldType::Editor)
     {
         const auto distance = GetPlayerDistance(world->GetPlayer());
         const auto textWidth = GetDrawFormatStringWidth("%0.3f", distance);

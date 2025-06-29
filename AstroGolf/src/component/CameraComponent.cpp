@@ -32,7 +32,7 @@ void CameraComponent::Update(float delta)
 
 void CameraComponent::UpdatePos()
 {
-    if (Game::instance->isPaused)
+    if (Game::instance->isPaused || !draggable)
     {
         return;
     }

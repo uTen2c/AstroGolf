@@ -119,7 +119,7 @@ void TitleWorld::DrawBackground(DrawStack& stack)
     Graphs::titleGraph->DrawCenter(WINDOW_WIDTH * 0.5f, titleY);
 }
 
-void TitleWorld::PostDraw(DrawStack& stack) const
+void TitleWorld::PostDraw(DrawStack& stack)
 {
     if (Game::instance->isPaused || !should_show_cursor_hint_)
     {

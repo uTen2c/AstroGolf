@@ -6,3 +6,10 @@ void Transform::ApplyDrawStack(DrawStack* stack) const
     stack->Scale(scale);
     stack->Rotate(rotation);
 }
+
+void Transform::ApplyDrawStack(DrawStack& stack) const
+{
+    stack.Translate(translate);
+    stack.Scale(scale);
+    stack.Rotate(rotation);
+}

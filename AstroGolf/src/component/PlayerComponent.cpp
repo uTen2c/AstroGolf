@@ -140,7 +140,7 @@ void PlayerComponent::Draw(DrawStack* stack)
         {
             const auto ratio = round((drag_vector_.Length() / max_shot_power) * 100) / 100.0f;
             // 1pxとかになると見栄えが悪いので最低8pxにする
-            const auto height = std::max<float>(Graphs::playerPowerInficator->height * ratio, 8);
+            const auto height = std::max<float>(Graphs::playerPowerIndicator->height * ratio, 8);
             const auto offset = radius * 1.5f;
             stack->Push();
             stack->Translate(drag_vector_.Normalized().Mul(offset));
@@ -148,7 +148,7 @@ void PlayerComponent::Draw(DrawStack* stack)
             const auto rot = drag_vector_.Normalized().SignedAngle({0, -1}) * -1;
             const auto srcX = CanShot() ? 0 : 12;
             DrawRectRotaGraph3F(pos.x, pos.y, srcX, 0, 12, height, static_cast<float>(12) * 0.5f, height, 1, 1, rot,
-                                Graphs::playerPowerInficator->handle, true);
+                                Graphs::playerPowerIndicator->handle, true);
             stack->Pop();
         }
 
@@ -175,7 +175,7 @@ void PlayerComponent::Draw(DrawStack* stack)
             // Shot vec
             if (isDragging && drag_vector_.Length() > 0)
             {
-                const auto offset = radius * 1.5f + Graphs::playerPowerInficator->height / 2;
+                const auto offset = radius * 1.5f + Graphs::playerPowerIndicator->height / 2;
                 auto vec = drag_vector_;
                 const auto arrowStart = screenPos.Copy().Add(vec.Normalized().Mul(offset));
                 auto copied = arrowStart;

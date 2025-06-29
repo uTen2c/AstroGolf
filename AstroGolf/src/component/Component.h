@@ -51,6 +51,8 @@ public:
 
     [[nodiscard]] int GetId() const;
 
+    Component Copy(int id) const;
+
 protected:
     void ApplyDrawStack(DrawStack* stack) const;
 };

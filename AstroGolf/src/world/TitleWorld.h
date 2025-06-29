@@ -26,7 +26,7 @@ public:
 
 protected:
     void DrawBackground(DrawStack& stack) override;
-    void PostDraw(DrawStack& stack) const override;
+    void PostDraw(DrawStack& stack) override;
 
 private:
     void UpdateCamera(const float& deltaTime) const;

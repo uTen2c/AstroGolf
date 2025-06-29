@@ -26,12 +26,19 @@ void Component::SetWorldPos(const Vec2& pos)
 
 AbsolutePos Component::GetWorldPos() const
 {
+    std::shared_ptr<Component> parentPtr = parent;
+
+    // ホントは条件分けせずにできたほうがいい
+    if (!parentPtr)
+    {
+        return {.pos = transform.translate, .rot = transform.rotation};
+    }
+
     std::vector<Transform> transforms = {};
-    Component* parentPtr = parent.get();
     while (parentPtr != nullptr)
     {
         transforms.emplace_back(parentPtr->transform);
-        parentPtr = parentPtr->parent.get();
+        parentPtr = parentPtr->parent;
     }
 
     Vec2 pos;
@@ -47,7 +54,7 @@ AbsolutePos Component::GetWorldPos() const
     const auto& rotated = transform.translate.Rotated(rot);
     pos.Add(rotated);
 
-    return {pos, rot};
+    return {.pos = pos, .rot = rot};
 }
 
 int Component::GetId() const
@@ -55,9 +62,16 @@ int Component::GetId() const
     return id_;
 }
 
+Component Component::Copy(const int id) const
+{
+    auto copy = *this;
+    copy.id_ = id;
+    return copy;
+}
+
 void Component::ApplyDrawStack(DrawStack* stack) const
 {
-    const auto & [pos, rot] = GetWorldPos();
+    const auto& [pos, rot] = GetWorldPos();
     stack->Translate(pos);
     stack->Rotate(rot);
 }

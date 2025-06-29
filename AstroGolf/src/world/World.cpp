@@ -150,6 +150,12 @@ void World::DrawBallistic()
         ImGui::End();
     }
 
+    ballistic_->transform.translate = player_->transform.translate.Copy().Add(
+        player_->intersectingNormal.Copy().Mul(0.0001f));
+    ballistic_->velocity = {};
+
+    ballistic_->Reset();
+
     if (!player_->CanShot())
     {
         return;
@@ -166,12 +172,6 @@ void World::DrawBallistic()
 
     static const float frame_sec = 1.0f / fps;
     static const float delta = frame_sec;
-
-    ballistic_->transform.translate = player_->transform.translate.Copy().Add(
-        player_->intersectingNormal.Copy().Mul(0.0001f));
-    ballistic_->velocity = {};
-
-    ballistic_->Reset();
 
     ballistic_->Update(0);
 
@@ -324,7 +324,7 @@ void World::DrawBackground(DrawStack& stack)
 {
 }
 
-void World::PostDraw(DrawStack& stack) const
+void World::PostDraw(DrawStack& stack)
 {
 }
 

@@ -40,14 +40,9 @@ namespace
     }
 }
 
-PhysicsComponent::PhysicsComponent(const int id): Component(id)
+void PhysicsComponent::Update(float deltaTime)
 {
-    collider = std::make_unique<NullCollider>();
-}
-
-void PhysicsComponent::Update(const float deltaTime)
-{
-    Component::Update(deltaTime);
+    ColliderComponent::Update(deltaTime);
     CalcGravity();
 }
 
@@ -81,7 +76,7 @@ void PhysicsComponent::PostUpdate(const float deltaTime)
 
 void PhysicsComponent::Draw(DrawStack* stack)
 {
-    Component::Draw(stack);
+    ColliderComponent::Draw(stack);
 }
 
 void PhysicsComponent::Move(const Vec2& delta)
@@ -186,7 +181,7 @@ void PhysicsComponent::Move(const Vec2& delta)
                 {
                     continue;
                 }
-                
+
                 const auto otherPos = worldPos.pos;
                 const auto distance = otherPos.Distance(moved);
 

@@ -23,7 +23,9 @@
     <ClCompile Include="src\component\BoxComponent.cpp" />
     <ClCompile Include="src\component\CameraComponent.cpp" />
     <ClCompile Include="src\component\CircleComponent.cpp" />
+    <ClCompile Include="src\component\ColliderComponent.cpp" />
     <ClCompile Include="src\component\Component.cpp" />
+    <ClCompile Include="src\component\editor\PlayerStartAnchorComponent.cpp" />
     <ClCompile Include="src\component\GoalHoleComponent.cpp" />
     <ClCompile Include="src\component\misc\BallisticComponent.cpp" />
     <ClCompile Include="src\component\misc\GoalScoreDisplayComponent.cpp" />
@@ -68,6 +70,7 @@
     <ClCompile Include="src\sound\Sound.cpp" />
     <ClCompile Include="src\world\DemoWorld.cpp" />
     <ClCompile Include="src\world\EditorWorld.cpp" />
+    <ClCompile Include="src\world\PlayWorld.cpp" />
     <ClCompile Include="src\world\SplashScreenWorld.cpp" />
     <ClCompile Include="src\world\StageSelectWorld.cpp" />
     <ClCompile Include="src\world\StageWorld.cpp" />
@@ -78,7 +81,9 @@
     <ClInclude Include="src\component\BoxComponent.h" />
     <ClInclude Include="src\component\CameraComponent.h" />
     <ClInclude Include="src\component\CircleComponent.h" />
+    <ClInclude Include="src\component\ColliderComponent.h" />
     <ClInclude Include="src\component\Component.h" />
+    <ClInclude Include="src\component\editor\PlayerStartAnchorComponent.h" />
     <ClInclude Include="src\component\GoalHoleComponent.h" />
     <ClInclude Include="src\component\misc\BallisticComponent.h" />
     <ClInclude Include="src\component\misc\GoalScoreDisplayComponent.h" />
@@ -109,7 +114,6 @@
     <ClInclude Include="src\game\StageManager.h" />
     <ClInclude Include="src\graph\Graph.h" />
     <ClInclude Include="src\graph\Graphs.h" />
-    <ClInclude Include="src\ImGuiExtension.h" />
     <ClInclude Include="src\KeyInstance.h" />
     <ClInclude Include="src\math\BoundingBox.h" />
     <ClInclude Include="src\math\CircleCollider.h" />
@@ -125,6 +129,7 @@
     <ClInclude Include="src\sound\Sound.h" />
     <ClInclude Include="src\world\DemoWorld.h" />
     <ClInclude Include="src\world\EditorWorld.h" />
+    <ClInclude Include="src\world\PlayWorld.h" />
     <ClInclude Include="src\world\SplashScreenWorld.h" />
     <ClInclude Include="src\world\StageSelectWorld.h" />
     <ClInclude Include="src\world\StageWorld.h" />

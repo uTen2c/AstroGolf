@@ -14,7 +14,9 @@ public:
     inline static std::unique_ptr<Graph> titleGrassesGraph;
     inline static std::unique_ptr<Graph> titleCursorGraph;
     inline static std::unique_ptr<Graph> starsGraph;
-    inline static std::unique_ptr<Graph> playerPowerInficator;
+    inline static std::unique_ptr<Graph> playerPowerIndicator;
+    inline static std::unique_ptr<Graph> editorPlayerStartAnchor;
+    inline static std::unique_ptr<Graph> goalHole;
 
     static void Load()
     {
@@ -24,6 +26,8 @@ public:
         titleGrassesGraph = std::make_unique<Graph>("grasses.png", 2048, 2048);
         titleCursorGraph = std::make_unique<Graph>("title/cursor.png", 64, 64);
         starsGraph = std::make_unique<Graph>("stars.png", 32, 32);
-        playerPowerInficator = std::make_unique<Graph>("power_indicator.png", 12, 128);
+        playerPowerIndicator = std::make_unique<Graph>("power_indicator.png", 12, 128);
+        editorPlayerStartAnchor = std::make_unique<Graph>("editor/player_start_anchor.png", 24, 24);
+        goalHole = std::make_unique<Graph>("hole.png", 128, 128);
     }
 };

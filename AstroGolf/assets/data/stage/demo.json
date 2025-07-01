@@ -1,0 +1,48 @@
+{
+  "goal": {
+    "rot": 0.0,
+    "x": 86.333251953125,
+    "y": 132.6667022705078
+  },
+  "planets": [
+    {
+      "graphId": "purple",
+      "gravityMultiplier": 1.0,
+      "radius": 175.0,
+      "x": 300.00006103515625,
+      "y": 250.0000457763672
+    },
+    {
+      "graphId": "purple",
+      "gravityMultiplier": 1.0,
+      "radius": 175.0,
+      "x": -253.14285278320313,
+      "y": 124.8571548461914
+    },
+    {
+      "graphId": "purple",
+      "gravityMultiplier": 1.0,
+      "radius": 175.0,
+      "x": 552.0,
+      "y": -370.0
+    },
+    {
+      "graphId": "orange_big",
+      "gravityMultiplier": 1.0,
+      "radius": 250.0,
+      "x": 800.71435546875,
+      "y": 304.4285888671875
+    },
+    {
+      "graphId": "orange_big",
+      "gravityMultiplier": 1.0,
+      "radius": 250.0,
+      "x": 70.71426391601563,
+      "y": -385.5715026855469
+    }
+  ],
+  "start": {
+    "x": 767.857177734375,
+    "y": -15.571441650390625
+  }
+}

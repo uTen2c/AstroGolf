@@ -16,6 +16,7 @@ void Device::Update()
     debugKey.Update();
     menuKey.Update();
     ctrlKey.Update();
+    deleteKey.Update();
 }
 
 bool Device::LeftClicked() const

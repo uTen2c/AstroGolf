@@ -12,6 +12,7 @@ public:
     KeyInstance debugKey = KeyInstance(KEY_INPUT_F3);
     KeyInstance menuKey = KeyInstance(KEY_INPUT_ESCAPE);
     KeyInstance ctrlKey = KeyInstance(KEY_INPUT_LCONTROL);
+    KeyInstance deleteKey = KeyInstance(KEY_INPUT_DELETE);
 
     Device();
 

@@ -15,7 +15,7 @@ bool StageManager::LoadStages()
 
     try
     {
-        std::ifstream file("assets/stages.json");
+        std::ifstream file("assets/data/stages.json");
         if (!file.is_open())
         {
             spdlog::error("Failed to open stages.json");
@@ -47,6 +47,17 @@ bool StageManager::LoadStages()
         spdlog::error("Failed to load stages: {}", e.what());
         return false;
     }
+}
+
+std::vector<std::string> StageManager::GetStageIds()
+{
+    std::vector<std::string> keys;
+    keys.reserve(stages_.size());
+    for (const auto& stage : stages_)
+    {
+        keys.push_back(stage.id);
+    }
+    return keys;
 }
 
 std::unique_ptr<World> StageManager::CreateWorld(const std::string& id)

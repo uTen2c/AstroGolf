@@ -1,0 +1,12 @@
+[
+  {
+    "id": "orange_big",
+    "path": "planet/orange_big.png",
+    "size": 500
+  },
+  {
+    "id": "purple",
+    "path": "planet/purple.png",
+    "size": 350
+  }
+]

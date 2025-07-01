@@ -10,6 +10,7 @@ GoalHoleComponent::GoalHoleComponent(const int id): PhysicsComponent(id)
 {
     collider = std::make_unique<HoleCollider>();
     goal_collider_ = std::make_unique<RotatableBoxCollider>(60 - 8, 60 - 8, GetWorldPos().rot);
+    zIndex = 1050;
 }
 
 void GoalHoleComponent::Update(const float deltaTime)

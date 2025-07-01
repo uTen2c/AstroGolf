@@ -16,6 +16,7 @@ struct PlanetDefine
     Vec2 pos;
     float radius;
     std::string graphId;
+    float gravityMultiplier;
 };
 
 class StageDefine
@@ -27,20 +28,7 @@ public:
 
     StageDefine() = default;
 
-    explicit StageDefine(const json& json)
-        : startPos(Vec2(json["start"]["x"], json["start"]["y"])),
-          goal({
-              .pos = Vec2(json["goal"]["x"], json["goal"]["y"]),
-              .rot = json["goal"]["rot"]
-          })
-    {
-        for (auto j : json["planets"])
-        {
-            planets.emplace_back(PlanetDefine{
-                .pos = {j["x"], j["y"]},
-                .radius = j["radius"],
-                .graphId = j["graphId"]
-            });
-        }
-    }
+    explicit StageDefine(const json& json);
+
+    json ToJson() const;
 };

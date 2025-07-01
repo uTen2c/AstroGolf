@@ -55,6 +55,7 @@
     <ClCompile Include="src\game\SaveManager.cpp" />
     <ClCompile Include="src\game\StageManager.cpp" />
     <ClCompile Include="src\graph\Graph.cpp" />
+    <ClCompile Include="src\ImEx.cpp" />
     <ClCompile Include="src\KeyInstance.cpp" />
     <ClCompile Include="src\math\BoundingBox.cpp" />
     <ClCompile Include="src\math\CircleCollider.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="src\game\StageManager.h" />
     <ClInclude Include="src\graph\Graph.h" />
     <ClInclude Include="src\graph\Graphs.h" />
+    <ClInclude Include="src\ImEx.h" />
     <ClInclude Include="src\KeyInstance.h" />
     <ClInclude Include="src\math\BoundingBox.h" />
     <ClInclude Include="src\math\CircleCollider.h" />
@@ -140,14 +142,14 @@
     <Folder Include="assets\sprite\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\data\graphs.json" />
+    <Content Include="assets\data\stages.json" />
     <Content Include="assets\fonts\MPLUS1p-Bold.ttf" />
     <Content Include="assets\fonts\MPLUS1p-Medium.ttf" />
     <Content Include="assets\fonts\Outfit-Bold.ttf" />
     <Content Include="assets\sound\dropping_in_hole.mp3" />
     <Content Include="assets\sound\shot_1.mp3" />
     <Content Include="assets\sound\shot_2.mp3" />
-    <Content Include="assets\stages.json" />
-    <Content Include="assets\stage\demo.json" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

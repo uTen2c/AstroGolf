@@ -5,12 +5,13 @@
 
 CommonPlanetComponent::CommonPlanetComponent(const int id, const float radius, std::string graphId):
     PlanetComponent(id, radius),
-    graph_id_(std::move(graphId))
+    graphId(std::move(graphId))
 {
 }
 
 void CommonPlanetComponent::Update(float deltaTime)
 {
+    planetGravity = 9.8f * radius * gravityMultiplier;
     PlanetComponent::Update(deltaTime);
 }
 
@@ -19,12 +20,12 @@ void CommonPlanetComponent::Draw(DrawStack* stack)
     stack->Push();
     transform.ApplyDrawStack(stack);
 
-    if (const auto& graph = PlanetGraphs::GetGraph(graph_id_))
+    if (const auto& graph = PlanetGraphs::GetGraph(graphId))
     {
         graph->Draw(*stack);
     }
 
-    if (Game::debugEnabled)
+    if (Game::debugEnabled || Game::instance->GetWorld().GetType() == WorldType::Editor)
     {
         const auto pos = stack->GetScreenPos();
         const auto scale = stack->GetScreenScale();

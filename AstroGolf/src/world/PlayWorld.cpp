@@ -8,8 +8,8 @@
 #include "../component/GoalHoleComponent.h"
 #include "../component/planet/CommonPlanetComponent.h"
 
-PlayWorld::PlayWorld(const StageDefine& stageDefine, const bool debug)
-    : stageDefine(stageDefine), debug_(debug)
+PlayWorld::PlayWorld(std::string id, const StageDefine& stageDefine, const bool debug)
+    : id_(std::move(id)), stageDefine(stageDefine), debug_(debug)
 {
 }
 
@@ -22,7 +22,7 @@ void PlayWorld::Update(const float& deltaTime)
         ImGui::Begin("Debug");
         if (ImGui::Button("Stop"))
         {
-            Game::instance->ChangeWorldWithTransition<EditorWorld>(TransitionMode::Circle, stageDefine);
+            Game::instance->ChangeWorldWithTransition<EditorWorld>(TransitionMode::Circle, id_, stageDefine);
         }
         ImGui::End();
     }
@@ -38,6 +38,7 @@ void PlayWorld::Init()
         const auto component = std::make_shared<
             CommonPlanetComponent>(NextComponentId(), planet.radius, planet.graphId);
         component->transform.translate = planet.pos;
+        component->gravityMultiplier = planet.gravityMultiplier;
         AddComponent(component);
     }
 
@@ -56,14 +57,14 @@ WorldType PlayWorld::GetType() const
 
 std::string PlayWorld::GetStageId() const
 {
-    return ""; // TODO
+    return id_;
 }
 
 void PlayWorld::OnGoal()
 {
     if (debug_)
     {
-        Game::instance->ChangeWorldWithTransition<EditorWorld>(TransitionMode::Circle, stageDefine);
+        Game::instance->ChangeWorldWithTransition<EditorWorld>(TransitionMode::Circle, id_, stageDefine);
         return;
     }
     StageWorld::OnGoal();

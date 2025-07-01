@@ -25,21 +25,25 @@ World& Game::GetWorld() const
 
 void Game::Update()
 {
-    if (CheckHitKey(KEY_INPUT_1) != 0 && world_->GetType() != WorldType::Title)
+    const auto& io = ImGui::GetIO();
+    if (!io.WantTextInput)
     {
-        ChangeWorldWithTransition<TitleWorld>(TransitionMode::Slide);
-    }
-    if (CheckHitKey(KEY_INPUT_2) != 0 && world_->GetType() != WorldType::Demo)
-    {
-        ChangeWorldWithTransition<DemoWorld>(TransitionMode::Slide);
-    }
-    if (CheckHitKey(KEY_INPUT_3) != 0 && world_->GetType() != WorldType::StageSelect)
-    {
-        ChangeWorldWithTransition<StageSelectWorld>(TransitionMode::Slide);
-    }
-    if (CheckHitKey(KEY_INPUT_4) != 0 && world_->GetType() != WorldType::Editor)
-    {
-        ChangeWorldWithTransition<EditorWorld>(TransitionMode::Slide);
+        if (CheckHitKey(KEY_INPUT_1) != 0 && world_->GetType() != WorldType::Title)
+        {
+            ChangeWorldWithTransition<TitleWorld>(TransitionMode::Slide);
+        }
+        if (CheckHitKey(KEY_INPUT_2) != 0 && world_->GetType() != WorldType::Demo)
+        {
+            ChangeWorldWithTransition<DemoWorld>(TransitionMode::Slide);
+        }
+        if (CheckHitKey(KEY_INPUT_3) != 0 && world_->GetType() != WorldType::StageSelect)
+        {
+            ChangeWorldWithTransition<StageSelectWorld>(TransitionMode::Slide);
+        }
+        if (CheckHitKey(KEY_INPUT_4) != 0 && world_->GetType() != WorldType::Editor)
+        {
+            ChangeWorldWithTransition<EditorWorld>(TransitionMode::Slide);
+        }
     }
 
     device_.Update();

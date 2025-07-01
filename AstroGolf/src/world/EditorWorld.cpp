@@ -4,6 +4,7 @@
 #include <imgui.h>
 #include <memory>
 #include <spdlog/spdlog.h>
+#include <nlohmann/json.hpp>
 
 #include "PlayWorld.h"
 #include "../Game.h"
@@ -11,16 +12,21 @@
 #include "../component/planet/CommonPlanetComponent.h"
 #include "../editor/PlanetGraphs.h"
 #include "../editor/StageDefine.h"
+#include "../ImEx.h"
+#include "../game/StageManager.h"
+
+using json = nlohmann::json;
 
 EditorWorld::EditorWorld()
 {
     menuEnabled = false;
 }
 
-EditorWorld::EditorWorld(const StageDefine& stageDefine)
+EditorWorld::EditorWorld(const std::string& id, const StageDefine& stageDefine)
     : EditorWorld()
 {
     has_define_ = true;
+    stage_id_ = id;
     stage_define_ = stageDefine;
 }
 
@@ -34,26 +40,7 @@ void EditorWorld::Init()
     {
         return;
     }
-
-    // ReSharper disable once CppUseStructuredBinding
-    for (const auto& planet : stage_define_.planets)
-    {
-        const auto id = NextComponentId();
-        const auto component = std::make_shared<
-            CommonPlanetComponent>(id, planet.radius, planet.graphId);
-        component->transform.translate = planet.pos;
-        defined_component_ids_.emplace_back(id);
-        AddComponent(component);
-    }
-
-    goalHole = std::make_shared<GoalHoleComponent>(NextComponentId());
-    goalHole->transform.translate = stage_define_.goal.pos;
-    goalHole->transform.rotation = stage_define_.goal.rot;
-    AddComponent(goalHole);
-
-    startAnchor = std::make_shared<PlayerStartAnchorComponent>(NextComponentId());
-    startAnchor->transform.translate = stage_define_.startPos;
-    AddComponent(startAnchor);
+    Load(stage_id_);
 }
 
 void EditorWorld::Draw()
@@ -67,30 +54,50 @@ void EditorWorld::DrawBackground(DrawStack& stack)
     DrawGrid(stack);
 
     ImGui::Begin("Stage Editor", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+
+    ImGui::SeparatorText("Stage");
+    auto stageId = !stage_id_.empty() ? stage_id_ : "##";
+    const auto& stageIds = StageManager::GetStageIds();
+    if (ImEx::Combo("Stage id", stageId, stageIds))
+    {
+        Load(stageId);
+    }
+
     ImGui::SeparatorText("Mode");
-    if (ImGui::Button("Player start"))
+    if (ImGui::Button("Anchor"))
     {
         place_type_ = PlaceType::PlayerStart;
     }
-    if (ImGui::Button("Goal hole"))
+    ImGui::SameLine();
+    if (ImGui::Button("Goal"))
     {
         place_type_ = PlaceType::GoalHole;
     }
-    if (ImGui::Button("Component"))
+    ImGui::SameLine();
+    if (ImGui::Button("Planet"))
     {
         place_type_ = PlaceType::Component;
     }
     ImGui::Separator();
+    if (ImEx::Combo("Graph", planet_graph_id_, PlanetGraphs::GetGraphIds()))
+    {
+        planet_radius_ = PlanetGraphs::GetGraphInfo(planet_graph_id_).radius;
+    }
+    ImGui::Separator();
+
+    ImGui::BeginDisabled(!startAnchor || !goalHole);
     if (ImGui::Button("Test play"))
     {
-
-        auto playStage = std::make_unique<PlayWorld>(GetDefine(), true);
+        auto playStage = std::make_unique<PlayWorld>(stageId, GetDefine(), true);
         Game::instance->ChangeWorldWithTransition(TransitionMode::Slide, std::move(playStage));
     }
-    if (ImGui::Button("Load"))
+    ImGui::SameLine();
+    if (ImGui::Button("Save"))
     {
-        Load("demo");
+        Save();
     }
+    ImGui::EndDisabled();
+
     ImGui::End();
 }
 
@@ -107,9 +114,10 @@ void EditorWorld::Update(const float& deltaTime)
     UpdatePlanetEditor(deltaTime);
     UpdateComponentIndicator();
     UpdateMovement();
+    UpdateDelete();
     UpdateInspector();
 
-    GetPlayer()->transform.translate = {10000, 10000};
+    GetPlayer()->transform.translate = GetCamera().transform.translate + Vec2(10000, 10000);
 }
 
 void EditorWorld::UpdatePlanetEditor(const float& deltaTime)
@@ -118,6 +126,14 @@ void EditorWorld::UpdatePlanetEditor(const float& deltaTime)
     const auto worldPos = GetMouseWorldPos();
 
     const auto& io = ImGui::GetIO();
+
+    // 右クリックで選択解除
+    if (Game::Device().RightClicked() && !io.WantCaptureMouse)
+    {
+        selected_component_id_ = -1;
+        return;
+    }
+
     if (Game::Device().LeftClicked() && !io.WantCaptureMouse)
     {
         clicked_pos_ = mousePos;
@@ -148,7 +164,7 @@ void EditorWorld::UpdatePlanetEditor(const float& deltaTime)
         break;
     case PlaceType::Component:
         {
-            const auto component = std::make_shared<CommonPlanetComponent>(id, 350 / 2, "purple");
+            const auto component = std::make_shared<CommonPlanetComponent>(id, planet_radius_, planet_graph_id_);
             component->transform.translate = worldPos;
             AddComponent(component);
             break;
@@ -247,7 +263,6 @@ void EditorWorld::UpdateMovement()
 
     Vec2 movement;
     const Vec2 moved = mousePos - movement_start_mouse_pos_;
-    spdlog::info("moved {}, {}", moved.x, moved.y);
     if (movement_type_ == MovementType::Both || movement_type_ == MovementType::X)
     {
         movement.x = moved.x;
@@ -263,7 +278,8 @@ void EditorWorld::UpdateMovement()
 
 void EditorWorld::UpdateInspector()
 {
-    ImGui::Begin("Inspector", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+    ImGui::SetNextWindowSize(ImVec2(300, 400), ImGuiCond_Always);
+    ImGui::Begin("Inspector", nullptr, ImGuiWindowFlags_NoResize);
 
     const auto& component = GetComponent(selected_component_id_);
     if (!component)
@@ -273,28 +289,60 @@ void EditorWorld::UpdateInspector()
         return;
     }
 
-    if (ImGui::TreeNode("Transform"))
+    if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-
         // 座標
         ImGui::InputFloat("X", &component->transform.translate.x);
-        ImGui::SameLine();
         ImGui::InputFloat("Y", &component->transform.translate.y);
 
         // 回転（GoalHoleのみ）
-        if (const auto goalHole = dynamic_cast<GoalHoleComponent*>(component))
+        if (const auto goal = dynamic_cast<GoalHoleComponent*>(component))
         {
-            {
-                ImGui::SliderAngle("Rot", &goalHole->transform.rotation);
-                spdlog::info("goalHole->transform.rotation {}", goalHole->transform.rotation);
-            }
+            ImGui::SliderAngle("Rot", &goal->transform.rotation);
         }
 
         ImGui::TreePop();
     }
 
+    if (const auto planet = dynamic_cast<CommonPlanetComponent*>(component))
+    {
+        if (ImGui::TreeNodeEx("Planet", ImGuiTreeNodeFlags_DefaultOpen))
+        {
+            ImGui::SliderFloat("Radius", &planet->radius, 4, 600);
+            if (ImEx::Combo("Graph", planet->graphId, PlanetGraphs::GetGraphIds()))
+            {
+                planet->radius = PlanetGraphs::GetGraphInfo(planet->graphId).radius;
+            }
+
+            ImGui::InputFloat("Gravity Multiplier", &planet->gravityMultiplier);
+
+            ImGui::TreePop();
+        }
+    }
+
     ImGui::End();
+}
+
+void EditorWorld::UpdateDelete()
+{
+    const auto& component = GetComponent(selected_component_id_);
+    if (!component)
+    {
+        return;
+    }
+
+    // スタートアンカーとゴールは消せない
+    if (
+        startAnchor && selected_component_id_ == startAnchor->GetId()
+        || goalHole && selected_component_id_ == goalHole->GetId())
+    {
+        return;
+    }
+
+    if (Game::Device().deleteKey.Pressed())
+    {
+        RemoveComponent(component->GetId());
+    }
 }
 
 WorldType EditorWorld::GetType() const
@@ -304,7 +352,7 @@ WorldType EditorWorld::GetType() const
 
 void EditorWorld::Load(const std::string& stageId)
 {
-    const auto& filename = fmt::format("assets/stage/{}.json", stageId);
+    const auto& filename = fmt::format("assets/data/stage/{}.json", stageId);
     std::ifstream file(filename);
     if (!file.is_open())
     {
@@ -324,20 +372,57 @@ void EditorWorld::Load(const std::string& stageId)
     goalHole = nullptr;
 
     stage_id_ = stageId;
-    for (const auto& componentJson : json["components"])
+
+    const auto define = StageDefine(json);
+    stage_define_ = define;
+
+    // ReSharper disable once CppUseStructuredBinding
+    for (const auto& planet : define.planets)
     {
+        const auto id = NextComponentId();
+        const auto component = std::make_shared<
+            CommonPlanetComponent>(id, planet.radius, planet.graphId);
+        component->transform.translate = planet.pos;
+        component->gravityMultiplier = planet.gravityMultiplier;
+        defined_component_ids_.emplace_back(id);
+        AddComponent(component);
     }
 
-    startAnchor = std::make_shared<PlayerStartAnchorComponent>(NextComponentId());
     goalHole = std::make_shared<GoalHoleComponent>(NextComponentId());
-    AddComponent(startAnchor);
+    goalHole->transform.translate = define.goal.pos;
+    goalHole->transform.rotation = define.goal.rot;
     AddComponent(goalHole);
+
+    startAnchor = std::make_shared<PlayerStartAnchorComponent>(NextComponentId());
+    startAnchor->transform.translate = define.startPos;
+    AddComponent(startAnchor);
+}
+
+void EditorWorld::Save()
+{
+    const auto& define = GetDefine();
+    const auto& filename = fmt::format("assets/data/stage/{}.json", stage_id_);
+    std::ofstream file(filename);
+    if (!file.is_open())
+    {
+        spdlog::error("Failed to open {}", filename);
+        return;
+    }
+
+    file << define.ToJson().dump(2);
+
+    spdlog::info("Stage save successfully {}", filename);
 }
 
 void EditorWorld::UpdateComponentIndicator()
 {
     const auto& worldPos = GetMouseWorldPos();
-    for (const auto& component : GetComponents())
+    auto sortedComponents = GetComponents();
+    std::ranges::sort(sortedComponents.begin(), sortedComponents.end(), [](auto a, auto b)
+    {
+        return a->zIndex > b->zIndex;
+    });
+    for (const auto& component : sortedComponents)
     {
         const auto colliderComponent = dynamic_cast<ColliderComponent*>(component);
         if (!colliderComponent)
@@ -389,7 +474,7 @@ void EditorWorld::DrawPreview(DrawStack& stack)
         }
     case PlaceType::Component:
         {
-            auto component = CommonPlanetComponent(-1, 350.0f / 2, "purple");
+            auto component = CommonPlanetComponent(-1, planet_radius_, planet_graph_id_);
             component.transform.translate = worldPos;
             component.Draw(&stack);
             break;
@@ -496,8 +581,8 @@ StageDefine EditorWorld::GetDefine()
     StageDefine define;
     define.startPos = startAnchor->transform.translate;
     define.goal = GoalDefine{
-        goalHole->transform.translate,
-        goalHole->transform.rotation
+        .pos = goalHole->transform.translate,
+        .rot = goalHole->transform.rotation
     };
     for (const int& id : defined_component_ids_)
     {
@@ -517,7 +602,8 @@ StageDefine EditorWorld::GetDefine()
             PlanetDefine planetDefine = {
                 .pos = planet->transform.translate,
                 .radius = planet->radius,
-                .graphId = planet->GraphId(),
+                .graphId = planet->graphId,
+                .gravityMultiplier = planet->gravityMultiplier,
             };
             define.planets.emplace_back(planetDefine);
         }

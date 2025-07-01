@@ -55,13 +55,15 @@ class EditorWorld final : public World
     MovementType movement_type_ = MovementType::None;
     Vec2 movement_start_mouse_pos_;
     Vec2 movement_start_component_pos_;
+    std::string planet_graph_id_ = "purple";
+    float planet_radius_ = 175;
 
 public:
     std::shared_ptr<PlayerStartAnchorComponent> startAnchor;
     std::shared_ptr<GoalHoleComponent> goalHole;
 
     EditorWorld();
-    explicit EditorWorld(const StageDefine& stageDefine);
+    explicit EditorWorld(const std::string& id, const StageDefine& stageDefine);
     ~EditorWorld() override;
     void Init() override;
     void Draw() override;
@@ -76,6 +78,7 @@ public:
 
 private:
     void Load(const std::string& stageId);
+    void Save();
 
     void UpdateComponentIndicator();
     void UpdatePlanetEditor(const float& deltaTime);
@@ -83,6 +86,7 @@ private:
     void PlaceGoalHole(const Vec2& pos);
     void UpdateMovement();
     void UpdateInspector();
+    void UpdateDelete();
 
     void DrawPreview(DrawStack& stack);
     void DrawGizmo(DrawStack& stack);
@@ -92,5 +96,5 @@ private:
     static void DrawGrid(DrawStack& stack);
     static Vec2 GetMousePos();
 
-    StageDefine GetDefine(); 
+    StageDefine GetDefine();
 };

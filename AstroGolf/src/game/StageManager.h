@@ -49,6 +49,7 @@ public:
 
     static bool LoadStages();
     static const std::vector<Stage>& GetStages() { return stages_; }
+    static std::vector<std::string> GetStageIds();
     static std::unique_ptr<World> CreateWorld(const std::string& id);
     static void OnRegisterWorlds();
 

@@ -16,7 +16,7 @@ public:
 
     [[nodiscard]] virtual std::string GetStageId() const;
 
-    void Reload() const;
+    virtual void Reload() const;
 
     void OnGoal() override;
 

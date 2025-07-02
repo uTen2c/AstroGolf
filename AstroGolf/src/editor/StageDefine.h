@@ -17,6 +17,10 @@ struct PlanetDefine
     float radius;
     std::string graphId;
     float gravityMultiplier;
+    bool isSatellite;
+    float rotationSpeed;
+    float rotationOriginOffsetX;
+    float rotationOriginOffsetY;
 };
 
 class StageDefine
@@ -30,5 +34,5 @@ public:
 
     explicit StageDefine(const json& json);
 
-    json ToJson() const;
+    [[nodiscard]] json ToJson() const;
 };

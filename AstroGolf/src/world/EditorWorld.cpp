@@ -13,6 +13,7 @@
 #include "../editor/PlanetGraphs.h"
 #include "../editor/StageDefine.h"
 #include "../ImEx.h"
+#include "../editor/StageFileManager.h"
 #include "../game/StageManager.h"
 
 using json = nlohmann::json;
@@ -88,6 +89,7 @@ void EditorWorld::DrawBackground(DrawStack& stack)
     ImGui::BeginDisabled(!startAnchor || !goalHole);
     if (ImGui::Button("Test play"))
     {
+        Save();
         auto playStage = std::make_unique<PlayWorld>(stageId, GetDefine(), true);
         Game::instance->ChangeWorldWithTransition(TransitionMode::Slide, std::move(playStage));
     }
@@ -215,7 +217,7 @@ void EditorWorld::UpdateMovement()
     const auto padding = 16 / scale;
     const auto max = 64 / scale;
     const auto& relativePos = mousePos - pos;
-    if (Game::Device().LeftClicking() && movement_type_ == MovementType::None)
+    if (Game::Device().LeftClicked() && movement_type_ == MovementType::None)
     {
         // 真ん中ドラッグ
         if (abs(relativePos.x) <= padding && abs(relativePos.y) <= padding)
@@ -316,6 +318,13 @@ void EditorWorld::UpdateInspector()
 
             ImGui::InputFloat("Gravity Multiplier", &planet->gravityMultiplier);
 
+            ImGui::Checkbox("Is satellite", &planet->isSatellite);
+
+            if (planet->isSatellite)
+            {
+                ImGui::SliderAngle("Rot / Sec", &planet->rotationSpeed);
+            }
+
             ImGui::TreePop();
         }
     }
@@ -352,16 +361,8 @@ WorldType EditorWorld::GetType() const
 
 void EditorWorld::Load(const std::string& stageId)
 {
-    const auto& filename = fmt::format("assets/data/stage/{}.json", stageId);
-    std::ifstream file(filename);
-    if (!file.is_open())
-    {
-        spdlog::error("Failed to open {}", filename);
-        return;
-    }
-
-    json json;
-    file >> json;
+    const auto& define = *StageFileManager::LoadDefine(stageId);
+    stage_define_ = define;
 
     for (const auto id : defined_component_ids_)
     {
@@ -373,9 +374,6 @@ void EditorWorld::Load(const std::string& stageId)
 
     stage_id_ = stageId;
 
-    const auto define = StageDefine(json);
-    stage_define_ = define;
-
     // ReSharper disable once CppUseStructuredBinding
     for (const auto& planet : define.planets)
     {
@@ -384,6 +382,9 @@ void EditorWorld::Load(const std::string& stageId)
             CommonPlanetComponent>(id, planet.radius, planet.graphId);
         component->transform.translate = planet.pos;
         component->gravityMultiplier = planet.gravityMultiplier;
+        component->isSatellite = planet.isSatellite;
+        component->rotationSpeed = planet.rotationSpeed;
+        component->rotationOriginOffset = {planet.rotationOriginOffsetX, planet.rotationOriginOffsetY};
         defined_component_ids_.emplace_back(id);
         AddComponent(component);
     }
@@ -443,6 +444,10 @@ void EditorWorld::UpdateComponentIndicator()
 
 void EditorWorld::DrawPreview(DrawStack& stack)
 {
+    if (Game::Device().LeftClicking())
+    {
+        return;
+    }
     if (movement_type_ != MovementType::None)
     {
         return;
@@ -604,6 +609,10 @@ StageDefine EditorWorld::GetDefine()
                 .radius = planet->radius,
                 .graphId = planet->graphId,
                 .gravityMultiplier = planet->gravityMultiplier,
+                .isSatellite = planet->isSatellite,
+                .rotationSpeed = planet->rotationSpeed,
+                .rotationOriginOffsetX = planet->rotationOriginOffset.x,
+                .rotationOriginOffsetY = planet->rotationOriginOffset.y
             };
             define.planets.emplace_back(planetDefine);
         }

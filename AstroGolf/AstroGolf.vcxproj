@@ -144,6 +144,10 @@
   <ItemGroup>
     <Content Include="assets\data\graphs.json" />
     <Content Include="assets\data\stages.json" />
+    <Content Include="assets\data\stage\demo.json" />
+    <Content Include="assets\data\stage\stage00.json" />
+    <Content Include="assets\data\stage\stage01.json" />
+    <Content Include="assets\data\stage\stage02.json" />
     <Content Include="assets\fonts\MPLUS1p-Bold.ttf" />
     <Content Include="assets\fonts\MPLUS1p-Medium.ttf" />
     <Content Include="assets\fonts\Outfit-Bold.ttf" />

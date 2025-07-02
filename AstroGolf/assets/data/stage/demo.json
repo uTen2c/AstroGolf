@@ -8,41 +8,50 @@
     {
       "graphId": "purple",
       "gravityMultiplier": 1.0,
+      "isSatellite": false,
       "radius": 175.0,
-      "x": 300.00006103515625,
-      "y": 250.0000457763672
-    },
-    {
-      "graphId": "purple",
-      "gravityMultiplier": 1.0,
-      "radius": 175.0,
+      "rotationOriginOffsetX": 0.0,
+      "rotationOriginOffsetY": -205.0,
+      "rotationSpeed": 0.0,
       "x": -253.14285278320313,
       "y": 124.8571548461914
     },
     {
       "graphId": "purple",
       "gravityMultiplier": 1.0,
+      "isSatellite": false,
       "radius": 175.0,
-      "x": 552.0,
-      "y": -370.0
+      "rotationOriginOffsetX": 0.0,
+      "rotationOriginOffsetY": -205.0,
+      "rotationSpeed": 0.0,
+      "x": 1196.0,
+      "y": 494.0
     },
     {
       "graphId": "orange_big",
       "gravityMultiplier": 1.0,
+      "isSatellite": false,
       "radius": 250.0,
-      "x": 800.71435546875,
-      "y": 304.4285888671875
-    },
-    {
-      "graphId": "orange_big",
-      "gravityMultiplier": 1.0,
-      "radius": 250.0,
+      "rotationOriginOffsetX": 0.0,
+      "rotationOriginOffsetY": -280.0,
+      "rotationSpeed": 0.0,
       "x": 70.71426391601563,
       "y": -385.5715026855469
+    },
+    {
+      "graphId": "gray_small",
+      "gravityMultiplier": 2.0,
+      "isSatellite": true,
+      "radius": 50.0,
+      "rotationOriginOffsetX": -391.0,
+      "rotationOriginOffsetY": -373.0,
+      "rotationSpeed": 0.45378562808036804,
+      "x": 1385.333251953125,
+      "y": 669.6666870117188
     }
   ],
   "start": {
-    "x": 767.857177734375,
-    "y": -15.571441650390625
+    "x": 103.857177734375,
+    "y": -683.5714111328125
   }
 }

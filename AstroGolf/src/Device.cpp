@@ -19,16 +19,26 @@ void Device::Update()
     deleteKey.Update();
 }
 
-bool Device::LeftClicked() const
+bool Device::LeftClicked()
 {
-    return (last_mouse_input_ & MOUSE_INPUT_LEFT) == 0
+    const auto clicked = (last_mouse_input_ & MOUSE_INPUT_LEFT) == 0
         && (current_mouse_input_ & MOUSE_INPUT_LEFT) != 0;
+    if (clicked)
+    {
+        left_clicked_pos_ = MousePos();
+    }
+    return clicked;
 }
 
-bool Device::LeftReleased() const
+bool Device::LeftReleased(const bool allowMove) const
 {
-    return (last_mouse_input_ & MOUSE_INPUT_LEFT) != 0
-    && (current_mouse_input_ & MOUSE_INPUT_LEFT) == 0;
+    const auto released = (last_mouse_input_ & MOUSE_INPUT_LEFT) != 0
+        && (current_mouse_input_ & MOUSE_INPUT_LEFT) == 0;
+    if (allowMove)
+    {
+        return released;
+    }
+    return left_clicked_pos_.Distance(MousePos()) < 10;
 }
 
 bool Device::LeftClicking() const
@@ -45,4 +55,11 @@ bool Device::RightClicked() const
 bool Device::RightClicking() const
 {
     return (current_mouse_input_ & MOUSE_INPUT_RIGHT) != 0;
+}
+
+Vec2 Device::MousePos() const
+{
+    int x, y;
+    GetMousePoint(&x, &y);
+    return {static_cast<float>(x), static_cast<float>(y)};
 }

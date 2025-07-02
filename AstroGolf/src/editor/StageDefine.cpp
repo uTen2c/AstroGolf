@@ -27,12 +27,17 @@ StageDefine::StageDefine(const json& json)
     {
         for (auto j : json.at("planets"))
         {
-            planets.emplace_back(PlanetDefine{
+            auto planetDefine = PlanetDefine{
                 .pos = {j.at("x"), j.at("y")},
                 .radius = j.at("radius"),
                 .graphId = j.at("graphId"),
-                .gravityMultiplier = j.at("gravityMultiplier")
-            });
+                .gravityMultiplier = j.value("gravityMultiplier", 1.0f),
+                .isSatellite = j.value("isSatellite", false),
+                .rotationSpeed = j.value("rotationSpeed", 0.0f),
+                .rotationOriginOffsetX = j.value("rotationOriginOffsetX", 0.0f),
+                .rotationOriginOffsetY = j.value("rotationOriginOffsetY", 0.0f),
+            };
+            planets.emplace_back(planetDefine);
         }
     }
     catch (const std::exception& e)
@@ -48,13 +53,18 @@ json StageDefine::ToJson() const
     // ReSharper disable once CppUseStructuredBinding
     for (const auto& planet : planets)
     {
-        planetList.emplace_back(json{
+        auto planetJson = json{
             {"x", planet.pos.x},
             {"y", planet.pos.y},
             {"radius", planet.radius},
             {"graphId", planet.graphId},
             {"gravityMultiplier", planet.gravityMultiplier},
-        });
+            {"isSatellite", planet.isSatellite},
+            {"rotationSpeed", planet.rotationSpeed},
+            {"rotationOriginOffsetX", planet.rotationOriginOffsetX},
+            {"rotationOriginOffsetY", planet.rotationOriginOffsetY},
+        };
+        planetList.emplace_back(planetJson);
     }
 
     return json{

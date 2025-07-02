@@ -8,5 +8,25 @@
     "id": "purple",
     "path": "planet/purple.png",
     "size": 350
+  },
+  {
+    "id": "gray",
+    "path": "planet/gray.png",
+    "size": 300
+  },
+  {
+    "id": "gray_small",
+    "path": "planet/gray_small.png",
+    "size": 100
+  },
+  {
+    "id": "orange2",
+    "path": "planet/orange2.png",
+    "size": 248
+  },
+  {
+    "id": "blue",
+    "path": "planet/blue.png",
+    "size": 262
   }
 ]

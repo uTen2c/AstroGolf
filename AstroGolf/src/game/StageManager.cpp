@@ -4,7 +4,9 @@
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
 
+#include "../editor/StageFileManager.h"
 #include "../world/DemoWorld.h"
+#include "../world/PlayWorld.h"
 #include "../world/TitleWorld.h"
 
 using json = nlohmann::json;
@@ -62,17 +64,25 @@ std::vector<std::string> StageManager::GetStageIds()
 
 std::unique_ptr<World> StageManager::CreateWorld(const std::string& id)
 {
-    const auto& function = factories_[id];
-    if (!function)
+    auto stageDefine = StageFileManager::GetOrLoadDefine(id);
+    if (!stageDefine)
     {
         spdlog::warn("Tried to create a world with a non-exists ID: {}", id);
         return nullptr;
     }
-    return function();
+    return std::make_unique<PlayWorld>(id, *stageDefine);
+    // const auto& function = factories_[id];
+    // if (!function)
+    // {
+    //     spdlog::warn("Tried to create a world with a non-exists ID: {}", id);
+    //     return nullptr;
+    // }
+    // return function();
 }
 
 void StageManager::OnRegisterWorlds()
 {
+    // TODO 不要
     RegisterWorld(demoId, []
     {
         return std::make_unique<DemoWorld>();

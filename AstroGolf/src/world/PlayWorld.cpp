@@ -7,6 +7,14 @@
 #include "../Game.h"
 #include "../component/GoalHoleComponent.h"
 #include "../component/planet/CommonPlanetComponent.h"
+#include "../editor/StageFileManager.h"
+#include "../graph/Graphs.h"
+#include "../math/Math.h"
+
+PlayWorld::PlayWorld(std::string id) : id_(std::move(id))
+{
+    stageDefine = *StageFileManager::GetOrLoadDefine(id);
+}
 
 PlayWorld::PlayWorld(std::string id, const StageDefine& stageDefine, const bool debug)
     : id_(std::move(id)), stageDefine(stageDefine), debug_(debug)
@@ -16,11 +24,13 @@ PlayWorld::PlayWorld(std::string id, const StageDefine& stageDefine, const bool 
 void PlayWorld::Update(const float& deltaTime)
 {
     StageWorld::Update(deltaTime);
+    UpdateCamera(deltaTime);
 
     if (debug_)
     {
         ImGui::Begin("Debug");
-        if (ImGui::Button("Stop"))
+        ImGui::Checkbox("Free camera", &free_camera_);
+        if (ImGui::Button("Return editor"))
         {
             Game::instance->ChangeWorldWithTransition<EditorWorld>(TransitionMode::Circle, id_, stageDefine);
         }
@@ -39,6 +49,9 @@ void PlayWorld::Init()
             CommonPlanetComponent>(NextComponentId(), planet.radius, planet.graphId);
         component->transform.translate = planet.pos;
         component->gravityMultiplier = planet.gravityMultiplier;
+        component->isSatellite = planet.isSatellite;
+        component->rotationSpeed = planet.rotationSpeed;
+        component->rotationOriginOffset = {planet.rotationOriginOffsetX, planet.rotationOriginOffsetY};
         AddComponent(component);
     }
 
@@ -48,6 +61,35 @@ void PlayWorld::Init()
     AddComponent(goalHole);
 
     GetPlayer()->transform.translate = stageDefine.startPos;
+}
+
+void PlayWorld::Reload() const
+{
+    if (debug_)
+    {
+        auto playStage = std::make_unique<PlayWorld>(id_, stageDefine, true);
+        Game::instance->ChangeWorldWithTransition(TransitionMode::Slide, std::move(playStage));
+        return;
+    }
+    StageWorld::Reload();
+}
+
+void PlayWorld::DrawBackground(DrawStack& stack)
+{
+    Graphs::stageBackground->Draw(0, 0);
+}
+
+void PlayWorld::UpdateCamera(float deltaTime)
+{
+    if (free_camera_)
+    {
+        return;
+    }
+
+    auto& camera = GetCamera();
+    const auto player = GetPlayer();
+    const auto focusPos = player->transform.translate;
+    camera.transform.translate = Math::Lerp(camera.transform.translate, focusPos, deltaTime * 3.0f);
 }
 
 WorldType PlayWorld::GetType() const

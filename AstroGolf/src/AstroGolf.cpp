@@ -123,7 +123,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         ImGui::Render();
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
-        DrawFormatString(0, 0, GetColor(255, 255, 255), "FPS:%d", Game::fps);
+        if (Game::instance->debugEnabled)
+        {
+            DrawFormatString(8, 8, GetColor(255, 255, 255), "FPS:%d", Game::fps);
+        }
 
         // 今回取得した時間を保存
         time = nowTime;

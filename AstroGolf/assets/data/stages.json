@@ -2,7 +2,7 @@
   {
     "id": "demo",
     "name": "デモステージ",
-    "preview": "stage1.png",
+    "preview": "placeholder.png",
     "challenges": [
       "GoalHoleInOne",
       "GoalExcellent",
@@ -32,6 +32,36 @@
   {
     "id": "stage02",
     "name": "stage02",
+    "preview": "placeholder.png",
+    "challenges": [
+      "GoalHoleInOne",
+      "GoalExcellent",
+      "Goal"
+    ]
+  },
+  {
+    "id": "stage03",
+    "name": "stage03",
+    "preview": "placeholder.png",
+    "challenges": [
+      "GoalHoleInOne",
+      "GoalExcellent",
+      "Goal"
+    ]
+  },
+  {
+    "id": "stage04",
+    "name": "stage04",
+    "preview": "placeholder.png",
+    "challenges": [
+      "GoalHoleInOne",
+      "GoalExcellent",
+      "Goal"
+    ]
+  },
+  {
+    "id": "stage05",
+    "name": "stage05",
     "preview": "placeholder.png",
     "challenges": [
       "GoalHoleInOne",

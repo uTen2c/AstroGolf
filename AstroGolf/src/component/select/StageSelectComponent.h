@@ -23,7 +23,7 @@ public:
     [[nodiscard]] int GetFocusedIndex() const;
 
 private:
-    void DrawButton(const float& x, const float& y, const float& scale, const std::string& label, const bool& selected, const int& stars) const;
+    void DrawButton(const float& x, const float& y, const std::string& label, const bool& selected, const int& stars) const;
     static int CheckMoveKey(float deltaTime);
 
     static void OnSelect(int index);

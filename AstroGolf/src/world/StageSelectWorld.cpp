@@ -9,13 +9,24 @@
 #include "../game/StageManager.h"
 #include "../graph/Graphs.h"
 
+namespace
+{
+    bool graph_initialized = false;
+    std::unique_ptr<Graph> title_graph;
+}
+
 StageSelectWorld::StageSelectWorld()
 {
+    if (!graph_initialized)
+    {
+        title_graph = std::make_unique<Graph>("stage_select/title.png", 534, 208);
+        graph_initialized = true;
+    }
     title_font_handle_ = CreateFontToHandle("M PLUS 1p Bold", 32, 5, DX_FONTTYPE_ANTIALIASING_8X8);
 
     for (const auto& stage : StageManager::GetStages())
     {
-        const auto ptr = std::make_shared<Graph>(std::format("preview/{}", stage.preview), 600, 300);
+        const auto ptr = std::make_shared<Graph>(std::format("preview/{}", stage.preview), 640, 360);
         preview_graphs_.emplace_back(ptr);
     }
 
@@ -45,10 +56,10 @@ void StageSelectWorld::Draw()
 {
     World::Draw();
 
-    static constexpr auto title = "ステージ選択";
-    const auto width = static_cast<float>(GetDrawStringWidthToHandle(title, std::strlen(title), title_font_handle_));
-    DrawStringFToHandle(WINDOW_WIDTH * 0.5f - width * 0.5f, 32.0f, title, GetColor(255, 255, 255),
-                        title_font_handle_);
+    static constexpr float padding = 32;
+    SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255 * 0.8f));
+    title_graph->Draw(padding / 2, padding);
+    SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void StageSelectWorld::Update(const float& deltaTime)

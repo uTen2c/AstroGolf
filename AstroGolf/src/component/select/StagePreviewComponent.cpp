@@ -7,15 +7,25 @@
 
 namespace
 {
-    constexpr auto PREVIEW_WIDTH = 600;
-    constexpr auto PREVIEW_HEIGHT = 300;
-    constexpr auto BASE_WIDTH = 620;
-    constexpr auto BASE_HEIGHT = 320;
-    constexpr auto TITLE_OFFSET = 40;
+    constexpr float PREVIEW_WIDTH = 640;
+    constexpr float PREVIEW_HEIGHT = 360;
+    constexpr float PADDING = 32;
+    constexpr float INNER_PADDING = 16;
+    constexpr float CHALLENGES_PADDING = 8;
+    constexpr float BASE_WIDTH = PREVIEW_WIDTH + INNER_PADDING * 2;
+    constexpr float BASE_HEIGHT = WINDOW_HEIGHT - INNER_PADDING * 2;
+    constexpr float TITLE_OFFSET = 40;
+
+    bool graph_initialized = false;
+    std::unique_ptr<Graph> challenges_graph;
 }
 
 StagePreviewComponent::StagePreviewComponent(const int id): Component(id)
 {
+    if (!graph_initialized)
+    {
+        challenges_graph = std::make_unique<Graph>("stage_select/challenges.png", 398, 44);
+    }
     base_graph_ = std::make_unique<Graph>("preview_base.png", 620, 320);
     challenge_font_handle_ = CreateFontToHandle("M PLUS 1p Medium", 24, 5, DX_FONTTYPE_ANTIALIASING_8X8);
 }
@@ -39,26 +49,23 @@ void StagePreviewComponent::Draw(DrawStack* stack)
         return;
     }
 
-    constexpr auto padding = (WINDOW_HEIGHT - PREVIEW_WIDTH) / 2;
-    constexpr auto x = WINDOW_WIDTH - PREVIEW_WIDTH - padding;
-    constexpr auto baseOffset = (BASE_WIDTH - PREVIEW_WIDTH) * 0.5f;
-    DrawGraphF(x - baseOffset, padding - baseOffset + TITLE_OFFSET, base_graph_->handle, true);
-    graph_->Draw(x, padding + TITLE_OFFSET);
+    // 右の枠
+    static constexpr float start_x = WINDOW_WIDTH - BASE_WIDTH - PADDING;
+    static constexpr float start_y = PADDING;
+    SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255 * 0.5f));
+    DrawBoxAA(start_x, start_y, WINDOW_WIDTH - PADDING, WINDOW_HEIGHT - PADDING, GetColor(158, 228, 255), true);
 
-    constexpr auto borderWidth = 3;
-    constexpr auto challengeBaseX = x - baseOffset;
-    const auto challengeBaseY = padding - baseOffset + TITLE_OFFSET + base_graph_->height + 32;
-    DrawBoxAA(
-        challengeBaseX, challengeBaseY, challengeBaseX + BASE_WIDTH, challengeBaseY + 240,
-        GetColor(66, 86, 213), false, borderWidth);
-    SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255 * 0.2f));
-    DrawBoxAA(
-        challengeBaseX + borderWidth,
-        challengeBaseY + borderWidth,
-        challengeBaseX + BASE_WIDTH - borderWidth * 2,
-        challengeBaseY + 240 - borderWidth * 2,
-        GetColor(0, 17, 206), true);
+    // 下のChallengesの装飾文字
+    static const float challenges_x = WINDOW_WIDTH - PADDING - CHALLENGES_PADDING - challenges_graph->width;
+    static const float challenges_y = WINDOW_HEIGHT - PADDING - CHALLENGES_PADDING - challenges_graph->height;
+    SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255 * 0.25f));
+    challenges_graph->Draw(challenges_x, challenges_y);
+
     SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+    static constexpr float preview_x = start_x + INNER_PADDING;
+    static constexpr float preview_y = start_y + INNER_PADDING;
+    graph_->Draw(preview_x, preview_y);
 
     for (int i = 0; i < min(challenge_entries_.size(), 3); ++i)
     {

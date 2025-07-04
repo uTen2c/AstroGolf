@@ -86,6 +86,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 
+    static ImWchar const glyph_ranges[] = {
+        0x0020, 0xfffd,
+        0,
+    };
+    io.Fonts->AddFontFromFileTTF("./assets/fonts/MPLUS1p-Medium.ttf", 18, nullptr, glyph_ranges);
+
     ImGui_ImplWin32_Init(GetMainWindowHandle());
 
     // ReSharper disable once CppCStyleCast

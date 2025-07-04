@@ -362,11 +362,11 @@ void PlayerComponent::OnCollide(PhysicsComponent* other, const IntersectingResul
     const auto sp = last_move_speed_vec_ * result.normal;
     if (sp.Length() >= 1.5)
     {
-        // const auto particle = std::make_shared<GroundParticleComponent>(world->NextComponentId());
-        // particle->transform.translate = result.point;
-        // particle->normal = result.normal;
-        // particle->speed = sp.Length();
-        // world->AddComponent(particle);
+        const auto particle = std::make_shared<GroundParticleComponent>(world->NextComponentId());
+        particle->transform.translate = result.point;
+        particle->normal = result.normal;
+        particle->speed = sp.Length();
+        world->AddComponent(particle);
     }
 
     if (const auto hole = dynamic_cast<GoalHoleComponent*>(other))

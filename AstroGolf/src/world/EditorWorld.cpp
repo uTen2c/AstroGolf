@@ -14,6 +14,7 @@
 #include "../editor/StageDefine.h"
 #include "../ImEx.h"
 #include "../editor/StageFileManager.h"
+#include "../game/SaveManager.h"
 #include "../game/StageManager.h"
 
 using json = nlohmann::json;
@@ -52,55 +53,18 @@ void EditorWorld::Draw()
 void EditorWorld::DrawBackground(DrawStack& stack)
 {
     World::DrawBackground(stack);
+
+    // PushStyles();
+
     DrawGrid(stack);
 
-    ImGui::Begin("Stage Editor", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-
-    ImGui::SeparatorText("Stage");
-    auto stageId = !stage_id_.empty() ? stage_id_ : "##";
-    const auto& stageIds = StageManager::GetStageIds();
-    if (ImEx::Combo("Stage id", stageId, stageIds))
-    {
-        Load(stageId);
-    }
-
-    ImGui::SeparatorText("Mode");
-    if (ImGui::Button("Anchor"))
-    {
-        place_type_ = PlaceType::PlayerStart;
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("Goal"))
-    {
-        place_type_ = PlaceType::GoalHole;
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("Planet"))
-    {
-        place_type_ = PlaceType::Component;
-    }
-    ImGui::Separator();
-    if (ImEx::Combo("Graph", planet_graph_id_, PlanetGraphs::GetGraphIds()))
-    {
-        planet_radius_ = PlanetGraphs::GetGraphInfo(planet_graph_id_).radius;
-    }
-    ImGui::Separator();
-
-    ImGui::BeginDisabled(!startAnchor || !goalHole);
-    if (ImGui::Button("Test play"))
-    {
-        Save();
-        auto playStage = std::make_unique<PlayWorld>(stageId, GetDefine(), true);
-        Game::instance->ChangeWorldWithTransition(TransitionMode::Slide, std::move(playStage));
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("Save"))
-    {
-        Save();
-    }
-    ImGui::EndDisabled();
-
-    ImGui::End();
+    // ImGui::Begin("Stage Editor", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+    //
+    //
+    //
+    // ImGui::End();
+    //
+    // PopStyles();
 }
 
 void EditorWorld::PostDraw(DrawStack& stack)
@@ -117,7 +81,10 @@ void EditorWorld::Update(const float& deltaTime)
     UpdateComponentIndicator();
     UpdateMovement();
     UpdateDelete();
-    UpdateInspector();
+
+    PushStyles();
+    UpdateUi();
+    PopStyles();
 
     GetPlayer()->transform.translate = GetCamera().transform.translate + Vec2(10000, 10000);
 }
@@ -278,10 +245,52 @@ void EditorWorld::UpdateMovement()
     component->transform.translate = movement_start_component_pos_ + movement;
 }
 
-void EditorWorld::UpdateInspector()
+void EditorWorld::UpdateUi()
 {
-    ImGui::SetNextWindowSize(ImVec2(300, 400), ImGuiCond_Always);
-    ImGui::Begin("Inspector", nullptr, ImGuiWindowFlags_NoResize);
+    ImGui::SetNextWindowSize(ImVec2(300, WINDOW_HEIGHT), ImGuiCond_Always);
+    ImGui::SetNextWindowPos(ImVec2(WINDOW_WIDTH - 300, 0), ImGuiCond_Always);
+    ImGui::Begin("ステージエディター", nullptr,
+                 ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+
+    if (ImGui::BeginMenuBar())
+    {
+        if (ImGui::MenuItem("読み込み"))
+        {
+            ImGui::OpenPopup("ステージ読み込み");
+        }
+
+        if (ImGui::MenuItem("保存"))
+        {
+            //
+        }
+
+        if (ImGui::MenuItem("テストプレイ"))
+        {
+        }
+
+        if (ImGui::BeginPopupModal("ステージ読み込み", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+        {
+            ImGui::Text("読み込むステージを選択してください");
+
+            auto stageId = !stage_id_.empty() ? stage_id_ : "##";
+            const auto& stageIds = StageManager::GetStageIds();
+            if (ImEx::Combo("Stage id", stageId, stageIds))
+            {
+                Load(stageId);
+                ImGui::CloseCurrentPopup();
+            }
+
+            if (ImGui::Button("キャンセル", ImVec2(120, 0)))
+            {
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::EndPopup();
+        }
+
+        ImGui::EndMenuBar();
+    }
+
+    DrawGeneralEditor();
 
     const auto& component = GetComponent(selected_component_id_);
     if (!component)
@@ -354,6 +363,61 @@ void EditorWorld::UpdateDelete()
     }
 }
 
+void EditorWorld::DrawGeneralEditor()
+{
+    if (ImGui::TreeNodeEx("Stage", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        auto stageId = !stage_id_.empty() ? stage_id_ : "##";
+        const auto& stageIds = StageManager::GetStageIds();
+        if (ImEx::Combo("Stage id", stageId, stageIds))
+        {
+            Load(stageId);
+        }
+
+        ImGui::TreePop();
+    }
+
+    if (ImGui::TreeNodeEx("Place mode", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        if (ImGui::Button("Anchor"))
+        {
+            place_type_ = PlaceType::PlayerStart;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Goal"))
+        {
+            place_type_ = PlaceType::GoalHole;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Planet"))
+        {
+            place_type_ = PlaceType::Component;
+        }
+        ImGui::Separator();
+        if (ImEx::Combo("Graph", planet_graph_id_, PlanetGraphs::GetGraphIds()))
+        {
+            planet_radius_ = PlanetGraphs::GetGraphInfo(planet_graph_id_).radius;
+        }
+        ImGui::Separator();
+
+        ImGui::TreePop();
+    }
+
+    ImGui::BeginDisabled(!startAnchor || !goalHole);
+    if (ImGui::Button("Test play"))
+    {
+        Save();
+        auto playStage = std::make_unique<PlayWorld>(stage_id_, GetDefine(), true);
+        Game::instance->ChangeWorldWithTransition(TransitionMode::Slide, std::move(playStage));
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Save"))
+    {
+        Save();
+    }
+    ImGui::EndDisabled();
+}
+
 WorldType EditorWorld::GetType() const
 {
     return WorldType::Editor;
@@ -412,6 +476,7 @@ void EditorWorld::Save()
 
     file << define.ToJson().dump(2);
 
+    StageFileManager::UnloadDefine(stage_id_);
     spdlog::info("Stage save successfully {}", filename);
 }
 
@@ -579,6 +644,18 @@ Vec2 EditorWorld::GetMousePos()
     int mouseY;
     GetMousePoint(&mouseX, &mouseY);
     return {static_cast<float>(mouseX), static_cast<float>(mouseY)};
+}
+
+void EditorWorld::PushStyles()
+{
+    // ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
+    // ImGui::PushStyleColor(ImGuiCol_TitleBg, ImVec4(0.0f, 0.3f, 0.1f, 1.0f));
+}
+
+void EditorWorld::PopStyles()
+{
+    // ImGui::PopStyleColor();
+    // ImGui::PopStyleColor();
 }
 
 StageDefine EditorWorld::GetDefine()

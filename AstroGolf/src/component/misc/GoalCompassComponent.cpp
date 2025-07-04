@@ -28,8 +28,8 @@ void GoalCompassComponent::Update(float delta)
     const auto& center = world->GetCamera().transform.translate;
     transform.translate = center;
 
-    const auto & camera = world->GetCamera();
-    const auto scaledWidth = WINDOW_WIDTH  / camera.zoom;
+    const auto& camera = world->GetCamera();
+    const auto scaledWidth = WINDOW_WIDTH / camera.zoom;
     const auto scaledHeight = WINDOW_HEIGHT / camera.zoom;
     BoundingBox fullscreenBox(scaledWidth + 128, scaledHeight + 128);
 
@@ -59,7 +59,7 @@ void GoalCompassComponent::Update(float delta)
         {
             shouldShowFlag = true;
             flagPos = result.point;
-            compass_angle_ = (flagPos - target->transform.translate).Normalized().SignedAngle({-1, 0}) * -1;
+            compass_angle_ = (flagPos - target->transform.translate).Normalized().SignedAngle({-1, 0});
             break;
         }
     }

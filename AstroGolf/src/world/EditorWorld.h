@@ -85,16 +85,19 @@ private:
     void PlacePlayerStartAnchor(const Vec2& pos);
     void PlaceGoalHole(const Vec2& pos);
     void UpdateMovement();
-    void UpdateInspector();
+    void UpdateUi();
     void UpdateDelete();
 
+    void DrawGeneralEditor();
     void DrawPreview(DrawStack& stack);
     void DrawGizmo(DrawStack& stack);
 
     [[nodiscard]] Vec2 GetMouseWorldPos() const;
 
+    StageDefine GetDefine();
+    
     static void DrawGrid(DrawStack& stack);
     static Vec2 GetMousePos();
-
-    StageDefine GetDefine();
+    static void PushStyles();
+    static void PopStyles();
 };

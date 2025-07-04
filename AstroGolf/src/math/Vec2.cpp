@@ -144,7 +144,8 @@ float Vec2::Angle(const Vec2& other) const
 float Vec2::SignedAngle(const Vec2& other) const
 {
     // atan2を使用して符号付き角度を計算
-    return std::atan2(Cross(other), Dot(other));
+    // Y軸が下向きの座標系なので、外積の符号を反転させる
+    return std::atan2(-Cross(other), Dot(other));
 }
 
 Vec2 Vec2::Rotate(const float radians)

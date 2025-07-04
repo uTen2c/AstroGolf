@@ -2,10 +2,11 @@
 #include "../Component.h"
 #include "../PhysicsComponent.h"
 
-class GroundParticleComponent : public PhysicsComponent
+class GroundParticleComponent : public Component
 {
     float alive_time_ = 0;
     std::vector<float> angles_;
+    float frame_speed_ = 1.0f / 30.0f;
 
 public:
     Vec2 normal;

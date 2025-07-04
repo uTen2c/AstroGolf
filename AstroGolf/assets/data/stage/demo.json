@@ -48,6 +48,28 @@
       "rotationSpeed": 0.45378562808036804,
       "x": 1385.333251953125,
       "y": 669.6666870117188
+    },
+    {
+      "graphId": "gray",
+      "gravityMultiplier": 1.0,
+      "isSatellite": false,
+      "radius": 150.0,
+      "rotationOriginOffsetX": 0.0,
+      "rotationOriginOffsetY": -180.0,
+      "rotationSpeed": 0.0,
+      "x": 65.3333740234375,
+      "y": 670.666748046875
+    },
+    {
+      "graphId": "purple",
+      "gravityMultiplier": 1.0,
+      "isSatellite": false,
+      "radius": 175.0,
+      "rotationOriginOffsetX": 0.0,
+      "rotationOriginOffsetY": -205.0,
+      "rotationSpeed": 0.0,
+      "x": -370.0,
+      "y": 734.0
     }
   ],
   "start": {

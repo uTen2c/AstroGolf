@@ -1,5 +1,7 @@
 #include "CircleCollider.h"
 
+#include <spdlog/spdlog.h>
+
 #include "BoundingBox.h"
 #include "HoleCollider.h"
 #include "RotatableBoxCollider.h"
@@ -18,8 +20,8 @@ IntersectingResult CircleCollider::Intersects(const Vec2& origin, const Vec2& ot
             return NO_INTERSECTED;
         }
 
-        const auto normal = otherOrigin.Copy().Sub(origin);
-        return {.intersected = true, .normal = normal, .point = otherOrigin + normal * cc->radius};
+        const auto normal = otherOrigin.Copy().Sub(origin).Normalized();
+        return {.intersected = true, .normal = normal, .point = origin + normal * radius};
     }
 
     // 円と矩形の衝突判定

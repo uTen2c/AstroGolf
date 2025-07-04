@@ -145,7 +145,7 @@ void PlayerComponent::Draw(DrawStack* stack)
             stack->Push();
             stack->Translate(drag_vector_.Normalized().Mul(offset));
             const auto& pos = stack->GetScreenPos();
-            const auto rot = drag_vector_.Normalized().SignedAngle({0, -1}) * -1;
+            const auto rot = drag_vector_.Normalized().SignedAngle({0, -1});
             const auto srcX = CanShot() ? 0 : 12;
             DrawRectRotaGraph3F(pos.x, pos.y, srcX, 0, 12, height, static_cast<float>(12) * 0.5f, height, 1, 1, rot,
                                 Graphs::playerPowerIndicator->handle, true);
@@ -365,7 +365,6 @@ void PlayerComponent::OnCollide(PhysicsComponent* other, const IntersectingResul
         const auto particle = std::make_shared<GroundParticleComponent>(world->NextComponentId());
         particle->transform.translate = result.point;
         particle->normal = result.normal;
-        particle->speed = sp.Length();
         world->AddComponent(particle);
     }
 

@@ -14,7 +14,6 @@
 #include "../editor/StageDefine.h"
 #include "../ImEx.h"
 #include "../editor/StageFileManager.h"
-#include "../game/SaveManager.h"
 #include "../game/StageManager.h"
 
 using json = nlohmann::json;
@@ -259,14 +258,18 @@ void EditorWorld::UpdateUi()
             ImGui::OpenPopup("ステージ読み込み");
         }
 
+        ImGui::BeginDisabled(!startAnchor || !goalHole);
         if (ImGui::MenuItem("保存"))
         {
-            //
+            Save();
         }
-
         if (ImGui::MenuItem("テストプレイ"))
         {
+            Save();
+            auto playStage = std::make_unique<PlayWorld>(stage_id_, GetDefine(), true);
+            Game::instance->ChangeWorldWithTransition(TransitionMode::Slide, std::move(playStage));
         }
+        ImGui::EndDisabled();
 
         if (ImGui::BeginPopupModal("ステージ読み込み", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
         {
@@ -365,31 +368,26 @@ void EditorWorld::UpdateDelete()
 
 void EditorWorld::DrawGeneralEditor()
 {
-    if (ImGui::TreeNodeEx("Stage", ImGuiTreeNodeFlags_DefaultOpen))
+    if (stage_id_.empty())
     {
-        auto stageId = !stage_id_.empty() ? stage_id_ : "##";
-        const auto& stageIds = StageManager::GetStageIds();
-        if (ImEx::Combo("Stage id", stageId, stageIds))
-        {
-            Load(stageId);
-        }
-
-        ImGui::TreePop();
+        ImGui::Text("「読み込む」からステージデータを\n読み込んでください");
+        return;
     }
-
-    if (ImGui::TreeNodeEx("Place mode", ImGuiTreeNodeFlags_DefaultOpen))
+    
+    ImGui::Text(std::format("ステージID: {}", stage_id_).c_str());
+    if (ImGui::TreeNodeEx("設置モード", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        if (ImGui::Button("Anchor"))
+        if (ImGui::Button("スタート地点"))
         {
             place_type_ = PlaceType::PlayerStart;
         }
         ImGui::SameLine();
-        if (ImGui::Button("Goal"))
+        if (ImGui::Button("ゴール"))
         {
             place_type_ = PlaceType::GoalHole;
         }
         ImGui::SameLine();
-        if (ImGui::Button("Planet"))
+        if (ImGui::Button("惑星"))
         {
             place_type_ = PlaceType::Component;
         }
@@ -402,20 +400,6 @@ void EditorWorld::DrawGeneralEditor()
 
         ImGui::TreePop();
     }
-
-    ImGui::BeginDisabled(!startAnchor || !goalHole);
-    if (ImGui::Button("Test play"))
-    {
-        Save();
-        auto playStage = std::make_unique<PlayWorld>(stage_id_, GetDefine(), true);
-        Game::instance->ChangeWorldWithTransition(TransitionMode::Slide, std::move(playStage));
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("Save"))
-    {
-        Save();
-    }
-    ImGui::EndDisabled();
 }
 
 WorldType EditorWorld::GetType() const

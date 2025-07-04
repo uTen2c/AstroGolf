@@ -2,9 +2,8 @@
 
 #include <numbers>
 
+#include "CrossPointResult.h"
 #include "Vec2.h"
-
-#pragma once
 
 class Math
 {
@@ -24,4 +23,6 @@ public:
     }
 
     static float EaseOutQuad(const float x);
+
+    static CrossPointResult GetCrossPoint(const Vec2& start0, const Vec2& end0, const Vec2& start1, const Vec2& end1);
 };

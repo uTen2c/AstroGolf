@@ -6,6 +6,7 @@
 #include "EditorWorld.h"
 #include "../Game.h"
 #include "../component/GoalHoleComponent.h"
+#include "../component/misc/GoalCompassComponent.h"
 #include "../component/planet/CommonPlanetComponent.h"
 #include "../editor/StageFileManager.h"
 #include "../graph/Graphs.h"
@@ -59,6 +60,10 @@ void PlayWorld::Init()
     goalHole->transform.translate = stageDefine.goal.pos;
     goalHole->transform.rotation = stageDefine.goal.rot;
     AddComponent(goalHole);
+
+    const auto compass = std::make_shared<GoalCompassComponent>(NextComponentId());
+    compass->targetId = goalHole->GetId();
+    AddComponent(compass);
 
     GetPlayer()->transform.translate = stageDefine.startPos;
 }

@@ -17,6 +17,8 @@ public:
     inline static std::unique_ptr<Graph> playerPowerIndicator;
     inline static std::unique_ptr<Graph> editorPlayerStartAnchor;
     inline static std::unique_ptr<Graph> goalHole;
+    inline static std::unique_ptr<Graph> goalFlag;
+    inline static std::unique_ptr<Graph> goalCompass;
 
     static void Load()
     {
@@ -29,5 +31,7 @@ public:
         playerPowerIndicator = std::make_unique<Graph>("power_indicator.png", 12, 128);
         editorPlayerStartAnchor = std::make_unique<Graph>("editor/player_start_anchor.png", 24, 24);
         goalHole = std::make_unique<Graph>("hole.png", 128, 128);
+        goalFlag = std::make_unique<Graph>("stage/goal_flag.png", 64, 64);
+        goalCompass = std::make_unique<Graph>("stage/goal_compass.png", 128, 128);
     }
 };

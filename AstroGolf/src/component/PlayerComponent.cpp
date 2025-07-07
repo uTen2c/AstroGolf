@@ -368,15 +368,13 @@ void PlayerComponent::OnCollide(PhysicsComponent* other, const IntersectingResul
         world->AddComponent(particle);
     }
 
-    if (const auto hole = dynamic_cast<GoalHoleComponent*>(other))
+    if (dynamic_cast<GoalHoleComponent*>(other))
     {
         const auto durationMs = GetNowCount() - last_hole_sound_at_;
         if (sp.Length() >= 1.3 && durationMs > 50)
         {
             last_hole_sound_at_ = GetNowCount();
             dropping_in_hole_sound->volume = std::clamp((last_move_speed_ - 0.3f) / 0.3f, 0.0f, 1.0f);
-            // spdlog::info("hole {} {}", last_move_speed_, dropping_in_hole_sound->volume);
-            spdlog::info("{}", durationMs);
             dropping_in_hole_sound->Play();
         }
     }

@@ -1,6 +1,7 @@
 #include "ImEx.h"
 
 #include <imgui.h>
+#include <cstring>
 
 bool ImEx::Combo(const std::string& caption, std::string& currentItem, const std::vector<std::string>& items)
 {
@@ -25,6 +26,30 @@ bool ImEx::Combo(const std::string& caption, std::string& currentItem, const std
         }
         ImGui::EndCombo();
     }
+
+    return changed;
+}
+
+bool ImEx::InputText(const char* label, std::string* str, const ImGuiInputTextFlags flags, const int bufferSize)
+{
+    // 一時的なバッファを作成
+    const auto buffer = new char[bufferSize];
+
+    // stringの内容をバッファにコピー
+    strncpy_s(buffer, bufferSize, str->c_str(), bufferSize - 1);
+    buffer[bufferSize - 1] = '\0';
+
+    // ImGui::InputTextを実行
+    const bool changed = ImGui::InputText(label, buffer, bufferSize, flags);
+
+    // 変更があった場合、stringに反映
+    if (changed)
+    {
+        *str = buffer;
+    }
+
+    // バッファを解放
+    delete[] buffer;
 
     return changed;
 }

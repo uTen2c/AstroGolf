@@ -20,7 +20,7 @@ public:
     inline static std::unique_ptr<Graph> goalHole;
     inline static std::unique_ptr<Graph> goalFlag;
     inline static std::unique_ptr<Graph> goalCompass;
-    inline static std::vector<std::unique_ptr<Graph>> landingParticles;
+    inline static std::unique_ptr<Graph> landingParticle;
 
     static void Load()
     {
@@ -35,13 +35,6 @@ public:
         goalHole = std::make_unique<Graph>("hole.png", 128, 128);
         goalFlag = std::make_unique<Graph>("stage/goal_flag.png", 64, 64);
         goalCompass = std::make_unique<Graph>("stage/goal_compass.png", 128, 128);
-
-        // 着地パーティクル読み込み
-        static constexpr auto frames = 4;
-        landingParticles.reserve(frames);
-        for (int i = 0; i < frames; ++i)
-        {
-            landingParticles.emplace_back(std::make_unique<Graph>(std::format("landing_particle/landing_particle_{}.png", i), 48, 48));
-        }
+        landingParticle = std::make_unique<Graph>("landing_particle.png", 48, 48);
     }
 };

@@ -154,10 +154,9 @@
     <Content Include="assets\sound\dropping_in_hole.mp3" />
     <Content Include="assets\sound\shot_1.mp3" />
     <Content Include="assets\sound\shot_2.mp3" />
-    <Content Include="assets\sprite\landing_particle\landing_particle_0.png" />
-    <Content Include="assets\sprite\landing_particle\landing_particle_1.png" />
-    <Content Include="assets\sprite\landing_particle\landing_particle_2.png" />
-    <Content Include="assets\sprite\landing_particle\landing_particle_3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="assets\sprite\" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

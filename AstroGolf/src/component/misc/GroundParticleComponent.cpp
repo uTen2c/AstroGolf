@@ -28,16 +28,16 @@ void GroundParticleComponent::Draw(DrawStack* stack)
 {
     stack->Push();
     ApplyDrawStack(stack);
-    
+
     const auto rotation = normal.SignedAngle({0, -1});
     stack->Rotate(rotation);
-    
+
     stack->Push();
     stack->Translate(Vec2(0, -24).Rotate(rotation));
-    
+
 
     const int frameIndex = std::min(static_cast<int>(floor(alive_time_ / frame_speed_)), 3);
-    Graphs::landingParticles[frameIndex]->Draw(*stack);
+    Graphs::landingParticle->Draw(*stack, frameIndex, 0);
     stack->Pop();
     stack->Pop();
 }

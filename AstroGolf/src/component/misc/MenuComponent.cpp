@@ -49,6 +49,10 @@ void MenuComponent::Update(float delta)
 
 void MenuComponent::Draw(DrawStack* stack)
 {
+    if (Game::uiHidden)
+    {
+        return;
+    }
     DrawMenuButton();
     DrawMenu();
 }

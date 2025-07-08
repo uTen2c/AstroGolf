@@ -1,11 +1,12 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(grep:*)",
+      "Bash(rg:*)"
+    ]
+  },
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "microsoft.docs.mcp"
-  ],
-  "permissions": {
-    "allow": [
-      "Bash(grep:*)"
-    ]
-  }
+  ]
 }

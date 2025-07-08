@@ -11,8 +11,8 @@
   },
   {
     "id": "stage00",
-    "name": "Stage00",
-    "preview": "placeholder.png",
+    "name": "衛星",
+    "preview": "stage00.png",
     "challenges": [
       "GoalHoleInOne",
       "GoalExcellent",

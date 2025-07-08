@@ -33,6 +33,7 @@ public:
     inline static int fps = 0;
     inline static float deltaTime = 0;
     inline static bool shouldShutdown = false;
+    inline static bool uiHidden = false;
     inline static bool debugEnabled = false;
     inline static float soundVolume = 1.0f;
 

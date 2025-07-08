@@ -27,7 +27,7 @@ void PlayWorld::Update(const float& deltaTime)
     StageWorld::Update(deltaTime);
     UpdateCamera(deltaTime);
 
-    if (debug_)
+    if (debug_ && !Game::uiHidden)
     {
         ImGui::Begin("Debug");
         ImGui::Checkbox("Free camera", &free_camera_);
@@ -66,6 +66,8 @@ void PlayWorld::Init()
     AddComponent(compass);
 
     GetPlayer()->transform.translate = stageDefine.startPos;
+
+    GetCamera().zoom = 0.8f;
 }
 
 void PlayWorld::Reload() const
@@ -105,6 +107,18 @@ WorldType PlayWorld::GetType() const
 std::string PlayWorld::GetStageId() const
 {
     return id_;
+}
+
+void PlayWorld::OnCameraMoveWithMouse(CameraComponent* camera)
+{
+    StageWorld::OnCameraMoveWithMouse(camera);
+
+    free_camera_ = true;
+}
+
+void PlayWorld::OnShot()
+{
+    free_camera_ = false;
 }
 
 void PlayWorld::OnGoal()

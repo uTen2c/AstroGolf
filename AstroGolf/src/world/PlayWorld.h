@@ -25,5 +25,7 @@ public:
     
     [[nodiscard]] WorldType GetType() const override;
     [[nodiscard]] std::string GetStageId() const override;
+    void OnCameraMoveWithMouse(CameraComponent* camera) override;
+    void OnShot() override;
     void OnGoal() override;
 };

@@ -13,6 +13,7 @@ void Device::Update()
     last_mouse_input_ = current_mouse_input_;
     current_mouse_input_ = GetMouseInput();
 
+    toggleUiKey.Update();
     debugKey.Update();
     menuKey.Update();
     ctrlKey.Update();

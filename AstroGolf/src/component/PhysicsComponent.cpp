@@ -418,7 +418,7 @@ void PhysicsComponent::CalcGravity()
     if (dynamic_cast<TitleWorld*>(world))
     {
         constexpr auto base = 9.8f * 300;
-        const auto distance = std::clamp(200.0f - transform.translate.y, 0.0f, 50.0f);
+        const auto distance = std::clamp(300.0f - transform.translate.y, 0.0f, 100.0f);
         const auto correctedDistance = std::max(distance / 100.0f, 1.0f); // 1px = 1cm, convert cm to meter
         const auto g = base * 0.2f / correctedDistance;
         gravitySources.emplace_back(0.0f, g);

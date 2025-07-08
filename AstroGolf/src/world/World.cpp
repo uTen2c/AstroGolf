@@ -311,6 +311,10 @@ void World::OnCameraMoveWithMouse(CameraComponent* camera)
     //
 }
 
+void World::OnShot()
+{
+}
+
 void World::OnGoal()
 {
 }

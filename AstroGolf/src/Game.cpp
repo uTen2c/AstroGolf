@@ -66,6 +66,11 @@ void Game::Update()
     {
         debugEnabled = !debugEnabled;
     }
+
+    if (device_.toggleUiKey.Pressed())
+    {
+        uiHidden = !uiHidden;
+    }
 }
 
 void Game::UpdateTransition(const float delta)

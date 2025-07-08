@@ -8,7 +8,7 @@ class HoleCollider : public Collider
 public:
     float width = 60.0f;
     float height = 80.0f;
-    float edgeWidth = 4.0f;
+    float edgeWidth = 3.0f;
     float rotation = 0.0f;
 
     HoleCollider();

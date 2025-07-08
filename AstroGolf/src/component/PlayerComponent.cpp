@@ -259,6 +259,7 @@ void PlayerComponent::UpdateShot()
             velocity = shotVec;
             PlayShotSound();
             shot_count_++;
+            world->OnShot();
         }
         drag_vector_ = {};
         isDragging = false;

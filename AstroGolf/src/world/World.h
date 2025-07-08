@@ -89,6 +89,7 @@ public:
 
     virtual void OnCameraMoveWithMouse(CameraComponent* camera);
 
+    virtual void OnShot();
     virtual void OnGoal();
 
     virtual bool CanPlayerShot();

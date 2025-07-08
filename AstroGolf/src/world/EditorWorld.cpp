@@ -108,6 +108,11 @@ void EditorWorld::UpdatePlanetEditor(const float& deltaTime)
         return;
     }
 
+    if (stage_id_.empty())
+    {
+        return;
+    }
+
     if (!Game::Device().LeftReleased() || mousePos.Distance(clicked_pos_) > 10)
     {
         return;
@@ -246,13 +251,18 @@ void EditorWorld::UpdateMovement()
 
 void EditorWorld::UpdateUi()
 {
-    ImGui::SetNextWindowSize(ImVec2(300, WINDOW_HEIGHT), ImGuiCond_Always);
-    ImGui::SetNextWindowPos(ImVec2(WINDOW_WIDTH - 300, 0), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(360, WINDOW_HEIGHT), ImGuiCond_Always);
+    ImGui::SetNextWindowPos(ImVec2(WINDOW_WIDTH - 360, 0), ImGuiCond_Always);
     ImGui::Begin("ステージエディター", nullptr,
                  ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
     if (ImGui::BeginMenuBar())
     {
+        // if (ImGui::MenuItem("新規作成"))
+        // {
+        //     ImGui::OpenPopup("ステージ新規作成");
+        // }
+
         if (ImGui::MenuItem("読み込み"))
         {
             ImGui::OpenPopup("ステージ読み込み");
@@ -270,6 +280,20 @@ void EditorWorld::UpdateUi()
             Game::instance->ChangeWorldWithTransition(TransitionMode::Slide, std::move(playStage));
         }
         ImGui::EndDisabled();
+
+        // if (ImGui::BeginPopupModal("ステージ新規作成", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+        // {
+        //     ImGui::Text("ステージIDを入力してください");
+        //
+        //     std::string id;
+        //     ImEx::InputText("ID", &id);
+        //
+        //     if (ImGui::Button("キャンセル", ImVec2(120, 0)))
+        //     {
+        //         ImGui::CloseCurrentPopup();
+        //     }
+        //     ImGui::EndPopup();
+        // }
 
         if (ImGui::BeginPopupModal("ステージ読み込み", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
         {
@@ -295,15 +319,21 @@ void EditorWorld::UpdateUi()
 
     DrawGeneralEditor();
 
-    const auto& component = GetComponent(selected_component_id_);
-    if (!component)
+    if (stage_id_.empty())
     {
-        ImGui::Text("Choose component");
         ImGui::End();
         return;
     }
 
-    if (ImGui::TreeNodeEx("Transform", ImGuiTreeNodeFlags_DefaultOpen))
+    const auto& component = GetComponent(selected_component_id_);
+    if (!component)
+    {
+        ImGui::Text("クリックしてコンポーネントを\n選択してください");
+        ImGui::End();
+        return;
+    }
+
+    if (ImGui::TreeNodeEx("位置", ImGuiTreeNodeFlags_DefaultOpen))
     {
         // 座標
         ImGui::InputFloat("X", &component->transform.translate.x);
@@ -320,21 +350,21 @@ void EditorWorld::UpdateUi()
 
     if (const auto planet = dynamic_cast<CommonPlanetComponent*>(component))
     {
-        if (ImGui::TreeNodeEx("Planet", ImGuiTreeNodeFlags_DefaultOpen))
+        if (ImGui::TreeNodeEx("詳細 (惑星)", ImGuiTreeNodeFlags_DefaultOpen))
         {
-            ImGui::SliderFloat("Radius", &planet->radius, 4, 600);
-            if (ImEx::Combo("Graph", planet->graphId, PlanetGraphs::GetGraphIds()))
+            ImGui::SliderFloat("半径", &planet->radius, 4, 600);
+            if (ImEx::Combo("タイプ", planet->graphId, PlanetGraphs::GetGraphIds()))
             {
                 planet->radius = PlanetGraphs::GetGraphInfo(planet->graphId).radius;
             }
 
-            ImGui::InputFloat("Gravity Multiplier", &planet->gravityMultiplier);
+            ImGui::InputFloat("重力倍率", &planet->gravityMultiplier);
 
-            ImGui::Checkbox("Is satellite", &planet->isSatellite);
+            ImGui::Checkbox("衛星", &planet->isSatellite);
 
             if (planet->isSatellite)
             {
-                ImGui::SliderAngle("Rot / Sec", &planet->rotationSpeed);
+                ImGui::SliderAngle("回転角度/秒", &planet->rotationSpeed);
             }
 
             ImGui::TreePop();
@@ -373,7 +403,7 @@ void EditorWorld::DrawGeneralEditor()
         ImGui::Text("「読み込む」からステージデータを\n読み込んでください");
         return;
     }
-    
+
     ImGui::Text(std::format("ステージID: {}", stage_id_).c_str());
     if (ImGui::TreeNodeEx("設置モード", ImGuiTreeNodeFlags_DefaultOpen))
     {
@@ -391,12 +421,10 @@ void EditorWorld::DrawGeneralEditor()
         {
             place_type_ = PlaceType::Component;
         }
-        ImGui::Separator();
-        if (ImEx::Combo("Graph", planet_graph_id_, PlanetGraphs::GetGraphIds()))
+        if (ImEx::Combo("惑星タイプ", planet_graph_id_, PlanetGraphs::GetGraphIds()))
         {
             planet_radius_ = PlanetGraphs::GetGraphInfo(planet_graph_id_).radius;
         }
-        ImGui::Separator();
 
         ImGui::TreePop();
     }

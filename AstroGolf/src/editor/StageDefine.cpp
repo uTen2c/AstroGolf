@@ -44,6 +44,21 @@ StageDefine::StageDefine(const json& json)
     {
         //
     }
+    try
+    {
+        for (auto j : json.at("playableAreas"))
+        {
+            PlayableAreaDefine playableAreaDefine = {
+                .start = {j.at("start").at("x"), j.at("start").at("y")},
+                .end = {j.at("end").at("x"), j.at("end").at("y")},
+            };
+            playableAreas.emplace_back(playableAreaDefine);
+        }
+    }
+    catch (const std::exception& e)
+    {
+        //
+    }
 }
 
 json StageDefine::ToJson() const
@@ -67,6 +82,30 @@ json StageDefine::ToJson() const
         planetList.emplace_back(planetJson);
     }
 
+    std::vector<json> playableAreaList;
+    playableAreaList.reserve(playableAreas.size());
+    for (const auto& area : playableAreas)
+    {
+        const json areaJson = {
+            {
+                "start",
+                {
+                    {"x", area.start.x},
+                    {"y", area.start.y},
+                },
+            },
+            {
+                "end",
+                {
+                    {"x", area.end.x},
+                    {"y", area.end.y},
+                },
+            }
+        };
+        playableAreaList.emplace_back(areaJson);
+    }
+
+
     return json{
         {
             "start", {
@@ -82,6 +121,7 @@ json StageDefine::ToJson() const
                 {"rot", goal.rot},
             }
         },
-        {"planets", planetList}
+        {"planets", planetList},
+        {"playableAreas", playableAreaList},
     };
 }

@@ -1,1 +1,35 @@
-{}
+{
+  "goal": {
+    "rot": 0.0,
+    "x": -1244.0,
+    "y": -604.0
+  },
+  "planets": [
+    {
+      "graphId": "purple",
+      "gravityMultiplier": 1.0,
+      "isSatellite": false,
+      "radius": 175.0,
+      "rotationOriginOffsetX": 0.0,
+      "rotationOriginOffsetY": -205.0,
+      "rotationSpeed": 0.0,
+      "x": -496.0,
+      "y": -80.0
+    },
+    {
+      "graphId": "blue",
+      "gravityMultiplier": 3.0,
+      "isSatellite": false,
+      "radius": 131.0,
+      "rotationOriginOffsetX": 0.0,
+      "rotationOriginOffsetY": -161.0,
+      "rotationSpeed": 0.0,
+      "x": 80.0,
+      "y": 264.0
+    }
+  ],
+  "start": {
+    "x": -390.0,
+    "y": 94.0
+  }
+}

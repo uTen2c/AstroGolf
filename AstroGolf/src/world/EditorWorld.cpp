@@ -37,6 +37,8 @@ void EditorWorld::Init()
 {
     World::Init();
 
+    GetCamera().minZoomLevel = 0.1f;
+
     if (!has_define_)
     {
         return;
@@ -46,7 +48,12 @@ void EditorWorld::Init()
 
 void EditorWorld::Draw()
 {
+    if (place_type_ == PlaceType::PlayableArea)
+    {
+        SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255 * 0.4));
+    }
     World::Draw();
+    SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void EditorWorld::DrawBackground(DrawStack& stack)
@@ -70,6 +77,7 @@ void EditorWorld::PostDraw(DrawStack& stack)
 {
     DrawPreview(stack);
     DrawGizmo(stack);
+    DrawPlayableArea();
 }
 
 void EditorWorld::Update(const float& deltaTime)
@@ -77,6 +85,7 @@ void EditorWorld::Update(const float& deltaTime)
     World::Update(deltaTime);
 
     UpdatePlanetEditor(deltaTime);
+    UpdatePlayableAreaEditor();
     UpdateComponentIndicator();
     UpdateMovement();
     UpdateDelete();
@@ -108,7 +117,14 @@ void EditorWorld::UpdatePlanetEditor(const float& deltaTime)
         return;
     }
 
+    // ステージを読み込んでいなかったらなにもしない
     if (stage_id_.empty())
+    {
+        return;
+    }
+
+    // 設置モードがプレイアブルエリアの場合は何もしない
+    if (place_type_ == PlaceType::PlayableArea)
     {
         return;
     }
@@ -142,10 +158,37 @@ void EditorWorld::UpdatePlanetEditor(const float& deltaTime)
             AddComponent(component);
             break;
         }
+    case PlaceType::PlayableArea:
+        break;
     }
 
     selected_component_id_ = id;
     spdlog::info("Clicked {}, {}", worldPos.x, worldPos.y);
+}
+
+void EditorWorld::UpdatePlayableAreaEditor()
+{
+    if (place_type_ != PlaceType::PlayableArea)
+    {
+        return;
+    }
+
+    const auto& worldPos = GetMouseWorldPos();
+    if (!is_area_dragging_ && Game::Device().RightClicked())
+    {
+        area_start_pos_ = worldPos;
+        is_area_dragging_ = true;
+    }
+
+    if (is_area_dragging_ && Game::Device().RightReleased())
+    {
+        is_area_dragging_ = false;
+    }
+
+    if (is_area_dragging_ && Game::Device().RightClicking())
+    {
+        area_end_pos_ = worldPos;
+    }
 }
 
 void EditorWorld::PlacePlayerStartAnchor(const Vec2& pos)
@@ -421,6 +464,12 @@ void EditorWorld::DrawGeneralEditor()
         {
             place_type_ = PlaceType::Component;
         }
+        ImGui::SameLine();
+        if (ImGui::Button("プレイエリア"))
+        {
+            place_type_ = PlaceType::PlayableArea;
+            selected_component_id_ = -1;
+        }
         if (ImEx::Combo("惑星タイプ", planet_graph_id_, PlanetGraphs::GetGraphIds()))
         {
             planet_radius_ = PlanetGraphs::GetGraphInfo(planet_graph_id_).radius;
@@ -445,8 +494,18 @@ void EditorWorld::Load(const std::string& stageId)
         RemoveComponent(id);
     }
     defined_component_ids_.clear();
-    startAnchor = nullptr;
-    goalHole = nullptr;
+
+    if (startAnchor)
+    {
+        RemoveComponent(startAnchor->GetId());
+        startAnchor = nullptr;
+    }
+
+    if (goalHole)
+    {
+        RemoveComponent(goalHole->GetId());
+        goalHole = nullptr;
+    }
 
     stage_id_ = stageId;
 
@@ -473,6 +532,19 @@ void EditorWorld::Load(const std::string& stageId)
     startAnchor = std::make_shared<PlayerStartAnchorComponent>(NextComponentId());
     startAnchor->transform.translate = define.startPos;
     AddComponent(startAnchor);
+
+    // vectorで扱っているが、とりあえず一つだけ
+    if (!define.playableAreas.empty())
+    {
+        const auto& [start, end] = define.playableAreas[0];
+        area_start_pos_ = start;
+        area_end_pos_ = end;
+    }
+    else
+    {
+        area_start_pos_ = {};
+        area_end_pos_ = {};
+    }
 }
 
 void EditorWorld::Save()
@@ -521,6 +593,10 @@ void EditorWorld::UpdateComponentIndicator()
 
 void EditorWorld::DrawPreview(DrawStack& stack)
 {
+    if (stage_id_.empty())
+    {
+        return;
+    }
     if (Game::Device().LeftClicking())
     {
         return;
@@ -561,9 +637,36 @@ void EditorWorld::DrawPreview(DrawStack& stack)
             component.Draw(&stack);
             break;
         }
+    case PlaceType::PlayableArea:
+        break;
     }
 
     SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+}
+
+void EditorWorld::DrawPlayableArea() const
+{
+    if (place_type_ != PlaceType::PlayableArea)
+    {
+        return;
+    }
+    if (area_start_pos_.Distance(area_end_pos_) < 0.1f)
+    {
+        return;
+    }
+    auto stack = CreateDrawStack();
+
+    stack.Push();
+    stack.Translate(area_start_pos_);
+    const auto& startPos = stack.GetScreenPos();
+    stack.Pop();
+
+    stack.Push();
+    stack.Translate(area_end_pos_);
+    const auto& endPos = stack.GetScreenPos();
+    stack.Pop();
+
+    DrawBoxAA(startPos.x, startPos.y, endPos.x, endPos.y, GetColor(0, 255, 0), false, 2);
 }
 
 void EditorWorld::DrawGizmo(DrawStack& stack)
@@ -706,5 +809,11 @@ StageDefine EditorWorld::GetDefine()
             define.planets.emplace_back(planetDefine);
         }
     }
+
+    define.playableAreas.emplace_back(PlayableAreaDefine{
+        .start = area_start_pos_,
+        .end = area_end_pos_,
+    });
+
     return define;
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "StageWorld.h"
+#include "../component/GoalHoleComponent.h"
 #include "../editor/StageDefine.h"
 
 class PlayWorld final : public StageWorld
@@ -14,6 +15,7 @@ public:
     explicit PlayWorld(std::string id);
     explicit PlayWorld(std::string id, const StageDefine& stageDefine, bool debug = false);
     void Update(const float& deltaTime) override;
+    void CheckPlayableArea() const;
     void Init() override;
     void Reload() const override;
 

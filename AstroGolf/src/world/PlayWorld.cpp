@@ -2,6 +2,7 @@
 
 #include <imgui.h>
 #include <memory>
+#include <spdlog/spdlog.h>
 
 #include "EditorWorld.h"
 #include "../Game.h"
@@ -10,6 +11,7 @@
 #include "../component/planet/CommonPlanetComponent.h"
 #include "../editor/StageFileManager.h"
 #include "../graph/Graphs.h"
+#include "../math/BoundingBox.h"
 #include "../math/Math.h"
 
 PlayWorld::PlayWorld(std::string id) : id_(std::move(id))
@@ -26,6 +28,7 @@ void PlayWorld::Update(const float& deltaTime)
 {
     StageWorld::Update(deltaTime);
     UpdateCamera(deltaTime);
+    CheckPlayableArea();
 
     if (debug_ && !Game::uiHidden)
     {
@@ -37,6 +40,36 @@ void PlayWorld::Update(const float& deltaTime)
         }
         ImGui::End();
     }
+}
+
+void PlayWorld::CheckPlayableArea() const
+{
+    // プレイアブルエリアが設定されていない場合は何もしない
+    if (stageDefine.playableAreas.empty())
+    {
+        return;
+    }
+
+    const auto areaDefine = stageDefine.playableAreas[0]; // vectorで扱っているがとりあえず一つだけ
+    const auto origin = Math::GetCenter(areaDefine.start, areaDefine.end);
+    const auto width = std::abs(areaDefine.start.x - areaDefine.end.x);
+    const auto height = std::abs(areaDefine.start.y - areaDefine.end.y);
+    const auto& area = BoundingBox(width, height);
+
+    // // スタート地点がプレイアブルエリアに含まれていない場合は何もしない
+    // if (!area.Contains(origin, stageDefine.startPos))
+    // {
+    //     return;
+    // }
+
+    // プレイヤーがプレイアブルエリア内にいる場合は何もしない
+    if (area.Contains(origin, GetPlayer()->transform.translate))
+    {
+        return;
+    }
+
+    // Reload();
+    // TODO
 }
 
 void PlayWorld::Init()

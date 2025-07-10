@@ -8,7 +8,8 @@ enum class PlaceType : std::uint8_t
 {
     PlayerStart,
     GoalHole,
-    Component
+    Component,
+    PlayableArea,
 };
 
 inline const char* to_string(const PlaceType e)
@@ -18,6 +19,7 @@ inline const char* to_string(const PlaceType e)
     case PlaceType::PlayerStart: return "PlayerStart";
     case PlaceType::GoalHole: return "Goal";
     case PlaceType::Component: return "Component";
+    case PlaceType::PlayableArea: return "PlayableArea";
     }
     return "unknown";
 }
@@ -58,6 +60,11 @@ class EditorWorld final : public World
     std::string planet_graph_id_ = "purple";
     float planet_radius_ = 175;
 
+    // PlayableAreaEditor
+    bool is_area_dragging_ = false;
+    Vec2 area_start_pos_;
+    Vec2 area_end_pos_;
+
 public:
     std::shared_ptr<PlayerStartAnchorComponent> startAnchor;
     std::shared_ptr<GoalHoleComponent> goalHole;
@@ -82,6 +89,7 @@ private:
 
     void UpdateComponentIndicator();
     void UpdatePlanetEditor(const float& deltaTime);
+    void UpdatePlayableAreaEditor();
     void PlacePlayerStartAnchor(const Vec2& pos);
     void PlaceGoalHole(const Vec2& pos);
     void UpdateMovement();
@@ -90,6 +98,7 @@ private:
 
     void DrawGeneralEditor();
     void DrawPreview(DrawStack& stack);
+    void DrawPlayableArea() const;
     void DrawGizmo(DrawStack& stack);
 
     [[nodiscard]] Vec2 GetMouseWorldPos() const;

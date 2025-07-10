@@ -22,7 +22,9 @@ public:
         return min <= value && value <= max;
     }
 
-    static float EaseOutQuad(const float x);
+    static float EaseOutQuad(float x);
 
     static CrossPointResult GetCrossPoint(const Vec2& start0, const Vec2& end0, const Vec2& start1, const Vec2& end1);
+
+    static Vec2 GetCenter(const Vec2& a, const Vec2& b);
 };

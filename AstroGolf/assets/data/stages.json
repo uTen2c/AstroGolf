@@ -22,10 +22,10 @@
   {
     "id": "stage01",
     "name": "stage01",
-    "preview": "placeholder.png",
+    "preview": "stage01.png",
     "challenges": [
+      "NoBound",
       "GoalHoleInOne",
-      "GoalExcellent",
       "Goal"
     ]
   },

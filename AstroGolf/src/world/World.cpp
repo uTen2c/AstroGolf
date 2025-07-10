@@ -32,17 +32,7 @@ void World::Init()
 
 void World::Draw()
 {
-    auto stack = DrawStack();
-
-    // カメラの位置を補正する
-    auto originOffset = Vec2(640, 360); // FIXME マジックナンバーをやめる
-    originOffset.Div(camera_->zoom);
-
-    auto trans = camera_->transform.translate;
-    trans.Mul(-1);
-    trans.Add(originOffset);
-    stack.Translate(trans);
-    stack.Scale(camera_->zoom);
+    auto stack = CreateDrawStack();
 
     DrawBackground(stack);
 
@@ -347,4 +337,21 @@ void World::SetMenuOpen(const bool open) const
     {
         menu_->SetMenuOpen(open);
     }
+}
+
+DrawStack World::CreateDrawStack() const
+{
+    auto stack = DrawStack();
+
+    // カメラの位置を補正する
+    auto originOffset = Vec2(640, 360); // FIXME マジックナンバーをやめる
+    originOffset.Div(camera_->zoom);
+
+    auto trans = camera_->transform.translate;
+    trans.Mul(-1);
+    trans.Add(originOffset);
+    stack.Translate(trans);
+    stack.Scale(camera_->zoom);
+
+    return stack;
 }

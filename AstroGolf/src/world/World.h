@@ -96,6 +96,8 @@ public:
 
     void SetMenuOpen(bool open) const;
 
+    DrawStack CreateDrawStack() const;
+
 protected:
     virtual void DrawBackground(DrawStack& stack);
     virtual void PostDraw(DrawStack& stack);

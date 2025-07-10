@@ -27,6 +27,7 @@ std::shared_ptr<StageDefine> StageFileManager::LoadDefine(const std::string& id)
     json json;
     file >> json;
 
+
     auto ptr = std::make_shared<StageDefine>(json);
     loaded_defines_[id] = ptr;
     return ptr;

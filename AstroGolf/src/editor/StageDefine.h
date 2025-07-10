@@ -23,12 +23,19 @@ struct PlanetDefine
     float rotationOriginOffsetY;
 };
 
+struct PlayableAreaDefine
+{
+    Vec2 start;
+    Vec2 end;
+};
+
 class StageDefine
 {
 public:
     Vec2 startPos = {};
     GoalDefine goal = {};
     std::vector<PlanetDefine> planets = {};
+    std::vector<PlayableAreaDefine> playableAreas = {};
 
     StageDefine() = default;
 

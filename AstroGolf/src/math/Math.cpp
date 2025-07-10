@@ -1,5 +1,7 @@
 #include "Math.h"
 
+#include <valarray>
+
 #include "CrossPointResult.h"
 
 float Math::Lerp(const float& start, const float& end, const float& delta)
@@ -60,4 +62,9 @@ CrossPointResult Math::GetCrossPoint(const Vec2& start0, const Vec2& end0, const
     }
 
     return result;
+}
+
+Vec2 Math::GetCenter(const Vec2& a, const Vec2& b)
+{
+    return {std::abs(a.x - b.x) * 0.5f, std::abs(a.y - b.y) * 0.5f};
 }

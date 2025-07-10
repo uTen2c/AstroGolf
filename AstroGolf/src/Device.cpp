@@ -47,10 +47,26 @@ bool Device::LeftClicking() const
     return (current_mouse_input_ & MOUSE_INPUT_LEFT) != 0;
 }
 
-bool Device::RightClicked() const
+bool Device::RightClicked()
 {
-    return (last_mouse_input_ & MOUSE_INPUT_RIGHT) == 0
+    const auto clicked = (last_mouse_input_ & MOUSE_INPUT_RIGHT) == 0
         && (current_mouse_input_ & MOUSE_INPUT_RIGHT) != 0;
+    if (clicked)
+    {
+        right_clicked_pos_ = MousePos();
+    }
+    return clicked;
+}
+
+bool Device::RightReleased(const bool allowMove) const
+{
+    const auto released = (last_mouse_input_ & MOUSE_INPUT_RIGHT) != 0
+    && (current_mouse_input_ & MOUSE_INPUT_RIGHT) == 0;
+    if (allowMove)
+    {
+        return released;
+    }
+    return right_clicked_pos_.Distance(MousePos()) < 10;
 }
 
 bool Device::RightClicking() const

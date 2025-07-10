@@ -8,7 +8,7 @@ namespace
 {
     int load(const std::string& graphName)
     {
-        const auto handle = LoadGraph(fmt::format("assets/sprite/{}", graphName).c_str());
+        const auto handle = LoadGraph(std::format("assets/sprite/{}", graphName).c_str());
         if (handle == -1)
         {
             spdlog::warn("Failed to load image file '{}'", graphName);

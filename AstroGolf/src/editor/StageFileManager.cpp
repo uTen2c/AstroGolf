@@ -16,7 +16,7 @@ std::shared_ptr<StageDefine> StageFileManager::GetOrLoadDefine(const std::string
 
 std::shared_ptr<StageDefine> StageFileManager::LoadDefine(const std::string& id)
 {
-    const auto& filename = fmt::format("assets/data/stage/{}.json", id);
+    const auto& filename = std::format("assets/data/stage/{}.json", id);
     std::ifstream file(filename);
     if (!file.is_open())
     {

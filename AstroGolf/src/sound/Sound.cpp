@@ -8,7 +8,7 @@
 
 Sound::Sound(const std::string& path)
 {
-    handle_ = LoadSoundMem(fmt::format("assets/sound/{}", path).c_str());
+    handle_ = LoadSoundMem(std::format("assets/sound/{}", path).c_str());
     if (handle_ == -1)
     {
         spdlog::warn("Failed to load sound file '{}'", path);

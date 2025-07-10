@@ -22,12 +22,14 @@ jobs:
 
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v2
+      - name: Install dependencies with vcpkg
+        run: |
+          cd AstroGolf
+          vcpkg install
+
       - name: Build
         run: |
           msbuild AstroGolf.sln /t:build /p:Configuration=Release /p:Platform=x64
-
-      - run: |
-          ls
 
       - name: Copy assets to Release directory
         run: |

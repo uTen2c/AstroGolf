@@ -25,6 +25,7 @@ jobs:
       - name: Install dependencies with vcpkg
         run: |
           cd AstroGolf
+          vcpkg integrate install
           vcpkg install
 
       - name: Build

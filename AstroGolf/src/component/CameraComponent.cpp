@@ -82,5 +82,5 @@ void CameraComponent::UpdateZoom()
         return;
     }
     const auto rot = GetMouseWheelRotVol();
-    zoom = std::clamp(zoom + static_cast<float>(rot) * 0.1f, 0.5f, 2.0f);
+    zoom = std::clamp(zoom + static_cast<float>(rot) * 0.1f, minZoomLevel, maxZoomLevel);
 }

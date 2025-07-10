@@ -29,7 +29,7 @@ jobs:
 
       - name: Build
         run: |
-          msbuild AstroGolf.sln /t:build /p:Configuration=Release /p:Platform=x64
+          msbuild AstroGolf.sln /t:build /p:Configuration=Release /p:Platform=x64 /p:VcpkgEnabled=true
 
       - name: Copy assets to Release directory
         run: |

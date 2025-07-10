@@ -65,6 +65,9 @@ class EditorWorld final : public World
     Vec2 area_start_pos_;
     Vec2 area_end_pos_;
 
+    // New stage popup
+    std::string new_stage_id_;
+
 public:
     std::shared_ptr<PlayerStartAnchorComponent> startAnchor;
     std::shared_ptr<GoalHoleComponent> goalHole;
@@ -104,6 +107,9 @@ private:
     [[nodiscard]] Vec2 GetMouseWorldPos() const;
 
     StageDefine GetDefine();
+
+    static bool CanCreateStage(const std::string& id);
+    void CreateStage(const std::string& id);
     
     static void DrawGrid(DrawStack& stack);
     static Vec2 GetMousePos();

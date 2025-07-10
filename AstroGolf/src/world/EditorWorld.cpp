@@ -59,18 +59,7 @@ void EditorWorld::Draw()
 void EditorWorld::DrawBackground(DrawStack& stack)
 {
     World::DrawBackground(stack);
-
-    // PushStyles();
-
     DrawGrid(stack);
-
-    // ImGui::Begin("Stage Editor", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-    //
-    //
-    //
-    // ImGui::End();
-    //
-    // PopStyles();
 }
 
 void EditorWorld::PostDraw(DrawStack& stack)
@@ -301,10 +290,11 @@ void EditorWorld::UpdateUi()
 
     if (ImGui::BeginMenuBar())
     {
-        // if (ImGui::MenuItem("新規作成"))
-        // {
-        //     ImGui::OpenPopup("ステージ新規作成");
-        // }
+        if (ImGui::MenuItem("新規作成"))
+        {
+            new_stage_id_ = "";
+            ImGui::OpenPopup("ステージ新規作成");
+        }
 
         if (ImGui::MenuItem("読み込み"))
         {
@@ -324,19 +314,28 @@ void EditorWorld::UpdateUi()
         }
         ImGui::EndDisabled();
 
-        // if (ImGui::BeginPopupModal("ステージ新規作成", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
-        // {
-        //     ImGui::Text("ステージIDを入力してください");
-        //
-        //     std::string id;
-        //     ImEx::InputText("ID", &id);
-        //
-        //     if (ImGui::Button("キャンセル", ImVec2(120, 0)))
-        //     {
-        //         ImGui::CloseCurrentPopup();
-        //     }
-        //     ImGui::EndPopup();
-        // }
+        if (ImGui::BeginPopupModal("ステージ新規作成", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+        {
+            ImGui::Text("ステージIDを入力してください");
+
+            ImEx::InputText("ID", &new_stage_id_);
+
+            if (ImGui::Button("キャンセル", ImVec2(140, 0)))
+            {
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::SameLine();
+
+            ImGui::BeginDisabled(!CanCreateStage(new_stage_id_));
+            if (ImGui::Button("作成", ImVec2(140, 0)))
+            {
+                CreateStage(new_stage_id_);
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::EndDisabled();
+            ImGui::EndPopup();
+        }
 
         if (ImGui::BeginPopupModal("ステージ読み込み", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
         {
@@ -550,7 +549,7 @@ void EditorWorld::Load(const std::string& stageId)
 void EditorWorld::Save()
 {
     const auto& define = GetDefine();
-    const auto& filename = fmt::format("assets/data/stage/{}.json", stage_id_);
+    const auto& filename = std::format("assets/data/stage/{}.json", stage_id_);
     std::ofstream file(filename);
     if (!file.is_open())
     {
@@ -816,4 +815,26 @@ StageDefine EditorWorld::GetDefine()
     });
 
     return define;
+}
+
+bool EditorWorld::CanCreateStage(const std::string& id)
+{
+    if (id.empty())
+    {
+        return false;
+    }
+    const auto& ids = StageManager::GetStageIds();
+    return std::ranges::find(ids, id) == ids.end();
+}
+
+void EditorWorld::CreateStage(const std::string& id)
+{
+    const auto& filename = std::format("assets/data/stage/{}.json", id);
+    std::ofstream file(filename);
+
+    file << "{}";
+
+    file.close();
+
+    Load(id);
 }

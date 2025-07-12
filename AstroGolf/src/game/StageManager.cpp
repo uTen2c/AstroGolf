@@ -7,7 +7,6 @@
 #include "../editor/StageFileManager.h"
 #include "../world/DemoWorld.h"
 #include "../world/PlayWorld.h"
-#include "../world/TitleWorld.h"
 
 using json = nlohmann::json;
 
@@ -40,8 +39,6 @@ bool StageManager::LoadStages()
 
         spdlog::info("Loaded {} stages", stages_.size());
 
-        OnRegisterWorlds();
-
         return true;
     }
     catch (const std::exception& e)
@@ -64,36 +61,16 @@ std::vector<std::string> StageManager::GetStageIds()
 
 std::unique_ptr<World> StageManager::CreateWorld(const std::string& id)
 {
-    auto stageDefine = StageFileManager::GetOrLoadDefine(id);
+    const auto stageDefine = StageFileManager::GetOrLoadDefine(id);
     if (!stageDefine)
     {
         spdlog::warn("Tried to create a world with a non-exists ID: {}", id);
         return nullptr;
     }
     return std::make_unique<PlayWorld>(id, *stageDefine);
-    // const auto& function = factories_[id];
-    // if (!function)
-    // {
-    //     spdlog::warn("Tried to create a world with a non-exists ID: {}", id);
-    //     return nullptr;
-    // }
-    // return function();
 }
 
-void StageManager::OnRegisterWorlds()
-{
-    // TODO 不要
-    RegisterWorld(demoId, []
-    {
-        return std::make_unique<DemoWorld>();
-    });
-    RegisterWorld(titleId, []
-    {
-        return std::make_unique<TitleWorld>();
-    });
-}
-
-std::string StageManager::GetChallengeMessage(GoalChallengeType type)
+std::string StageManager::GetChallengeMessage(const GoalChallengeType type)
 {
     switch (type)
     {
@@ -107,15 +84,4 @@ std::string StageManager::GetChallengeMessage(GoalChallengeType type)
         return "バウンドせずにゴールする";
     }
     return "";
-}
-
-void StageManager::RegisterWorld(const std::string& id, const std::function<std::unique_ptr<World>()>& worldFactory)
-{
-    if (factories_.contains(id))
-    {
-        spdlog::warn("World factory already registered: {}", id);
-        return;
-    }
-    factories_[id] = worldFactory;
-    spdlog::info("World factory registered: {}", id);
 }

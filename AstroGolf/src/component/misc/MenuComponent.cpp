@@ -17,7 +17,8 @@ namespace
     std::unique_ptr<Graph> menu_buttons_graph;
 }
 
-MenuComponent::MenuComponent(const int id): Component(id)
+MenuComponent::MenuComponent(const int id)
+    : Component(id)
 {
     zIndex = 3000;
     updateWhenPaused = true;
@@ -65,17 +66,15 @@ void MenuComponent::DrawMenuButton()
         return;
     }
 
-    int mouseX;
-    int mouseY;
-    GetMousePoint(&mouseX, &mouseY);
+    const auto& mousePos = Game::Device().MousePos();
 
     constexpr auto menuButtonPadding = 24;
     const auto halfW = static_cast<float>(menu_button_graph->width) * 0.5f;
     const auto halfH = static_cast<float>(menu_button_graph->height) * 0.5f;
     const auto centerX = WINDOW_WIDTH - halfW - menuButtonPadding;
     const auto centerY = halfH + menuButtonPadding;
-    const auto hovering = Math::InRange(static_cast<float>(mouseX), centerX - halfW, centerX + halfW) &&
-        Math::InRange(static_cast<float>(mouseY), centerY - halfH, centerY + halfH);
+    const auto hovering = Math::InRange(mousePos.x, centerX - halfW, centerX + halfW) &&
+        Math::InRange(mousePos.y, centerY - halfH, centerY + halfH);
     menu_button_graph->DrawCenter(centerX, centerY, hovering ? 1 : 0, 0);
 
     if (Game::Device().LeftClicked() && hovering && !menu_button_clicked_)
@@ -96,10 +95,6 @@ void MenuComponent::DrawMenu()
     {
         return;
     }
-
-    int mouseX;
-    int mouseY;
-    GetMousePoint(&mouseX, &mouseY);
 
     menu_background_graph->Draw(WINDOW_WIDTH - menu_background_graph->width, 0);
 
@@ -124,7 +119,6 @@ void MenuComponent::DrawMenu()
     {
         if (const auto stageWorld = dynamic_cast<StageWorld*>(world))
         {
-            spdlog::info("stageWorld");
             stageWorld->Reload();
         }
     });
@@ -157,15 +151,11 @@ void MenuComponent::DrawMenu()
 void MenuComponent::DrawMenuItem(const float x, const float y, const int buttonIndex,
                                  const std::function<void()>& onClick)
 {
-    int mouseX;
-    int mouseY;
-    GetMousePoint(&mouseX, &mouseY);
-
     const auto tileY = buttonIndex * 2;
     const auto& bb = BoundingBox(menu_buttons_graph->width, menu_buttons_graph->height);
     const bool& hovering = bb.Contains(
         Vec2(x, y) + Vec2(menu_buttons_graph->width / 2.0f, menu_buttons_graph->height / 2.0f),
-        Vec2(mouseX, mouseY)
+        Game::Device().MousePos()
     );
 
     menu_buttons_graph->Draw(

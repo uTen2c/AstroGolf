@@ -208,12 +208,10 @@ void GoalScoreDisplayComponent::DrawButtons()
 void GoalScoreDisplayComponent::DrawButton(const float x, const float y, const int buttonIndex,
                                            const std::function<void()>& onClick)
 {
-    int mouseX;
-    int mouseY;
-    GetMousePoint(&mouseX, &mouseY);
+    const auto& mousePos = Game::Device().MousePos();
 
     const auto& bb = BoundingBox(buttons_graph_->width, buttons_graph_->height);
-    const bool& contains = bb.Contains(Vec2(x, y), Vec2(mouseX, mouseY));
+    const bool& contains = bb.Contains(Vec2(x, y), mousePos);
     const bool& hovering = contains && !Game::instance->isPaused;
 
     const float yOffset = hovering ? -3 : 0;

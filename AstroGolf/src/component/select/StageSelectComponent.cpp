@@ -69,10 +69,8 @@ void StageSelectComponent::Update(float delta)
 
 void StageSelectComponent::Draw(DrawStack* stack)
 {
-    int mouseX;
-    int mouseY;
     int hoveringIndex = -1;
-    GetMousePoint(&mouseX, &mouseY);
+    const auto& mousePos = Game::Device().MousePos();
     const auto& stages = StageManager::GetStages();
     for (int i = 0; i < stages.size(); ++i)
     {
@@ -91,11 +89,11 @@ void StageSelectComponent::Draw(DrawStack* stack)
 
         DrawButton(0, static_cast<float>(y), stage.name, selected, progress.clearedChallenges.size());
 
-        if (mouseX > BUTTON_WIDTH)
+        if (mousePos.x > BUTTON_WIDTH)
         {
             continue;
         }
-        if (mouseY < y || mouseY > y + BUTTON_HEIGHT)
+        if (mousePos.y < y || mousePos.y > y + BUTTON_HEIGHT)
         {
             continue;
         }
@@ -140,11 +138,9 @@ void StageSelectComponent::DrawButton(const float& x, const float& y, const std:
 
 int StageSelectComponent::CheckMoveKey(float deltaTime)
 {
-    int mouseX;
-    int mouseY;
-    GetMousePoint(&mouseX, &mouseY);
+    const auto& mousePos = Game::Device().MousePos();
 
-    if (mouseX > BUTTON_WIDTH + LAYOUT_X_PADDING * 2)
+    if (mousePos.x > BUTTON_WIDTH + LAYOUT_X_PADDING * 2)
     {
         return 0;
     }

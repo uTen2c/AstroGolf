@@ -33,7 +33,7 @@ public:
 
     void Update(float delta) override;
     void Draw(DrawStack* stack) override;
-    void DrawConfitti() const;
+    void DrawConfetti() const;
     void DrawStars() const;
     void DrawStar(Vec2 pos, bool cleared, float delta) const;
     void DrawButtons();

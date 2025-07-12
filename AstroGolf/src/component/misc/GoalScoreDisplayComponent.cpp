@@ -62,7 +62,7 @@ void GoalScoreDisplayComponent::Draw(DrawStack* stack)
         return;
     }
 
-    DrawConfitti();
+    DrawConfetti();
     DrawStars();
     DrawButtons();
 
@@ -74,7 +74,7 @@ void GoalScoreDisplayComponent::Draw(DrawStack* stack)
     );
 }
 
-void GoalScoreDisplayComponent::DrawConfitti() const
+void GoalScoreDisplayComponent::DrawConfetti() const
 {
     const auto delta = std::clamp(animation_seconds_ * 4.0f, 0.0f, 1.0f);
     SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255 * delta));

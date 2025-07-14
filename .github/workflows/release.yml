@@ -31,7 +31,9 @@ jobs:
       - name: Build
         run: |
           msbuild AstroGolf.sln /t:build /p:Configuration=Release /p:Platform=x64 /p:VcpkgEnabled=true
-
+      - name: Remove debug file
+        run: |
+          Remove-Item -Path "x64/Release/AstroGolf.pdb"
       - name: Copy assets to Release directory
         run: |
           Copy-Item -Path "AstroGolf/assets" -Destination "x64/Release/" -Recurse -Force

@@ -9,6 +9,7 @@
 #include "game/SaveManager.h"
 #include "game/StageManager.h"
 #include "graph/Graphs.h"
+#include "sound/Sounds.h"
 
 // ReSharper disable once CppInconsistentNaming
 LRESULT CALLBACK WndProc(const HWND hwnd, const UINT msg, const WPARAM w_param, const LPARAM l_param)
@@ -67,6 +68,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     }
 
     Graphs::Load();
+    Sounds::Load();
     PlanetGraphs::Load();
     LoadFonts();
 

@@ -4,6 +4,7 @@
 class Sound final
 {
     int handle_;
+    float next_volume_multiplier_ = 1.0f;
 
 public:
     float volume = 1.0f;
@@ -19,11 +20,13 @@ public:
     Sound(Sound&& other) noexcept;
     Sound& operator=(Sound&& other) noexcept;
 
-    void Play() const;
+    void Play();
 
     void PlayLoop() const;
 
     void Stop() const;
+
+    void SetNextVolumeMultiplier(float multiplier);
 
     [[nodiscard]] int GetHandle() const;
 

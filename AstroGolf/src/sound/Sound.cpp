@@ -44,12 +44,13 @@ Sound& Sound::operator=(Sound&& other) noexcept
     return *this;
 }
 
-void Sound::Play() const
+void Sound::Play()
 {
     if (handle_)
     {
         ChangeNextPlayVolumeSoundMem(GetFinalVolume(), handle_);
         PlaySoundMem(handle_, DX_PLAYTYPE_BACK);
+        next_volume_multiplier_ = 1.0f;
     }
 }
 
@@ -70,6 +71,11 @@ void Sound::Stop() const
     }
 }
 
+void Sound::SetNextVolumeMultiplier(const float multiplier)
+{
+    next_volume_multiplier_ = multiplier;
+}
+
 int Sound::GetHandle() const
 {
     return handle_;
@@ -82,5 +88,5 @@ bool Sound::IsValid() const
 
 int Sound::GetFinalVolume() const
 {
-    return static_cast<int>(255.0f * Game::soundVolume * volume);
+    return static_cast<int>(255.0f * Game::soundVolume * volume * next_volume_multiplier_);
 }

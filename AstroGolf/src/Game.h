@@ -75,6 +75,8 @@ public:
 
     [[nodiscard]] static Device& Device();
 
+    static bool HasFocus();
+
 private:
     [[nodiscard]] static float GetTransitionProgress(float elapsedTimeMs, float durationMs);
 };

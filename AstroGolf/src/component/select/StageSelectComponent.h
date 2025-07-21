@@ -9,6 +9,7 @@ class StageSelectComponent final : public Component
     int font_handle_;
     int current_center_index_ = 0;
     int focused_index_ = 0;
+    int last_focused_index_ = 0;
     int mouse_hovering_index_ = -1;
     bool mouse_clicked_ = false;
     int clicked_index_ = -1;

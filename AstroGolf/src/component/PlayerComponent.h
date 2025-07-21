@@ -14,7 +14,7 @@ class PlayerComponent final : public PhysicsComponent
     int shot_count_ = 0;
     float last_move_speed_ = 0;
     Vec2 last_move_speed_vec_;
-    int last_hole_sound_at_ = GetNowCount();
+    int last_hit_sound_played_at_ = GetNowCount();
 
 public:
     Vec2 intersectingNormal;

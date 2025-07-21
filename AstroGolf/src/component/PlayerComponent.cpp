@@ -24,9 +24,11 @@ namespace
     std::unique_ptr<Sound> shot1_sound;
     std::unique_ptr<Sound> shot2_sound;
     std::unique_ptr<Sound> dropping_in_hole_sound;
+    std::unique_ptr<Sound> hit_sound;
 }
 
-PlayerComponent::PlayerComponent(const int id): PhysicsComponent(id)
+PlayerComponent::PlayerComponent(const int id)
+    : PhysicsComponent(id)
 {
     collider = std::make_unique<CircleCollider>(radius);
     zIndex = 1100;
@@ -38,6 +40,7 @@ PlayerComponent::PlayerComponent(const int id): PhysicsComponent(id)
         shot1_sound = std::make_unique<Sound>("shot_1.mp3");
         shot2_sound = std::make_unique<Sound>("shot_2.mp3");
         dropping_in_hole_sound = std::make_unique<Sound>("dropping_in_hole.mp3");
+        hit_sound = std::make_unique<Sound>("hit.mp3");
         sounds_initialized = true;
     }
 }
@@ -369,14 +372,19 @@ void PlayerComponent::OnCollide(PhysicsComponent* other, const IntersectingResul
         world->AddComponent(particle);
     }
 
-    if (dynamic_cast<GoalHoleComponent*>(other))
+    const auto durationMs = GetNowCount() - last_hit_sound_played_at_;
+    if (sp.Length() >= 1.3 && durationMs > 50)
     {
-        const auto durationMs = GetNowCount() - last_hole_sound_at_;
-        if (sp.Length() >= 1.3 && durationMs > 50)
+        last_hit_sound_played_at_ = GetNowCount();
+        if (dynamic_cast<GoalHoleComponent*>(other))
         {
-            last_hole_sound_at_ = GetNowCount();
+
             dropping_in_hole_sound->volume = std::clamp((last_move_speed_ - 0.3f) / 0.3f, 0.0f, 1.0f);
             dropping_in_hole_sound->Play();
+        }
+        else
+        {
+            // hit_sound->Play();
         }
     }
 }

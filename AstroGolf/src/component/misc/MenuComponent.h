@@ -8,6 +8,7 @@ class MenuComponent final : public Component
     bool menu_button_clicked_ = false;
     int clicked_index_ = -1;
     float menu_transition_delta_ = 0;
+    int last_hovering_index_ = -1;
 
 public:
     explicit MenuComponent(int id);

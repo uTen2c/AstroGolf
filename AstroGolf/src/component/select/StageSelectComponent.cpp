@@ -9,6 +9,7 @@
 #include "../../game/SaveManager.h"
 #include "../../game/StageManager.h"
 #include "../../graph/Graphs.h"
+#include "../../sound/Sounds.h"
 
 namespace
 {
@@ -26,7 +27,8 @@ namespace
     std::unique_ptr<Graph> buttons_graph;
 }
 
-StageSelectComponent::StageSelectComponent(const int id): Component(id)
+StageSelectComponent::StageSelectComponent(const int id)
+    : Component(id)
 {
     font_handle_ = CreateFontToHandle("M PLUS 1p Medium", FONT_SIZE, 5, DX_FONTTYPE_ANTIALIASING_8X8);
 
@@ -61,6 +63,7 @@ void StageSelectComponent::Update(float delta)
     {
         if (mouse_hovering_index_ != -1 && mouse_hovering_index_ == clicked_index_)
         {
+            Sounds::uiButtonClick->Play();
             OnSelect(clicked_index_);
         }
         clicked_index_ = -1;
@@ -89,6 +92,10 @@ void StageSelectComponent::Draw(DrawStack* stack)
 
         DrawButton(0, static_cast<float>(y), stage.name, selected, progress.clearedChallenges.size());
 
+        if (!Game::HasFocus())
+        {
+            continue;
+        }
         if (mousePos.x > BUTTON_WIDTH)
         {
             continue;
@@ -105,6 +112,12 @@ void StageSelectComponent::Draw(DrawStack* stack)
     if (hoveringIndex != -1)
     {
         focused_index_ = hoveringIndex;
+
+        if (focused_index_ != last_focused_index_)
+        {
+            Sounds::uiButtonHover->Play();
+        }
+        last_focused_index_ = focused_index_;
     }
 }
 

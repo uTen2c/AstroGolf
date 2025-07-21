@@ -159,6 +159,11 @@ Device& Game::Device()
     return device_;
 }
 
+bool Game::HasFocus()
+{
+    return GetMainWindowHandle() == GetForegroundWindow();
+}
+
 float Game::GetTransitionProgress(const float elapsedTimeMs, const float durationMs)
 {
     if (durationMs <= 0.0f)

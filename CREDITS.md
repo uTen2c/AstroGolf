@@ -1,5 +1,5 @@
 - https://kopacurve.blog.fc2.com/
 - pixabay / freesound_community
 - Adobe Soundbooth Sound Effects
-- Free UI Click Sound Effects Pack
-- Retro Game
+- Free UI Click Sound Effects Pack (Unity Asset Store)
+- Retro Game (Unity Asset Store)

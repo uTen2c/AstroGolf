@@ -132,6 +132,7 @@
     <ClInclude Include="src\math\Vec2.h" />
     <ClInclude Include="src\random\Random.h" />
     <ClInclude Include="src\sound\Sound.h" />
+    <ClInclude Include="src\sound\Sounds.h" />
     <ClInclude Include="src\world\DemoWorld.h" />
     <ClInclude Include="src\world\EditorWorld.h" />
     <ClInclude Include="src\world\PlayWorld.h" />
@@ -145,18 +146,74 @@
     <Content Include="assets\data\graphs.json" />
     <Content Include="assets\data\stages.json" />
     <Content Include="assets\data\stage\demo.json" />
-    <Content Include="assets\data\stage\stage00.json" />
     <Content Include="assets\data\stage\stage01.json" />
     <Content Include="assets\data\stage\stage02.json" />
+    <Content Include="assets\data\stage\stage00.json" />
     <Content Include="assets\fonts\MPLUS1p-Bold.ttf" />
     <Content Include="assets\fonts\MPLUS1p-Medium.ttf" />
     <Content Include="assets\fonts\Outfit-Bold.ttf" />
+    <Content Include="assets\movie\confetti.mp4" />
     <Content Include="assets\sound\dropping_in_hole.mp3" />
+    <Content Include="assets\sound\hit.mp3" />
     <Content Include="assets\sound\shot_1.mp3" />
     <Content Include="assets\sound\shot_2.mp3" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="assets\sprite\" />
+    <Content Include="assets\sprite\background.psd" />
+    <Content Include="assets\sprite\background_old.png" />
+    <Content Include="assets\sprite\background_old.psd" />
+    <Content Include="assets\sprite\editor\player_start_anchor.png" />
+    <Content Include="assets\sprite\editor\player_start_anchor.psd" />
+    <Content Include="assets\sprite\goal_flag.png" />
+    <Content Include="assets\sprite\grasses.png" />
+    <Content Include="assets\sprite\grasses.psd" />
+    <Content Include="assets\sprite\hole.png" />
+    <Content Include="assets\sprite\landing_particle.png" />
+    <Content Include="assets\sprite\logo.png" />
+    <Content Include="assets\sprite\menu\buttons.png" />
+    <Content Include="assets\sprite\menu\buttons.psd" />
+    <Content Include="assets\sprite\menu\menu_background.png" />
+    <Content Include="assets\sprite\menu\menu_background.psd" />
+    <Content Include="assets\sprite\menu_button.png" />
+    <Content Include="assets\sprite\menu_button.psd" />
+    <Content Include="assets\sprite\planet\black_hole.png" />
+    <Content Include="assets\sprite\planet\blue.png" />
+    <Content Include="assets\sprite\planet\gray.png" />
+    <Content Include="assets\sprite\planet\gray_small.png" />
+    <Content Include="assets\sprite\planet\orange2.png" />
+    <Content Include="assets\sprite\planet\orange_big.png" />
+    <Content Include="assets\sprite\planet\purple.png" />
+    <Content Include="assets\sprite\planet_2.png" />
+    <Content Include="assets\sprite\power_indicator.png" />
+    <Content Include="assets\sprite\preview\placeholder.png" />
+    <Content Include="assets\sprite\preview\stage00.png" />
+    <Content Include="assets\sprite\preview\stage01.png" />
+    <Content Include="assets\sprite\preview\stage1.png" />
+    <Content Include="assets\sprite\preview\stage2.png" />
+    <Content Include="assets\sprite\preview_base.png" />
+    <Content Include="assets\sprite\stage\challenge_star.png" />
+    <Content Include="assets\sprite\stage\challenge_star.psd" />
+    <Content Include="assets\sprite\stage\goal_compass.png" />
+    <Content Include="assets\sprite\stage\goal_flag.png" />
+    <Content Include="assets\sprite\stage\result_buttons.png" />
+    <Content Include="assets\sprite\stage\result_buttons.psd" />
+    <Content Include="assets\sprite\stage_select\buttons.png" />
+    <Content Include="assets\sprite\stage_select\buttons.psd" />
+    <Content Include="assets\sprite\stage_select\challenges.png" />
+    <Content Include="assets\sprite\stage_select\challenges.psd" />
+    <Content Include="assets\sprite\stage_select\mission.png" />
+    <Content Include="assets\sprite\stage_select\mission.psd" />
+    <Content Include="assets\sprite\stage_select\title.png" />
+    <Content Include="assets\sprite\stage_select\title.psd" />
+    <Content Include="assets\sprite\star.psd" />
+    <Content Include="assets\sprite\stars.png" />
+    <Content Include="assets\sprite\stars.psd" />
+    <Content Include="assets\sprite\test_square.png" />
+    <Content Include="assets\sprite\title.png" />
+    <Content Include="assets\sprite\title.psd" />
+    <Content Include="assets\sprite\title\cursor.png" />
+    <Content Include="assets\sprite\title\cursor.psd" />
+    <Content Include="assets\sprite\title\start.png" />
+    <Content Include="assets\sprite\title\start.psd" />
+    <Content Include="assets\sprite\title_ground.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -269,7 +326,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <AdditionalIncludeDirectories>$(projectDir)lib\;$(projectDir)lib\dxlib\;%(AdditionalIncludeDirectories);$(projectDir)\lib\dxlib</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /wd4010 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -289,7 +346,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalIncludeDirectories>$(projectDir)lib\;$(projectDir)lib\dxlib\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /wd4010 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

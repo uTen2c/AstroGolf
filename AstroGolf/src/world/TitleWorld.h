@@ -19,6 +19,8 @@ public:
     void Init() override;
     void Update(const float& deltaTime) override;
 
+    void Reload() const override;
+    
     void OnCameraMoveWithMouse(CameraComponent* camera) override;
     void OnGoal() override;
 

@@ -1,8 +1,8 @@
 {
   "goal": {
-    "rot": 0.0,
-    "x": -1244.0,
-    "y": -604.0
+    "rot": -1.9024088382720947,
+    "x": -126.25001525878906,
+    "y": 46.2500114440918
   },
   "planets": [
     {
@@ -13,23 +13,35 @@
       "rotationOriginOffsetX": 0.0,
       "rotationOriginOffsetY": -205.0,
       "rotationSpeed": 0.0,
-      "x": -496.0,
-      "y": -80.0
+      "x": 0.0,
+      "y": -2.500000238418579
     },
     {
-      "graphId": "blue",
-      "gravityMultiplier": 3.0,
-      "isSatellite": false,
-      "radius": 131.0,
-      "rotationOriginOffsetX": 0.0,
-      "rotationOriginOffsetY": -161.0,
-      "rotationSpeed": 0.0,
-      "x": 80.0,
-      "y": 264.0
+      "graphId": "gray",
+      "gravityMultiplier": 1.0,
+      "isSatellite": true,
+      "radius": 150.0,
+      "rotationOriginOffsetX": -390.0000915527344,
+      "rotationOriginOffsetY": -397.50006103515625,
+      "rotationSpeed": 0.8726646304130554,
+      "x": 381.666748046875,
+      "y": 400.8334045410156
+    }
+  ],
+  "playableAreas": [
+    {
+      "end": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "start": {
+        "x": 0.0,
+        "y": 0.0
+      }
     }
   ],
   "start": {
-    "x": -390.0,
-    "y": 94.0
+    "x": 128.75001525878906,
+    "y": -157.50001525878906
   }
 }

@@ -96,6 +96,11 @@ void TitleWorld::Update(const float& deltaTime)
     }
 }
 
+void TitleWorld::Reload() const
+{
+    Game::instance->ChangeWorldWithTransition<TitleWorld>(TransitionMode::Circle);
+}
+
 void TitleWorld::OnCameraMoveWithMouse(CameraComponent* camera)
 {
     camera->transform.translate = ClampCameraPos(camera->transform.translate);

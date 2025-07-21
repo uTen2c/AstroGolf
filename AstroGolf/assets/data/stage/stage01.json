@@ -1,47 +1,58 @@
 {
   "goal": {
-    "rot": -1.9024088382720947,
-    "x": -126.25001525878906,
-    "y": 46.2500114440918
+    "rot": 3.7873647212982178,
+    "x": -489.63360595703125,
+    "y": 665.7847290039063
   },
   "planets": [
     {
-      "graphId": "purple",
+      "graphId": "orange_big",
       "gravityMultiplier": 1.0,
       "isSatellite": false,
-      "radius": 175.0,
+      "radius": 250.0,
       "rotationOriginOffsetX": 0.0,
-      "rotationOriginOffsetY": -205.0,
+      "rotationOriginOffsetY": -280.0,
       "rotationSpeed": 0.0,
-      "x": 0.0,
-      "y": -2.500000238418579
+      "x": 120.0,
+      "y": -66.0
+    },
+    {
+      "graphId": "gray_small",
+      "gravityMultiplier": 1.0,
+      "isSatellite": true,
+      "radius": 50.0,
+      "rotationOriginOffsetX": -343.7142639160156,
+      "rotationOriginOffsetY": -15.714284896850586,
+      "rotationSpeed": 1.0646508932113647,
+      "x": -83.0,
+      "y": 597.0
     },
     {
       "graphId": "gray",
       "gravityMultiplier": 1.0,
-      "isSatellite": true,
+      "isSatellite": false,
       "radius": 150.0,
-      "rotationOriginOffsetX": -390.0000915527344,
-      "rotationOriginOffsetY": -397.50006103515625,
-      "rotationSpeed": 0.8726646304130554,
-      "x": 381.666748046875,
-      "y": 400.8334045410156
+      "rotationOriginOffsetX": 0.0,
+      "rotationOriginOffsetY": -180.0,
+      "rotationSpeed": 0.0,
+      "x": -424.0,
+      "y": 578.0
     }
   ],
   "playableAreas": [
     {
       "end": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -947.5001831054688,
+        "y": 1055.000244140625
       },
       "start": {
-        "x": 0.0,
-        "y": 0.0
+        "x": 485.0001220703125,
+        "y": -355.00006103515625
       }
     }
   ],
   "start": {
-    "x": 128.75001525878906,
-    "y": -157.50001525878906
+    "x": -55.583343505859375,
+    "y": 150.66665649414063
   }
 }

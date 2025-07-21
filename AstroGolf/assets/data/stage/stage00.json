@@ -1,10 +1,32 @@
 {
   "goal": {
-    "rot": 3.7873647212982178,
-    "x": -489.63360595703125,
-    "y": 665.7847290039063
+    "rot": 2.670353889465332,
+    "x": 541.9444580078125,
+    "y": 461.7776794433594
   },
   "planets": [
+    {
+      "graphId": "gray",
+      "gravityMultiplier": 1.0,
+      "isSatellite": false,
+      "radius": 150.0,
+      "rotationOriginOffsetX": 0.0,
+      "rotationOriginOffsetY": -161.0,
+      "rotationSpeed": 0.0,
+      "x": -539.952392578125,
+      "y": 529.833251953125
+    },
+    {
+      "graphId": "gray",
+      "gravityMultiplier": 1.5,
+      "isSatellite": false,
+      "radius": 150.0,
+      "rotationOriginOffsetX": 0.0,
+      "rotationOriginOffsetY": -180.0,
+      "rotationSpeed": 0.0,
+      "x": 14.217538833618164,
+      "y": 399.7965087890625
+    },
     {
       "graphId": "orange_big",
       "gravityMultiplier": 1.0,
@@ -13,46 +35,35 @@
       "rotationOriginOffsetX": 0.0,
       "rotationOriginOffsetY": -280.0,
       "rotationSpeed": 0.0,
-      "x": 120.0,
-      "y": -66.0
+      "x": -741.6666870117188,
+      "y": -14.666641235351563
     },
     {
-      "graphId": "gray_small",
-      "gravityMultiplier": 1.0,
-      "isSatellite": true,
-      "radius": 50.0,
-      "rotationOriginOffsetX": -343.7142639160156,
-      "rotationOriginOffsetY": -15.714284896850586,
-      "rotationSpeed": 1.0646508932113647,
-      "x": -83.0,
-      "y": 597.0
-    },
-    {
-      "graphId": "gray",
+      "graphId": "purple",
       "gravityMultiplier": 1.0,
       "isSatellite": false,
-      "radius": 150.0,
+      "radius": 175.0,
       "rotationOriginOffsetX": 0.0,
-      "rotationOriginOffsetY": -180.0,
+      "rotationOriginOffsetY": -161.0,
       "rotationSpeed": 0.0,
-      "x": -424.0,
-      "y": 578.0
+      "x": 484.0,
+      "y": 340.0
     }
   ],
   "playableAreas": [
     {
       "end": {
-        "x": -947.5001831054688,
-        "y": 1055.000244140625
+        "x": 1486.666748046875,
+        "y": 1984.9998779296875
       },
       "start": {
-        "x": 485.0001220703125,
-        "y": -355.00006103515625
+        "x": -1638.3330078125,
+        "y": -884.9998779296875
       }
     }
   ],
   "start": {
-    "x": -55.583343505859375,
-    "y": 150.66665649414063
+    "x": -490.0,
+    "y": 77.00006103515625
   }
 }

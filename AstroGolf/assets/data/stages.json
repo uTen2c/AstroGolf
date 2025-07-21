@@ -1,17 +1,7 @@
 [
   {
-    "id": "demo",
-    "name": "デモステージ",
-    "preview": "placeholder.png",
-    "challenges": [
-      "GoalHoleInOne",
-      "GoalExcellent",
-      "Goal"
-    ]
-  },
-  {
     "id": "stage00",
-    "name": "衛星",
+    "name": "4つの星",
     "preview": "stage00.png",
     "challenges": [
       "GoalHoleInOne",
@@ -21,18 +11,28 @@
   },
   {
     "id": "stage01",
-    "name": "stage01",
+    "name": "衛星",
     "preview": "stage01.png",
     "challenges": [
-      "NoBound",
       "GoalHoleInOne",
+      "GoalExcellent",
+      "Goal"
+    ]
+  },
+  {
+    "id": "demo",
+    "name": "Demo",
+    "preview": "placeholder.png",
+    "challenges": [
+      "GoalHoleInOne",
+      "GoalExcellent",
       "Goal"
     ]
   },
   {
     "id": "stage02",
     "name": "stage02",
-    "preview": "placeholder.png",
+    "preview": "stage02.png",
     "challenges": [
       "GoalHoleInOne",
       "GoalExcellent",

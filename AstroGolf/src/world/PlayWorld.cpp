@@ -42,10 +42,16 @@ void PlayWorld::Update(const float& deltaTime)
     }
 }
 
-void PlayWorld::CheckPlayableArea() const
+void PlayWorld::CheckPlayableArea()
 {
     // プレイアブルエリアが設定されていない場合は何もしない
     if (stageDefine.playableAreas.empty())
+    {
+        return;
+    }
+
+    // すでにプレイエリア外に行った判定がされていたら何もしない
+    if (out_of_area_)
     {
         return;
     }
@@ -68,7 +74,9 @@ void PlayWorld::CheckPlayableArea() const
         return;
     }
 
-    // Reload();
+    out_of_area_ = true;
+
+    Reload();
     // TODO
 }
 

@@ -15,6 +15,7 @@
 #include "../ImEx.h"
 #include "../editor/StageFileManager.h"
 #include "../game/StageManager.h"
+#include "../math/Math.h"
 
 using json = nlohmann::json;
 
@@ -67,6 +68,7 @@ void EditorWorld::PostDraw(DrawStack& stack)
     DrawPreview(stack);
     DrawGizmo(stack);
     DrawPlayableArea();
+    DrawMousePos();
 }
 
 void EditorWorld::Update(const float& deltaTime)
@@ -645,13 +647,13 @@ void EditorWorld::DrawPreview(DrawStack& stack)
 
 void EditorWorld::DrawPlayableArea() const
 {
-    if (place_type_ != PlaceType::PlayableArea)
-    {
-        return;
-    }
     if (area_start_pos_.Distance(area_end_pos_) < 0.1f)
     {
         return;
+    }
+    if (place_type_ != PlaceType::PlayableArea)
+    {
+        SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(255 * 0.20f));
     }
     auto stack = CreateDrawStack();
 
@@ -666,6 +668,14 @@ void EditorWorld::DrawPlayableArea() const
     stack.Pop();
 
     DrawBoxAA(startPos.x, startPos.y, endPos.x, endPos.y, GetColor(0, 255, 0), false, 2);
+
+    if (place_type_ != PlaceType::PlayableArea)
+    {
+        const auto& center = Math::GetCenter(startPos, endPos);
+        DrawCircleAA(center.x, center.y, 2, 8, GetColor(0, 255, 0), true);
+    }
+
+    SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 }
 
 void EditorWorld::DrawGizmo(DrawStack& stack)
@@ -710,6 +720,12 @@ void EditorWorld::DrawGizmo(DrawStack& stack)
                    pos.y + arrow_length + arrow_head_length, y_color, true);
     SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
     stack.Pop();
+}
+
+void EditorWorld::DrawMousePos() const
+{
+    const auto& pos = GetMouseWorldPos();
+    DrawFormatString(8, 8, GetColor(255, 255, 255), "(%d, %d)", static_cast<int>(pos.x), static_cast<int>(pos.y));
 }
 
 Vec2 EditorWorld::GetMouseWorldPos() const

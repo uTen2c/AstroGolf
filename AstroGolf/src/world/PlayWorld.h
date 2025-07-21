@@ -8,6 +8,7 @@ class PlayWorld final : public StageWorld
     std::string id_;
     bool debug_ = false;
     bool free_camera_ = false;
+    bool out_of_area_ = false; // プレイエリア外に行ったか
 
 public:
     StageDefine stageDefine;
@@ -15,7 +16,7 @@ public:
     explicit PlayWorld(std::string id);
     explicit PlayWorld(std::string id, const StageDefine& stageDefine, bool debug = false);
     void Update(const float& deltaTime) override;
-    void CheckPlayableArea() const;
+    void CheckPlayableArea();
     void Init() override;
     void Reload() const override;
 

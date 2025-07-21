@@ -103,6 +103,7 @@ private:
     void DrawPreview(DrawStack& stack);
     void DrawPlayableArea() const;
     void DrawGizmo(DrawStack& stack);
+    void DrawMousePos() const;
 
     [[nodiscard]] Vec2 GetMouseWorldPos() const;
 

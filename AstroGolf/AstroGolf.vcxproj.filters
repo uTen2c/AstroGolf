@@ -13,108 +13,465 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\component">
+      <UniqueIdentifier>{38a86d8d-f454-4748-8182-58705af0f5df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\component">
+      <UniqueIdentifier>{de75a148-3e11-440a-a21c-eb118257ba8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\component\misc">
+      <UniqueIdentifier>{9748486a-9722-4262-9e79-06e1c80f533b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\component\editor">
+      <UniqueIdentifier>{2a3b4c5d-6e7f-8912-3456-789abcdef012}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\component\object">
+      <UniqueIdentifier>{3b4c5d6e-7f89-1234-5678-9abcdef01234}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\component\planet">
+      <UniqueIdentifier>{4c5d6e7f-8912-3456-789a-bcdef0123456}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\component\select">
+      <UniqueIdentifier>{5d6e7f89-1234-5678-9abc-def012345678}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\component\title">
+      <UniqueIdentifier>{6e7f8912-3456-789a-bcde-f01234567890}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\debug">
+      <UniqueIdentifier>{7f891234-5678-9abc-def0-123456789012}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\editor">
+      <UniqueIdentifier>{89123456-789a-bcde-f012-345678901234}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\game">
+      <UniqueIdentifier>{91234567-89ab-cdef-0123-456789012345}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\graph">
+      <UniqueIdentifier>{12345678-9abc-def0-1234-56789012345a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\math">
+      <UniqueIdentifier>{23456789-abcd-ef01-2345-6789012345ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\random">
+      <UniqueIdentifier>{3456789a-bcde-f012-3456-789012345abc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\sound">
+      <UniqueIdentifier>{456789ab-cdef-0123-4567-89012345abcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\world">
+      <UniqueIdentifier>{56789abc-def0-1234-5678-9012345abcde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\component">
+      <UniqueIdentifier>{6789abcd-ef01-2345-6789-012345abcdef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\component\editor">
+      <UniqueIdentifier>{789abcde-f012-3456-789a-12345abcdef0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\component\misc">
+      <UniqueIdentifier>{89abcdef-0123-4567-89ab-2345abcdef01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\component\object">
+      <UniqueIdentifier>{9abcdef0-1234-5678-9abc-345abcdef012}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\component\planet">
+      <UniqueIdentifier>{abcdef01-2345-6789-abcd-45abcdef0123}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\component\select">
+      <UniqueIdentifier>{bcdef012-3456-789a-bcde-5abcdef01234}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\component\title">
+      <UniqueIdentifier>{cdef0123-4567-89ab-cdef-abcdef012345}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\debug">
+      <UniqueIdentifier>{def01234-5678-9abc-def0-bcdef0123456}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\editor">
+      <UniqueIdentifier>{ef012345-6789-abcd-ef01-cdef01234567}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\game">
+      <UniqueIdentifier>{f0123456-789a-bcde-f012-def012345678}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graph">
+      <UniqueIdentifier>{01234567-89ab-cdef-0123-ef0123456789}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\math">
+      <UniqueIdentifier>{12345678-9abc-def0-1234-f012345678ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\random">
+      <UniqueIdentifier>{23456789-abcd-ef01-2345-012345678abc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sound">
+      <UniqueIdentifier>{3456789a-bcde-f012-3456-12345678abcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\world">
+      <UniqueIdentifier>{456789ab-cdef-0123-4567-2345678abcde}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\camera\GameCamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\component\Component.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\component\SimpleSquareComponent.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\component</Filter>
     </ClInclude>
     <ClInclude Include="src\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\math\BoundingBox.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\math</Filter>
     </ClInclude>
     <ClInclude Include="src\math\CircleCollider.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\math</Filter>
     </ClInclude>
     <ClInclude Include="src\math\Collider.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\math</Filter>
     </ClInclude>
     <ClInclude Include="src\math\DrawStack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\Pos.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\math</Filter>
     </ClInclude>
     <ClInclude Include="src\world\World.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\component\BoxComponent.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\world</Filter>
     </ClInclude>
     <ClInclude Include="src\component\PhysicsComponent.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\component</Filter>
     </ClInclude>
     <ClInclude Include="src\debug\Debug.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\debug</Filter>
     </ClInclude>
     <ClInclude Include="src\math\NullCollider.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\math</Filter>
     </ClInclude>
     <ClInclude Include="src\math\Transform.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\math</Filter>
     </ClInclude>
     <ClInclude Include="src\math\Vec2.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\CameraComponent.h">
+      <Filter>Header Files\component</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\CircleComponent.h">
+      <Filter>Header Files\component</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\ColliderComponent.h">
+      <Filter>Header Files\component</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\editor\PlayerStartAnchorComponent.h">
+      <Filter>Header Files\component\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\GoalHoleComponent.h">
+      <Filter>Header Files\component</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\misc\GoalCompassComponent.h">
+      <Filter>Header Files\component\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\misc\GoalScoreDisplayComponent.h">
+      <Filter>Header Files\component\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\misc\GroundParticleComponent.h">
+      <Filter>Header Files\component\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\misc\MenuComponent.h">
+      <Filter>Header Files\component\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\object\SatelliteParentComponent.h">
+      <Filter>Header Files\component\object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\PlanetComponent.h">
+      <Filter>Header Files\component</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\planet\CommonPlanetComponent.h">
+      <Filter>Header Files\component\planet</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\planet\DemoPlanet2Component.h">
+      <Filter>Header Files\component\planet</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\planet\DemoPlanetComponent.h">
+      <Filter>Header Files\component\planet</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\PlayerComponent.h">
+      <Filter>Header Files\component</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\RotatableBoxComponent.h">
+      <Filter>Header Files\component</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\select\StagePreviewComponent.h">
+      <Filter>Header Files\component\select</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\select\StageSelectComponent.h">
+      <Filter>Header Files\component\select</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\TestSquareComponent.h">
+      <Filter>Header Files\component</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\title\StartTextComponent.h">
+      <Filter>Header Files\component\title</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\title\TitleSlopeComponent.h">
+      <Filter>Header Files\component\title</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\title\TitleWorldGroundComponent.h">
+      <Filter>Header Files\component\title</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Device.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\PlanetGraphs.h">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\StageDefine.h">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\StageFileManager.h">
+      <Filter>Header Files\editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\SaveManager.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game\StageManager.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graph\Graph.h">
+      <Filter>Header Files\graph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graph\Graphs.h">
+      <Filter>Header Files\graph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImEx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\KeyInstance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\CrossPointResult.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\HoleCollider.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\Math.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\RotatableBoxCollider.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\random\Random.h">
+      <Filter>Header Files\random</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sound\Sound.h">
+      <Filter>Header Files\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sound\Sounds.h">
+      <Filter>Header Files\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\world\DemoWorld.h">
+      <Filter>Header Files\world</Filter>
+    </ClInclude>
+    <ClInclude Include="src\world\EditorWorld.h">
+      <Filter>Header Files\world</Filter>
+    </ClInclude>
+    <ClInclude Include="src\world\PlayWorld.h">
+      <Filter>Header Files\world</Filter>
+    </ClInclude>
+    <ClInclude Include="src\world\SplashScreenWorld.h">
+      <Filter>Header Files\world</Filter>
+    </ClInclude>
+    <ClInclude Include="src\world\StageSelectWorld.h">
+      <Filter>Header Files\world</Filter>
+    </ClInclude>
+    <ClInclude Include="src\world\StageWorld.h">
+      <Filter>Header Files\world</Filter>
+    </ClInclude>
+    <ClInclude Include="src\world\TitleWorld.h">
+      <Filter>Header Files\world</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\Component.h">
+      <Filter>Header Files\component</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\misc\BallisticComponent.h">
+      <Filter>Header Files\component\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\component\BoxComponent.h">
+      <Filter>Header Files\component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AstroGolf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\camera\GameCamera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\component\Component.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\component\SimpleSquareComponent.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\component</Filter>
     </ClCompile>
     <ClCompile Include="src\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\math\BoundingBox.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\math</Filter>
     </ClCompile>
     <ClCompile Include="src\math\CircleCollider.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\math</Filter>
     </ClCompile>
     <ClCompile Include="src\math\Collider.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\math</Filter>
     </ClCompile>
     <ClCompile Include="src\math\DrawStack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\Pos.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\math</Filter>
     </ClCompile>
     <ClCompile Include="src\world\World.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\world</Filter>
     </ClCompile>
     <ClCompile Include="src\component\BoxComponent.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\component</Filter>
     </ClCompile>
     <ClCompile Include="src\component\PhysicsComponent.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\component</Filter>
     </ClCompile>
     <ClCompile Include="src\debug\Debug.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\debug</Filter>
     </ClCompile>
     <ClCompile Include="src\math\NullCollider.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\math</Filter>
     </ClCompile>
     <ClCompile Include="src\math\Transform.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\math</Filter>
     </ClCompile>
     <ClCompile Include="src\math\Vec2.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\CameraComponent.cpp">
+      <Filter>Source Files\component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\CircleComponent.cpp">
+      <Filter>Source Files\component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\ColliderComponent.cpp">
+      <Filter>Source Files\component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\editor\PlayerStartAnchorComponent.cpp">
+      <Filter>Source Files\component\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\GoalHoleComponent.cpp">
+      <Filter>Source Files\component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\misc\GoalCompassComponent.cpp">
+      <Filter>Source Files\component\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\misc\GoalScoreDisplayComponent.cpp">
+      <Filter>Source Files\component\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\misc\GroundParticleComponent.cpp">
+      <Filter>Source Files\component\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\misc\MenuComponent.cpp">
+      <Filter>Source Files\component\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\object\SatelliteParentComponent.cpp">
+      <Filter>Source Files\component\object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\PlanetComponent.cpp">
+      <Filter>Source Files\component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\planet\CommonPlanetComponent.cpp">
+      <Filter>Source Files\component\planet</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\planet\DemoPlanet2Component.cpp">
+      <Filter>Source Files\component\planet</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\planet\DemoPlanetComponent.cpp">
+      <Filter>Source Files\component\planet</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\PlayerComponent.cpp">
+      <Filter>Source Files\component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\RotatableBoxComponent.cpp">
+      <Filter>Source Files\component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\select\StagePreviewComponent.cpp">
+      <Filter>Source Files\component\select</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\select\StageSelectComponent.cpp">
+      <Filter>Source Files\component\select</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\TestSquareComponent.cpp">
+      <Filter>Source Files\component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\title\StartTextComponent.cpp">
+      <Filter>Source Files\component\title</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\title\TitleSlopeComponent.cpp">
+      <Filter>Source Files\component\title</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\title\TitleWorldGroundComponent.cpp">
+      <Filter>Source Files\component\title</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Device.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\PlanetGraphs.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\StageDefine.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\StageFileManager.cpp">
+      <Filter>Source Files\editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\SaveManager.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\StageManager.cpp">
+      <Filter>Source Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graph\Graph.cpp">
+      <Filter>Source Files\graph</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImEx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\KeyInstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\HoleCollider.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\Math.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\RotatableBoxCollider.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\random\Random.cpp">
+      <Filter>Source Files\random</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sound\Sound.cpp">
+      <Filter>Source Files\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\world\DemoWorld.cpp">
+      <Filter>Source Files\world</Filter>
+    </ClCompile>
+    <ClCompile Include="src\world\EditorWorld.cpp">
+      <Filter>Source Files\world</Filter>
+    </ClCompile>
+    <ClCompile Include="src\world\PlayWorld.cpp">
+      <Filter>Source Files\world</Filter>
+    </ClCompile>
+    <ClCompile Include="src\world\SplashScreenWorld.cpp">
+      <Filter>Source Files\world</Filter>
+    </ClCompile>
+    <ClCompile Include="src\world\StageSelectWorld.cpp">
+      <Filter>Source Files\world</Filter>
+    </ClCompile>
+    <ClCompile Include="src\world\StageWorld.cpp">
+      <Filter>Source Files\world</Filter>
+    </ClCompile>
+    <ClCompile Include="src\world\TitleWorld.cpp">
+      <Filter>Source Files\world</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\Component.cpp">
+      <Filter>Source Files\component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\Component.cpp">
+      <Filter>Source Files\component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\component\misc\BallisticComponent.cpp">
+      <Filter>Source Files\component\misc</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

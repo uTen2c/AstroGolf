@@ -63,10 +63,10 @@ void PlayWorld::CheckPlayableArea()
     const auto& area = BoundingBox(width, height);
 
     // // スタート地点がプレイアブルエリアに含まれていない場合は何もしない
-    // if (!area.Contains(origin, stageDefine.startPos))
-    // {
-    //     return;
-    // }
+    if (!area.Contains(origin, stageDefine.startPos))
+    {
+        return;
+    }
 
     // プレイヤーがプレイアブルエリア内にいる場合は何もしない
     if (area.Contains(origin, GetPlayer()->transform.translate))

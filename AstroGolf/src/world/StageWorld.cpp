@@ -74,10 +74,10 @@ void StageWorld::OnGoal()
     }
 
     goaled_ = true;
-    UpdateGoalText(clearedChallenges.size());
+    UpdateGoalText(static_cast<int>(clearedChallenges.size()));
 }
 
-void StageWorld::UpdateGoalText(int clearedChallengeCount) const
+void StageWorld::UpdateGoalText(const int clearedChallengeCount) const
 {
     const auto& player = GetPlayer();
     if (

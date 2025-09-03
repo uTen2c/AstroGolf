@@ -5,7 +5,7 @@
 CircleComponent::CircleComponent(const int id, const float radius): PhysicsComponent(id), radius(radius)
 {
     collider = std::make_unique<CircleCollider>(radius);
-    isStatic = true;
+    is_static = true;
 }
 
 void CircleComponent::Draw(DrawStack* stack)
@@ -15,7 +15,7 @@ void CircleComponent::Draw(DrawStack* stack)
 
     const auto pos = stack->GetScreenPos();
     const auto scale = stack->GetScreenScale();
-    const auto posnum = max(16 * scale.x, 16);
+    const auto posnum = static_cast<int>(max(16 * scale.x, 16));
     DrawCircleAA(pos.x, pos.y, radius * scale.x, posnum, 0xFFFFFFFF, true);
 
     stack->Pop();

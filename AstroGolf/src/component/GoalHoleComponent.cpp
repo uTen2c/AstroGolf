@@ -3,13 +3,14 @@
 #include <spdlog/spdlog.h>
 
 #include "../graph/Graphs.h"
-#include "../math/HoleCollider.h"
+#include "../math/collider/HoleCollider.h"
 #include "../world/World.h"
 
-GoalHoleComponent::GoalHoleComponent(const int id): PhysicsComponent(id)
+GoalHoleComponent::GoalHoleComponent(const int id)
+    : PhysicsComponent(id)
 {
     collider = std::make_unique<HoleCollider>();
-    goal_collider_ = std::make_unique<RotatableBoxCollider>(60 - 8, 60 - 8, GetWorldPos().rot);
+    goal_collider = std::make_unique<RotatableBoxCollider>(60.0f - 8.0f, 60.0f - 8.0f, GetWorldPos().rot);
     zIndex = 1050;
 }
 
@@ -30,10 +31,10 @@ void GoalHoleComponent::Update(const float deltaTime)
 void GoalHoleComponent::CheckGoal(const float deltaTime)
 {
     const auto& [pos, rot] = GetWorldPos();
-    goal_collider_->rotation = rot;
+    goal_collider->rotation = rot;
 
     const auto& player = world->GetPlayer();
-    const auto& result = goal_collider_->
+    const auto& result = goal_collider->
         Intersects(pos, player->GetWorldPos().pos, *player->collider);
     if (result.intersected)
     {

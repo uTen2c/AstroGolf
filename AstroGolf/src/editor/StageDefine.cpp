@@ -5,21 +5,25 @@ StageDefine::StageDefine(const json& json)
     try
     {
         const auto& start = json.at("start");
-        startPos = Vec2(start.at("x"), start.at("y"));
+        const float x = start.at("x");
+        const float y = start.at("y");
+        startPos = Vec2(x, y);
     }
-    catch (const std::exception& e)
+    catch ([[maybe_unused]] const std::exception& e)
     {
         //
     }
     try
     {
         const auto& g = json.at("goal");
+        const float x = g.at("x");
+        const float y = g.at("y");
         goal = {
-            .pos = Vec2(g.at("x"), g.at("y")),
+            .pos = Vec2(x, y),
             .rot = g.at("rot")
         };
     }
-    catch (const std::exception& e)
+    catch ([[maybe_unused]] const std::exception& e)
     {
         //
     }
@@ -27,8 +31,10 @@ StageDefine::StageDefine(const json& json)
     {
         for (auto j : json.at("planets"))
         {
+            const float x = j.at("x");
+            const float y = j.at("y");
             auto planetDefine = PlanetDefine{
-                .pos = {j.at("x"), j.at("y")},
+                .pos = {x, y},
                 .radius = j.at("radius"),
                 .graphId = j.at("graphId"),
                 .gravityMultiplier = j.value("gravityMultiplier", 1.0f),
@@ -40,7 +46,7 @@ StageDefine::StageDefine(const json& json)
             planets.emplace_back(planetDefine);
         }
     }
-    catch (const std::exception& e)
+    catch ([[maybe_unused]] const std::exception& e)
     {
         //
     }
@@ -49,7 +55,7 @@ StageDefine::StageDefine(const json& json)
         for (auto j : json.at("playableAreas"))
         {
             PlayableAreaDefine playableAreaDefine = {
-                .start = {j.at("start").at("x"), j.at("start").at("y")},
+                .start = Vec2(j.at("start").at("x"), j.at("start").at("y")),
                 .end = {j.at("end").at("x"), j.at("end").at("y")},
             };
             playableAreas.emplace_back(playableAreaDefine);

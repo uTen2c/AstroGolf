@@ -2,7 +2,7 @@
 
 #include <DxLib.h>
 
-#include "DrawStack.h"
+#include "../DrawStack.h"
 
 namespace
 {

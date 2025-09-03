@@ -1,31 +1,31 @@
-#include "BoundingBox.h"
+#include "BoxCollider.h"
 
 #include "CircleCollider.h"
 
-float BoundingBox::GetLeft() const
+float BoxCollider::GetLeft() const
 {
     return width * -0.5f;
 }
 
-float BoundingBox::GetRight() const
+float BoxCollider::GetRight() const
 {
     return width * 0.5f;
 }
 
-float BoundingBox::GetTop() const
+float BoxCollider::GetTop() const
 {
     return height * -0.5f;
 }
 
-float BoundingBox::GetBottom() const
+float BoxCollider::GetBottom() const
 {
     return height * 0.5f;
 }
 
-IntersectingResult BoundingBox::Intersects(const Vec2& origin, const Vec2& otherOrigin,
+IntersectingResult BoxCollider::Intersects(const Vec2& origin, const Vec2& otherOrigin,
                                            const Collider& otherCollider) const
 {
-    if (const auto* bb = dynamic_cast<const BoundingBox*>(&otherCollider))
+    if (const auto* bb = dynamic_cast<const BoxCollider*>(&otherCollider))
     {
         const auto selfLeft = origin.x + GetLeft();
         const auto selfRight = origin.x + GetRight();
@@ -52,7 +52,7 @@ IntersectingResult BoundingBox::Intersects(const Vec2& origin, const Vec2& other
     return NO_INTERSECTED;
 }
 
-bool BoundingBox::Contains(const Vec2& origin, const Vec2& point) const
+bool BoxCollider::Contains(const Vec2& origin, const Vec2& point) const
 {
     const auto x = point.x;
     const auto y = point.y;
@@ -63,7 +63,7 @@ bool BoundingBox::Contains(const Vec2& origin, const Vec2& point) const
     return x >= left && x <= right && y >= top && y <= bottom;
 }
 
-float BoundingBox::GetSize()
+float BoxCollider::GetSize()
 {
     return std::max(width, height);
 }

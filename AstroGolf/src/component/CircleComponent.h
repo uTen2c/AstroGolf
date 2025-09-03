@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "PhysicsComponent.h"
-#include "../math/CircleCollider.h"
 
 class CircleComponent final : public PhysicsComponent
 {

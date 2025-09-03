@@ -89,8 +89,8 @@ void StageSelectComponent::Draw(DrawStack* stack)
                                   : i == focused_index_;
         const auto& stage = stages[i];
         const auto& progress = SaveManager::GetProgresses()[stage.id];
-
-        DrawButton(0, static_cast<float>(y), stage.name, selected, progress.clearedChallenges.size());
+        const auto clearedChallengeCount = static_cast<int>(progress.clearedChallenges.size());
+        DrawButton(0.0f, static_cast<float>(y), stage.name, selected, clearedChallengeCount);
 
         if (!Game::HasFocus())
         {
@@ -130,7 +130,7 @@ void StageSelectComponent::DrawButton(const float& x, const float& y, const std:
                                       const int& stars) const
 {
     static constexpr float bottom_border_width = 10;
-    const float offsetX = selected ? 0 : -16;
+    const float offsetX = selected ? 0.0f : -16.0f;
     buttons_graph->Draw(x + offsetX, y, 0, selected ? 1 : 0);
     DrawStringFToHandle(
         x + BUTTON_LABEL_PADDING,

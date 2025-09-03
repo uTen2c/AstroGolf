@@ -4,7 +4,7 @@
 
 #include "../../Game.h"
 #include "../../graph/Graphs.h"
-#include "../../math/BoundingBox.h"
+#include "../../math/collider/BoxCollider.h"
 #include "../../world/World.h"
 #include "../../math/CrossPointResult.h"
 #include "../../math/Math.h"
@@ -31,7 +31,7 @@ void GoalCompassComponent::Update(float delta)
     const auto& camera = world->GetCamera();
     const auto scaledWidth = WINDOW_WIDTH / camera.zoom;
     const auto scaledHeight = WINDOW_HEIGHT / camera.zoom;
-    BoundingBox fullscreenBox(scaledWidth + 128, scaledHeight + 128);
+    BoxCollider fullscreenBox(scaledWidth + 128, scaledHeight + 128);
 
     // 画面内にゴールが存在する
     if (fullscreenBox.Contains(center, target->transform.translate))
@@ -40,7 +40,7 @@ void GoalCompassComponent::Update(float delta)
         return;
     }
 
-    BoundingBox box(scaledWidth - 128, scaledHeight - 128);
+    BoxCollider box(scaledWidth - 128, scaledHeight - 128);
 
     const Vec2 edges[4][2] = {
         {center + Vec2(box.GetLeft(), box.GetTop()), center + Vec2(box.GetRight(), box.GetTop())}, // Top

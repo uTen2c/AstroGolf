@@ -7,13 +7,15 @@ struct Vec2
     float x;
     float y;
 
-    Vec2(): x(0), y(0)
+    Vec2()
+        : x(0), y(0)
     {
     }
 
-    Vec2(const float x, const float y)
-        : x(x),
-          y(y)
+    template <typename X, typename Y>
+    Vec2(const X& x, const Y& y)
+        : x(static_cast<float>(x)),
+          y(static_cast<float>(y))
     {
     }
 

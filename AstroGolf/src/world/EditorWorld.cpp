@@ -694,7 +694,7 @@ void EditorWorld::DrawGizmo(DrawStack& stack)
     const auto& pos = stack.GetScreenPos();
 
     // 真ん中丸
-    const float radius = movement_type_ == MovementType::Both ? 8 : 4;
+    const float radius = movement_type_ == MovementType::Both ? 8.0f : 4.0f;
     DrawCircleAA(pos.x, pos.y, radius, 8, GetColor(255, 255, 255), true);
 
     static constexpr float arrow_offset = 16;
@@ -751,20 +751,23 @@ void EditorWorld::DrawGrid(DrawStack& stack)
 
     const auto gridSize = 100 * scale.x;
     const auto offset = static_cast<int>(ceil(abs(pos.x) / scale.x / gridSize));
-    const auto count = static_cast<int>(ceil(WINDOW_WIDTH / 100 / scale.x)) * 3;
+    const auto count = static_cast<int>(ceil(static_cast<float>(WINDOW_WIDTH) / 100 / scale.x)) * 3;
+
+    const int posX = static_cast<int>(pos.x);
+    const int posY = static_cast<int>(pos.y);
 
     // グリッド表示
     for (int i = -offset - count; i < offset + count; ++i)
     {
-        const auto gridSizeX = gridSize * i;
+        const auto gridSizeX = static_cast<int>(gridSize * static_cast<float>(i));
         static const auto grid_color = GetColor(38, 53, 71);
-        DrawLine(-2000, pos.y + gridSizeX, 2000, pos.y + gridSizeX, grid_color);
-        DrawLine(pos.x + gridSizeX, -2000, pos.x + gridSizeX, 2000, grid_color);
+        DrawLine(-2000, posY + gridSizeX, 2000, posY + gridSizeX, grid_color);
+        DrawLine(posX + gridSizeX, -2000, posX + gridSizeX, 2000, grid_color);
     }
 
     // X, Yの十字線描画
-    DrawLine(-2000, pos.y, 2000, pos.y, GetColor(255, 0, 0));
-    DrawLine(pos.x, -2000, pos.x, 2000, GetColor(0, 255, 0));
+    DrawLine(-2000, posY, 2000, posY, GetColor(255, 0, 0));
+    DrawLine(posX, -2000, posX, 2000, GetColor(0, 255, 0));
     stack.Pop();
 }
 

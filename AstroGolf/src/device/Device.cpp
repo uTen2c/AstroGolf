@@ -61,7 +61,7 @@ bool Device::RightClicked()
 bool Device::RightReleased(const bool allowMove) const
 {
     const auto released = (last_mouse_input_ & MOUSE_INPUT_RIGHT) != 0
-    && (current_mouse_input_ & MOUSE_INPUT_RIGHT) == 0;
+        && (current_mouse_input_ & MOUSE_INPUT_RIGHT) == 0;
     if (allowMove)
     {
         return released;
@@ -78,5 +78,5 @@ Vec2 Device::MousePos() const
 {
     int x, y;
     GetMousePoint(&x, &y);
-    return {static_cast<float>(x), static_cast<float>(y)};
+    return {x, y};
 }

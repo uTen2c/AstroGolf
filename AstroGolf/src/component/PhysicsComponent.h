@@ -3,8 +3,8 @@
 
 #include "ColliderComponent.h"
 #include "Component.h"
-#include "../math/Collider.h"
-#include "../math/RotatableBoxCollider.h"
+#include "../math/collider/Collider.h"
+#include "../math/collider/RotatableBoxCollider.h"
 
 class PhysicsComponent : public ColliderComponent
 {
@@ -12,14 +12,14 @@ protected:
     bool intersecting_ = false;
 
 public:
-    std::unique_ptr<RotatableBoxCollider> goal_collider_;
+    std::unique_ptr<RotatableBoxCollider> goal_collider;
     Vec2 velocity = {0, 0};
 
-    float lastGravityPower = 0;
-    std::vector<Vec2> gravitySources;
+    float last_gravity_power = 0;
+    std::vector<Vec2> gravity_sources;
 
     float mass = 1;
-    bool isStatic = false;
+    bool is_static = false;
 
     explicit PhysicsComponent(const int id)
         : ColliderComponent(id)

@@ -168,7 +168,7 @@ void World::DrawBallistic()
     auto shotVec = dragVector;
     shotVec.Mul(20.0f);
     // 重力の影響を相殺する
-    for (const auto& gravitySource : ballistic_->gravitySources)
+    for (const auto& gravitySource : ballistic_->gravity_sources)
     {
         shotVec.Add(gravitySource.Copy().Neg());
     }

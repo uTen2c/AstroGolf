@@ -11,7 +11,7 @@
 #include "../component/planet/CommonPlanetComponent.h"
 #include "../editor/StageFileManager.h"
 #include "../graph/Graphs.h"
-#include "../math/BoundingBox.h"
+#include "../math/collider/BoxCollider.h"
 #include "../math/Math.h"
 
 PlayWorld::PlayWorld(std::string id) : id_(std::move(id))
@@ -60,7 +60,7 @@ void PlayWorld::CheckPlayableArea()
     const auto origin = Math::GetCenter(areaDefine.start, areaDefine.end);
     const auto width = std::abs(areaDefine.start.x - areaDefine.end.x);
     const auto height = std::abs(areaDefine.start.y - areaDefine.end.y);
-    const auto& area = BoundingBox(width, height);
+    const auto& area = BoxCollider(width, height);
 
     // // スタート地点がプレイアブルエリアに含まれていない場合は何もしない
     if (!area.Contains(origin, stageDefine.startPos))

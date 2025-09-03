@@ -106,6 +106,18 @@
     <Filter Include="Source Files\world">
       <UniqueIdentifier>{456789ab-cdef-0123-4567-2345678abcde}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\math\collider">
+      <UniqueIdentifier>{70de8d0f-c940-4b0c-88df-09c669423ac1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\math\collider">
+      <UniqueIdentifier>{cda9bbd1-96b9-41f5-b7a2-d16c3976b2ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\device">
+      <UniqueIdentifier>{c79c3bb5-99fa-4ff1-a4f9-a48cd56626cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\device">
+      <UniqueIdentifier>{3a808cfc-577f-4d0c-a7b1-1a3c59fcccd0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\component\SimpleSquareComponent.h">
@@ -113,15 +125,6 @@
     </ClInclude>
     <ClInclude Include="src\Game.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\BoundingBox.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\CircleCollider.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\Collider.h">
-      <Filter>Header Files\math</Filter>
     </ClInclude>
     <ClInclude Include="src\math\DrawStack.h">
       <Filter>Header Files\math</Filter>
@@ -134,9 +137,6 @@
     </ClInclude>
     <ClInclude Include="src\debug\Debug.h">
       <Filter>Header Files\debug</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\NullCollider.h">
-      <Filter>Header Files\math</Filter>
     </ClInclude>
     <ClInclude Include="src\math\Transform.h">
       <Filter>Header Files\math</Filter>
@@ -210,9 +210,6 @@
     <ClInclude Include="src\component\title\TitleWorldGroundComponent.h">
       <Filter>Header Files\component\title</Filter>
     </ClInclude>
-    <ClInclude Include="src\Device.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\editor\PlanetGraphs.h">
       <Filter>Header Files\editor</Filter>
     </ClInclude>
@@ -237,19 +234,10 @@
     <ClInclude Include="src\ImEx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\KeyInstance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\math\CrossPointResult.h">
       <Filter>Header Files\math</Filter>
     </ClInclude>
-    <ClInclude Include="src\math\HoleCollider.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
     <ClInclude Include="src\math\Math.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="src\math\RotatableBoxCollider.h">
       <Filter>Header Files\math</Filter>
     </ClInclude>
     <ClInclude Include="src\random\Random.h">
@@ -291,6 +279,30 @@
     <ClInclude Include="src\component\BoxComponent.h">
       <Filter>Header Files\component</Filter>
     </ClInclude>
+    <ClInclude Include="src\math\collider\BoxCollider.h">
+      <Filter>Header Files\math\collider</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\collider\CircleCollider.h">
+      <Filter>Header Files\math\collider</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\collider\Collider.h">
+      <Filter>Header Files\math\collider</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\collider\HoleCollider.h">
+      <Filter>Header Files\math\collider</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\collider\NullCollider.h">
+      <Filter>Header Files\math\collider</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\collider\RotatableBoxCollider.h">
+      <Filter>Header Files\math\collider</Filter>
+    </ClInclude>
+    <ClInclude Include="src\device\Device.h">
+      <Filter>Header Files\device</Filter>
+    </ClInclude>
+    <ClInclude Include="src\device\KeyInstance.h">
+      <Filter>Header Files\device</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AstroGolf.cpp">
@@ -301,15 +313,6 @@
     </ClCompile>
     <ClCompile Include="src\Game.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\BoundingBox.cpp">
-      <Filter>Source Files\math</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\CircleCollider.cpp">
-      <Filter>Source Files\math</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\Collider.cpp">
-      <Filter>Source Files\math</Filter>
     </ClCompile>
     <ClCompile Include="src\math\DrawStack.cpp">
       <Filter>Source Files\math</Filter>
@@ -325,9 +328,6 @@
     </ClCompile>
     <ClCompile Include="src\debug\Debug.cpp">
       <Filter>Source Files\debug</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\NullCollider.cpp">
-      <Filter>Source Files\math</Filter>
     </ClCompile>
     <ClCompile Include="src\math\Transform.cpp">
       <Filter>Source Files\math</Filter>
@@ -401,9 +401,6 @@
     <ClCompile Include="src\component\title\TitleWorldGroundComponent.cpp">
       <Filter>Source Files\component\title</Filter>
     </ClCompile>
-    <ClCompile Include="src\Device.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\editor\PlanetGraphs.cpp">
       <Filter>Source Files\editor</Filter>
     </ClCompile>
@@ -425,16 +422,7 @@
     <ClCompile Include="src\ImEx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\KeyInstance.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\HoleCollider.cpp">
-      <Filter>Source Files\math</Filter>
-    </ClCompile>
     <ClCompile Include="src\math\Math.cpp">
-      <Filter>Source Files\math</Filter>
-    </ClCompile>
-    <ClCompile Include="src\math\RotatableBoxCollider.cpp">
       <Filter>Source Files\math</Filter>
     </ClCompile>
     <ClCompile Include="src\random\Random.cpp">
@@ -467,11 +455,32 @@
     <ClCompile Include="src\component\Component.cpp">
       <Filter>Source Files\component</Filter>
     </ClCompile>
-    <ClCompile Include="src\component\Component.cpp">
-      <Filter>Source Files\component</Filter>
-    </ClCompile>
     <ClCompile Include="src\component\misc\BallisticComponent.cpp">
       <Filter>Source Files\component\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\collider\Collider.cpp">
+      <Filter>Source Files\math\collider</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\collider\BoxCollider.cpp">
+      <Filter>Source Files\math\collider</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\collider\CircleCollider.cpp">
+      <Filter>Source Files\math\collider</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\collider\HoleCollider.cpp">
+      <Filter>Source Files\math\collider</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\collider\NullCollider.cpp">
+      <Filter>Source Files\math\collider</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\collider\RotatableBoxCollider.cpp">
+      <Filter>Source Files\math\collider</Filter>
+    </ClCompile>
+    <ClCompile Include="src\device\Device.cpp">
+      <Filter>Source Files\device</Filter>
+    </ClCompile>
+    <ClCompile Include="src\device\KeyInstance.cpp">
+      <Filter>Source Files\device</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

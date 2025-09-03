@@ -7,7 +7,7 @@
 
 BallisticComponent::BallisticComponent(const int id): PhysicsComponent(id)
 {
-    collider = std::make_unique<CircleCollider>(12);
+    collider = std::make_unique<CircleCollider>(12.0f);
     trail_screen_ = MakeScreen(WINDOW_WIDTH, WINDOW_HEIGHT, true);
 }
 
@@ -78,7 +78,7 @@ void BallisticComponent::Update(float deltaTime)
             }
             else
             {
-                const auto multiplier = 0.99f * (1 - max(250 - lastGravityPower, 0) / 250);
+                const auto multiplier = 0.99f * (1 - max(250 - last_gravity_power, 0) / 250);
                 velocity.Sub(velocity.Copy().Mul(multiplier * deltaTime));
             }
         }

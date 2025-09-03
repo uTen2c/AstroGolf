@@ -9,6 +9,12 @@ float Math::Lerp(const float& start, const float& end, const float& delta)
     return start + (end - start) * delta;
 }
 
+int Math::Lerp(const int& start, const int& end, const float& delta)
+{
+    const auto f = Lerp(static_cast<float>(start), static_cast<float>(end), delta);
+    return static_cast<int>(std::floor(f + 0.5f)); // 偏りが出ないように+0.5する
+}
+
 Vec2 Math::Lerp(const Vec2& start, const Vec2& end, const float& delta)
 {
     return {

@@ -8,7 +8,7 @@
 #include "GoalHoleComponent.h"
 #include "../Game.h"
 #include "../graph/Graphs.h"
-#include "../math/CircleCollider.h"
+#include "../math/collider/CircleCollider.h"
 #include "../math/Math.h"
 #include "../random/Random.h"
 #include "../sound/Sound.h"
@@ -74,7 +74,7 @@ void PlayerComponent::Update(const float deltaTime)
             }
             else
             {
-                const auto multiplier = 0.99f * (1 - max(250 - lastGravityPower, 0) / 250);
+                const auto multiplier = 0.99f * (1 - max(250 - last_gravity_power, 0) / 250);
                 velocity.Sub(velocity.Copy().Mul(multiplier * deltaTime));
             }
         }
@@ -143,15 +143,23 @@ void PlayerComponent::Draw(DrawStack* stack)
         {
             const auto ratio = round((drag_vector_.Length() / max_shot_power) * 100) / 100.0f;
             // 1pxとかになると見栄えが悪いので最低8pxにする
-            const auto height = std::max<float>(Graphs::playerPowerIndicator->height * ratio, 8);
+            const auto indicatorHeight = static_cast<float>(Graphs::playerPowerIndicator->height);
+            const auto height = std::max<float>(indicatorHeight * ratio, 8.0f);
             const auto offset = radius * 1.5f;
             stack->Push();
             stack->Translate(drag_vector_.Normalized().Mul(offset));
             const auto& pos = stack->GetScreenPos();
             const auto rot = drag_vector_.Normalized().SignedAngle({0, -1});
             const auto srcX = CanShot() ? 0 : 12;
-            DrawRectRotaGraph3F(pos.x, pos.y, srcX, 0, 12, height, static_cast<float>(12) * 0.5f, height, 1, 1, rot,
-                                Graphs::playerPowerIndicator->handle, true);
+            DrawRectRotaGraph3F(
+                pos.x, pos.y,
+                srcX, 0,
+                12, static_cast<int>(height),
+                static_cast<float>(12) * 0.5f, height,
+                1, 1,
+                rot,
+                Graphs::playerPowerIndicator->handle, true
+            );
             stack->Pop();
         }
 
@@ -159,7 +167,7 @@ void PlayerComponent::Draw(DrawStack* stack)
         if (Game::debugEnabled)
         {
             // Gravity sources
-            for (const auto& gravitySource : gravitySources)
+            for (const auto& gravitySource : gravity_sources)
             {
                 auto vec = screenPos;
                 vec.Add(gravitySource.Copy().Mul(0.5f));
@@ -252,7 +260,7 @@ void PlayerComponent::UpdateShot()
         shotVec.Mul(shot_power_multiplier);
 
         // 重力の影響を相殺する
-        for (const auto& gravitySource : gravitySources)
+        for (const auto& gravitySource : gravity_sources)
         {
             shotVec.Add(gravitySource.Copy().Neg());
         }

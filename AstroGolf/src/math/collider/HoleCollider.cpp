@@ -2,6 +2,9 @@
 
 #include <spdlog/spdlog.h>
 
+#include "CircleCollider.h"
+#include "RotatableBoxCollider.h"
+
 HoleCollider::HoleCollider() = default;
 
 namespace
@@ -45,19 +48,19 @@ IntersectingResult HoleCollider::Intersects(const Vec2& origin, const Vec2& othe
 
     const auto halfWidth = width * 0.5f;
     const auto halfHeight = height * 0.5f;
-    const auto halfEdgeWidth = edgeWidth * 0.5f;
+    const auto halfEdgeWidth = edge_width * 0.5f;
 
-    const auto bottomCollider = RotatableBoxCollider(width, edgeWidth, rotation);
+    const auto bottomCollider = RotatableBoxCollider(width, edge_width, rotation);
     const auto bottomOffset = Vec2(0, halfHeight - halfEdgeWidth).Rotate(rotation);
     const auto bottomOrigin = origin.Copy().Add(bottomOffset);
     const auto bottomResult = bottomCollider.Intersects(bottomOrigin, otherOrigin, otherCollider);
 
-    const auto leftCollider = RotatableBoxCollider(edgeWidth, height, rotation);
+    const auto leftCollider = RotatableBoxCollider(edge_width, height, rotation);
     const auto leftOffset = Vec2((halfWidth - halfEdgeWidth) * -1, 0).Rotate(rotation);
     const auto leftOrigin = origin.Copy().Add(leftOffset);
     const auto leftResult = leftCollider.Intersects(leftOrigin, otherOrigin, otherCollider);
 
-    const auto rightCollider = RotatableBoxCollider(edgeWidth, height, rotation);
+    const auto rightCollider = RotatableBoxCollider(edge_width, height, rotation);
     const auto rightOffset = Vec2(halfWidth - halfEdgeWidth, 0).Rotate(rotation);
     const auto rightOrigin = origin.Copy().Add(rightOffset);
     const auto rightResult = rightCollider.Intersects(rightOrigin, otherOrigin, otherCollider);

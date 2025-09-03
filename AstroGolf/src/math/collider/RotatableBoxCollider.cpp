@@ -3,8 +3,7 @@
 #include <spdlog/spdlog.h>
 
 #include "CircleCollider.h"
-#include "DrawStack.h"
-#include "Math.h"
+#include "../DrawStack.h"
 
 namespace
 {

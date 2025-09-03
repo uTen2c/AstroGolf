@@ -4,14 +4,14 @@
 #include <spdlog/spdlog.h>
 
 #include "../Game.h"
-#include "../math/CircleCollider.h"
+#include "../math/collider/CircleCollider.h"
 #include "../world/World.h"
 
 PlanetComponent::PlanetComponent(const int id, const float radius): PhysicsComponent(id), planetGravity(0),
                                                                     radius(radius)
 {
     collider = std::make_unique<CircleCollider>(radius);
-    isStatic = true;
+    is_static = true;
     planetGravity = 9.8f * radius;
 }
 
@@ -56,7 +56,7 @@ void PlanetComponent::ApplyGravity(PhysicsComponent* component) const
         return;
     }
     const auto gravityDir = transform.translate.Copy().Sub(component->transform.translate).Normalize();
-    component->gravitySources.emplace_back(gravityDir.Copy().Mul(g));
+    component->gravity_sources.emplace_back(gravityDir.Copy().Mul(g));
 }
 
 float PlanetComponent::GetPlayerDistance(const PhysicsComponent* component) const

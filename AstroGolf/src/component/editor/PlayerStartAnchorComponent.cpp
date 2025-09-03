@@ -6,7 +6,7 @@
 PlayerStartAnchorComponent::PlayerStartAnchorComponent(const int id)
     : ColliderComponent(id)
 {
-    collider = std::make_unique<CircleCollider>(12);
+    collider = std::make_unique<CircleCollider>(12.0f);
 }
 
 void PlayerStartAnchorComponent::Draw(DrawStack* stack)

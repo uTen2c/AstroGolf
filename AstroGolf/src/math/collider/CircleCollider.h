@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Collider.h"
-#include "Vec2.h"
 
 class CircleCollider final : public Collider
 {

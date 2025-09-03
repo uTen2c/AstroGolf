@@ -2,8 +2,8 @@
 
 #include <DxLib.h>
 
-#include "../math/BoundingBox.h"
-#include "../math/RotatableBoxCollider.h"
+#include "../math/collider/BoxCollider.h"
+#include "../math/collider/RotatableBoxCollider.h"
 
 namespace
 {
@@ -18,7 +18,7 @@ RotatableBoxComponent::RotatableBoxComponent(const int id, float width, float he
     height(height)
 {
     collider = std::make_unique<RotatableBoxCollider>(width, height, transform.rotation);
-    isStatic = true;
+    is_static = true;
 }
 
 
@@ -41,8 +41,8 @@ void RotatableBoxComponent::Draw(DrawStack* stack)
     const auto scale = stack->GetScreenScale();
     const auto [halfW, halfH] = Vec2(width, height).Mul(0.5).Mul(scale);
 
-    auto top = Vec2(0, -halfH);
-    auto bottom = Vec2(0, halfH);
+    auto top = Vec2(0.0f, -halfH);
+    auto bottom = Vec2(0.0f, halfH);
 
     top.Rotate(transform.rotation);
     bottom.Rotate(transform.rotation);

@@ -7,12 +7,13 @@
 #include <spdlog/spdlog.h>
 
 #include "../../Game.h"
-#include "../../math/BoundingBox.h"
+#include "../../math/collider/BoxCollider.h"
 #include "../../math/Math.h"
 #include "../../world/StageWorld.h"
 #include "../../world/StageSelectWorld.h"
 
-GoalScoreDisplayComponent::GoalScoreDisplayComponent(const int id): Component(id)
+GoalScoreDisplayComponent::GoalScoreDisplayComponent(const int id)
+    : Component(id)
 {
     confitti_screen_ = MakeScreen(1280, 720, true);
     message_font_handle_ = CreateFontToHandle("M PLUS 1p Medium", 32, 5, DX_FONTTYPE_ANTIALIASING_8X8);
@@ -149,8 +150,8 @@ void GoalScoreDisplayComponent::DrawStars() const
     const auto star3Delta = GetStarDelta(currentDelay, animation_seconds_);
 
     constexpr auto centerX = static_cast<float>(WINDOW_WIDTH) * 0.5f;
-    constexpr auto y = 360;
-    constexpr auto offset = 84;
+    constexpr auto y = 360.0f;
+    constexpr auto offset = 84.0f;
 
     DrawStar({centerX - offset, y}, star_count_ >= 1, star1Delta);
     DrawStar({centerX + offset, y}, star_count_ >= 2, star2Delta);
@@ -210,11 +211,11 @@ void GoalScoreDisplayComponent::DrawButton(const float x, const float y, const i
 {
     const auto& mousePos = Game::Device().MousePos();
 
-    const auto& bb = BoundingBox(buttons_graph_->width, buttons_graph_->height);
+    const auto& bb = BoxCollider(static_cast<float>(buttons_graph_->width), static_cast<float>(buttons_graph_->height));
     const bool& contains = bb.Contains(Vec2(x, y), mousePos);
     const bool& hovering = contains && !Game::instance->isPaused;
 
-    const float yOffset = hovering ? -3 : 0;
+    const float yOffset = hovering ? -3.0f : 0.0f;
     const int tileYOffset = hovering ? 1 : 0;
     buttons_graph_->DrawCenter(x, y + yOffset, 0, buttonIndex * 2 + tileYOffset);
 

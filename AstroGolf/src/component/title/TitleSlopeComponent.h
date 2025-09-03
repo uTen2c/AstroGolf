@@ -1,7 +1,7 @@
 #pragma once
 #include "../PhysicsComponent.h"
 #include "../../math/Math.h"
-#include "../../math/RotatableBoxCollider.h"
+#include "../../math/collider/RotatableBoxCollider.h"
 
 class TitleSlopeComponent final : public PhysicsComponent
 {

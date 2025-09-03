@@ -3,7 +3,7 @@
 #include <DxLib.h>
 #include <spdlog/spdlog.h>
 
-#include "../math/BoundingBox.h"
+#include "../math/collider/BoxCollider.h"
 
 namespace
 {
@@ -13,11 +13,12 @@ namespace
     }
 }
 
-BoxComponent::BoxComponent(const int id, const float width, const float height): PhysicsComponent(id), width(width),
-    height(height)
+BoxComponent::BoxComponent(const int id, const float width, const float height)
+    : PhysicsComponent(id), width(width),
+      height(height)
 {
-    collider = std::make_unique<BoundingBox>(width, height);
-    isStatic = true;
+    collider = std::make_unique<BoxCollider>(width, height);
+    is_static = true;
 }
 
 BoxComponent::~BoxComponent()
@@ -33,9 +34,9 @@ void BoxComponent::Draw(DrawStack* stack)
     const auto scale = stack->GetScreenScale();
     const auto halfW = width * 0.5f * scale.x;
     const auto halfH = height * 0.5f * scale.y;
-    
-    auto top = Vec2(0, -halfH);
-    auto bottom = Vec2(0, halfH);
+
+    auto top = Vec2(0.0f, -halfH);
+    auto bottom = Vec2(0.0f, halfH);
 
     top.Rotate(transform.rotation);
     bottom.Rotate(transform.rotation);
@@ -44,7 +45,7 @@ void BoxComponent::Draw(DrawStack* stack)
     const auto p21 = Vec2(halfW, -halfH).Rotated(transform.rotation);
     const auto p12 = Vec2(-halfW, halfH).Rotated(transform.rotation);
     const auto p22 = Vec2(halfW, halfH).Rotated(transform.rotation);
-    
+
     DrawLine(
         {vec.x + p11.x, vec.y + p11.y},
         {vec.x + p21.x, vec.y + p21.y},

@@ -12,6 +12,7 @@ public:
     static constexpr float deg_to_rad = pi / 180.0f;
 
     static float Lerp(const float& start, const float& end, const float& delta);
+    static int Lerp(const int& start, const int& end, const float& delta);
     static Vec2 Lerp(const Vec2& start, const Vec2& end, const float& delta);
 
     static float EaseOutQuart(const float delta);

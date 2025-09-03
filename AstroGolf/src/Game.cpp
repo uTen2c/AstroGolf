@@ -112,8 +112,9 @@ void Game::UpdateTransition(const float delta)
         const auto curvedProgress = Math::EaseOutQuart(std::clamp(progress, 0.f, 1.f));
         if (world_changed_)
         {
+            const int h = Math::Lerp(0, WINDOW_HEIGHT, curvedProgress);
             SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(curvedProgress * 255));
-            DrawBox(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT * curvedProgress, GetColor(0, 0, 0), true);
+            DrawBox(0, 0, WINDOW_WIDTH, h, GetColor(0, 0, 0), true);
             SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
         }
         else
@@ -121,8 +122,9 @@ void Game::UpdateTransition(const float delta)
             // 下からスライド
             if (transition_mode_ == TransitionMode::Slide)
             {
+                const int y = WINDOW_HEIGHT - Math::Lerp(0, WINDOW_HEIGHT, curvedProgress);
                 SetDrawBlendMode(DX_BLENDMODE_ALPHA, static_cast<int>(curvedProgress * 255));
-                DrawBox(0, WINDOW_HEIGHT - WINDOW_HEIGHT * curvedProgress, WINDOW_WIDTH, WINDOW_HEIGHT,
+                DrawBox(0, y, WINDOW_WIDTH, WINDOW_HEIGHT,
                         GetColor(0, 0, 0),
                         true);
                 SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);

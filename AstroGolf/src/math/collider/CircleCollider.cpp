@@ -2,7 +2,7 @@
 
 #include <spdlog/spdlog.h>
 
-#include "BoundingBox.h"
+#include "BoxCollider.h"
 #include "HoleCollider.h"
 #include "RotatableBoxCollider.h"
 
@@ -25,7 +25,7 @@ IntersectingResult CircleCollider::Intersects(const Vec2& origin, const Vec2& ot
     }
 
     // 円と矩形の衝突判定
-    if (const auto* box = dynamic_cast<const BoundingBox*>(&otherCollider))
+    if (const auto* box = dynamic_cast<const BoxCollider*>(&otherCollider))
     {
         const auto x1 = otherOrigin.x + box->GetLeft();
         const auto y1 = otherOrigin.y + box->GetTop();

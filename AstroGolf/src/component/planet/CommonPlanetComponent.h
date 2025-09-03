@@ -9,9 +9,9 @@ class Graph;
 class CommonPlanetComponent : public PlanetComponent
 {
     // Editor
-    bool rotationOriginDragging = false;
-    Vec2 rotationOriginDragStartOffset;
-    Vec2 rotationOriginDragStartMousePos;
+    bool rotation_origin_dragging_ = false;
+    Vec2 rotation_origin_drag_start_offset_;
+    Vec2 rotation_origin_drag_start_mouse_pos_;
 
     // Play
     bool origin_world_pos_initialized_ = false;
@@ -24,7 +24,7 @@ public:
     float gravityMultiplier = 1.0f;
     bool isSatellite = false;
     float rotationSpeed = 0;
-    Vec2 rotationOriginOffset = {0, -radius - 30};
+    Vec2 rotationOriginOffset = {0.0f, -radius - 30};
 
     CommonPlanetComponent(int id, float radius, std::string graphId);
     void Update(float deltaTime) override;

@@ -25,7 +25,7 @@ public:
     template <class T>
     void Draw(const T& x, const T& y, const int& tileX = 0, const int& tileY = 0) const
     {
-        DrawRectGraphF(x, y, tileX * width, tileY * height, width, height, handle, true);
+        DrawRectGraphF(static_cast<float>(x), static_cast<float>(y), tileX * width, tileY * height, width, height, handle, true);
     }
 
     void Draw(const DrawStack& stack, const int& tileX = 0, const int& tileY = 0) const;

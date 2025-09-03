@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "../math/NullCollider.h"
+#include "../math/collider/NullCollider.h"
 
 class Collider;
 

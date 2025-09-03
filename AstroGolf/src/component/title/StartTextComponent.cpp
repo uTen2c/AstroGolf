@@ -12,7 +12,7 @@ void StartTextComponent::Draw(DrawStack* stack)
 {
     stack->Push();
     ApplyDrawStack(stack);
-    stack->Translate({0, draw_offset_});
+    stack->Translate({0.0f, draw_offset_});
     start_text_graph_->Draw(*stack);
     stack->Pop();
 }

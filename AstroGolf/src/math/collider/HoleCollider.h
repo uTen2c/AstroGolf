@@ -1,14 +1,13 @@
 #pragma once
 #include "Collider.h"
-#include "DrawStack.h"
-#include "RotatableBoxCollider.h"
+#include "../DrawStack.h"
 
 class HoleCollider : public Collider
 {
 public:
     float width = 60.0f;
     float height = 80.0f;
-    float edgeWidth = 3.0f;
+    float edge_width = 3.0f;
     float rotation = 0.0f;
 
     HoleCollider();

@@ -43,17 +43,17 @@ void TitleWorld::Init()
     rightSlope->transform.translate = {1400, 300};
     AddComponent(rightSlope);
 
-    const auto rightWall = std::make_shared<RotatableBoxComponent>(NextComponentId(), 200, 1000);
+    const auto rightWall = std::make_shared<RotatableBoxComponent>(NextComponentId(), 200.0f, 1000.0f);
     rightWall->transform.translate = {1300, -200};
     AddComponent(rightWall);
 
-    const auto leftSlope = std::make_shared<RotatableBoxComponent>(NextComponentId(), 200, 800);
+    const auto leftSlope = std::make_shared<RotatableBoxComponent>(NextComponentId(), 200.0f, 800.0f);
     leftSlope->zIndex = 0;
     leftSlope->transform.rotation = -74.0f * Math::deg_to_rad;
     leftSlope->transform.translate = {-1400, 300};
     AddComponent(leftSlope);
 
-    const auto leftWall = std::make_shared<RotatableBoxComponent>(NextComponentId(), 200, 1000);
+    const auto leftWall = std::make_shared<RotatableBoxComponent>(NextComponentId(), 200.0f, 1000.0f);
     leftWall->transform.translate = {-1300, -200};
     AddComponent(leftWall);
 
@@ -142,11 +142,11 @@ void TitleWorld::PostDraw(DrawStack& stack)
 
     stack.Push();
 
-    stack.Translate({player->transform.translate.x + 50, 308});
+    stack.Translate({player->transform.translate.x + 50, 308.0f});
 
     stack.Push();
 
-    const auto offsetX = Math::Lerp(0, 64, Math::EaseOutQuad(cursor_animation_delta_));
+    const auto offsetX = Math::Lerp(0.0f, 64.0f, Math::EaseOutQuad(cursor_animation_delta_));
     stack.Translate({offsetX, offsetX / 2});
     Graphs::titleCursorGraph->Draw(stack);
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 
-#include "Device.h"
+#include "device/Device.h"
 #include "world/World.h"
 
 constexpr auto WINDOW_WIDTH = 1280;

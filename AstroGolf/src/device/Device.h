@@ -2,7 +2,7 @@
 #include <DxLib.h>
 
 #include "KeyInstance.h"
-#include "math/Vec2.h"
+#include "../math/Vec2.h"
 
 class Device
 {

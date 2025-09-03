@@ -3,11 +3,10 @@
 #include <spdlog/spdlog.h>
 
 #include "PlanetComponent.h"
-#include "../math/BoundingBox.h"
-#include "../math/CircleCollider.h"
-#include "../math/HoleCollider.h"
-#include "../math/NullCollider.h"
-#include "../math/RotatableBoxCollider.h"
+#include "../math/collider/BoxCollider.h"
+#include "../math/collider/CircleCollider.h"
+#include "../math/collider/HoleCollider.h"
+#include "../math/collider/RotatableBoxCollider.h"
 #include "../world/TitleWorld.h"
 #include "../world/World.h"
 
@@ -15,7 +14,7 @@ namespace
 {
     [[maybe_unused]] float GetColliderRadiusX(const Collider* collider)
     {
-        if (const auto bb = dynamic_cast<const BoundingBox*>(collider))
+        if (const auto bb = dynamic_cast<const BoxCollider*>(collider))
         {
             return bb->width * 0.5f;
         }
@@ -28,7 +27,7 @@ namespace
 
     [[maybe_unused]] float GetColliderRadiusY(const Collider* collider)
     {
-        if (const auto bb = dynamic_cast<const BoundingBox*>(collider))
+        if (const auto bb = dynamic_cast<const BoxCollider*>(collider))
         {
             return bb->height * 0.5f;
         }
@@ -56,7 +55,7 @@ void PhysicsComponent::UpdateMovement(const float deltaTime)
     copied.Mul(deltaTime);
 
     auto gravityVec = GetMergedGravityVelocity();
-    lastGravityPower = gravityVec.Length();
+    last_gravity_power = gravityVec.Length();
     copied.Add(gravityVec.Mul(deltaTime));
 
     // if (gravity > 0 && !intersecting_)
@@ -71,7 +70,7 @@ void PhysicsComponent::UpdateMovement(const float deltaTime)
 
 void PhysicsComponent::PostUpdate(const float deltaTime)
 {
-    gravitySources.clear();
+    gravity_sources.clear();
 }
 
 void PhysicsComponent::Draw(DrawStack* stack)
@@ -199,7 +198,7 @@ void PhysicsComponent::Move(const Vec2& delta)
                 OnCollide(nearbyComponent, result);
 
             }
-            if (const auto bb = dynamic_cast<BoundingBox*>(nearbyComponent->collider.get()))
+            if (const auto bb = dynamic_cast<BoxCollider*>(nearbyComponent->collider.get()))
             {
                 const auto otherPos = worldPos.pos;
                 const auto x1 = otherPos.x + bb->GetLeft();
@@ -297,7 +296,7 @@ void PhysicsComponent::Move(const Vec2& delta)
         }
     }
 
-    if (dynamic_cast<BoundingBox*>(collider.get()))
+    if (dynamic_cast<BoxCollider*>(collider.get()))
     {
         if (delta.x != 0.0f)
         {
@@ -313,7 +312,7 @@ void PhysicsComponent::Move(const Vec2& delta)
                 const auto& worldPos = nearbyComponent->GetWorldPos();
 
                 const auto& otherCollider = nearbyComponent->collider;
-                if (const BoundingBox* bb = dynamic_cast<BoundingBox*>(otherCollider.get()))
+                if (const BoxCollider* bb = dynamic_cast<BoxCollider*>(otherCollider.get()))
                 {
                     if (collider->Intersects(moved, worldPos.pos, *bb).intersected)
                     {
@@ -350,7 +349,7 @@ void PhysicsComponent::Move(const Vec2& delta)
                 const auto& worldPos = nearbyComponent->GetWorldPos();
 
                 const auto& otherCollider = nearbyComponent->collider;
-                if (const BoundingBox* bb = dynamic_cast<BoundingBox*>(otherCollider.get()))
+                if (const BoxCollider* bb = dynamic_cast<BoxCollider*>(otherCollider.get()))
                 {
                     if (collider->Intersects(moved, worldPos.pos, *bb).intersected)
                     {
@@ -397,7 +396,7 @@ void PhysicsComponent::Move(const Vec2& delta)
         return;
     }
 
-    if (!isStatic)
+    if (!is_static)
     {
         SetWorldPos(moved);
     }
@@ -406,7 +405,7 @@ void PhysicsComponent::Move(const Vec2& delta)
 Vec2 PhysicsComponent::GetMergedGravityVelocity() const
 {
     Vec2 vec;
-    for (const auto& gravitySource : gravitySources)
+    for (const auto& gravitySource : gravity_sources)
     {
         vec.Add(gravitySource);
     }
@@ -421,7 +420,7 @@ void PhysicsComponent::CalcGravity()
         const auto distance = std::clamp(300.0f - transform.translate.y, 0.0f, 100.0f);
         const auto correctedDistance = std::max(distance / 100.0f, 1.0f); // 1px = 1cm, convert cm to meter
         const auto g = base * 0.2f / correctedDistance;
-        gravitySources.emplace_back(0.0f, g);
+        gravity_sources.emplace_back(0.0f, g);
         return;
     }
 

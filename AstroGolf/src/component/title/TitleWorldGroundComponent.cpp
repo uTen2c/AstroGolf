@@ -1,7 +1,7 @@
 #include "TitleWorldGroundComponent.h"
 
 #include "../../graph/Graphs.h"
-#include "../../math/RotatableBoxCollider.h"
+#include "../../math/collider/RotatableBoxCollider.h"
 
 TitleWorldGroundComponent::TitleWorldGroundComponent(const int id): PhysicsComponent(id)
 {

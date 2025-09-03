@@ -4,7 +4,7 @@
 #include <spdlog/spdlog.h>
 
 #include "../../Game.h"
-#include "../../math/BoundingBox.h"
+#include "../../math/collider/BoxCollider.h"
 #include "../../math/Math.h"
 #include "../../sound/Sound.h"
 #include "../../sound/Sounds.h"
@@ -101,10 +101,10 @@ void MenuComponent::DrawMenu()
 
     menu_background_graph->Draw(WINDOW_WIDTH - menu_background_graph->width, 0);
 
-    constexpr float padding = 24;
-    const float buttonX = WINDOW_WIDTH - menu_buttons_graph->width - padding;
-    const float baseY = WINDOW_HEIGHT - menu_buttons_graph->height - padding;
-    const float gap = menu_buttons_graph->height + 24;
+    constexpr int padding = 24;
+    const float buttonX = static_cast<float>(WINDOW_WIDTH - menu_buttons_graph->width - padding);
+    const float baseY = static_cast<float>(WINDOW_HEIGHT - menu_buttons_graph->height - padding);
+    const float gap = static_cast<float>(menu_buttons_graph->height + 24);
 
 
     float offset = gap * -3;
@@ -155,9 +155,10 @@ void MenuComponent::DrawMenuItem(const float x, const float y, const int buttonI
                                  const std::function<void()>& onClick)
 {
     const auto tileY = buttonIndex * 2;
-    const auto& bb = BoundingBox(menu_buttons_graph->width, menu_buttons_graph->height);
+    const auto menuButtonGraphSize = Vec2(menu_buttons_graph->width, menu_buttons_graph->height);
+    const auto& bb = BoxCollider(menuButtonGraphSize.x, menuButtonGraphSize.y);
     const bool& hovering = Game::HasFocus() && bb.Contains(
-        Vec2(x, y) + Vec2(menu_buttons_graph->width / 2.0f, menu_buttons_graph->height / 2.0f),
+        Vec2(x, y) + menuButtonGraphSize / 2.0f,
         Game::Device().MousePos()
     );
 

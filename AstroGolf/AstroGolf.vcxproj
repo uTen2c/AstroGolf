@@ -19,6 +19,13 @@
         </ProjectConfiguration>
     </ItemGroup>
     <ItemGroup>
+        <ClCompile Include="include\imgui\imgui.cpp" />
+        <ClCompile Include="include\imgui\imgui_demo.cpp" />
+        <ClCompile Include="include\imgui\imgui_draw.cpp" />
+        <ClCompile Include="include\imgui\imgui_impl_dx11.cpp" />
+        <ClCompile Include="include\imgui\imgui_impl_win32.cpp" />
+        <ClCompile Include="include\imgui\imgui_tables.cpp" />
+        <ClCompile Include="include\imgui\imgui_widgets.cpp" />
         <ClCompile Include="src\AstroGolf.cpp"/>
         <ClCompile Include="src\component\BoxComponent.cpp"/>
         <ClCompile Include="src\component\CameraComponent.cpp"/>
@@ -48,172 +55,180 @@
         <ClCompile Include="src\component\title\TitleSlopeComponent.cpp"/>
         <ClCompile Include="src\component\title\TitleWorldGroundComponent.cpp"/>
         <ClCompile Include="src\debug\Debug.cpp"/>
-        <ClCompile Include="src\device\Device.cpp" />
-        <ClCompile Include="src\device\KeyInstance.cpp" />
-        <ClCompile Include="src\editor\PlanetGraphs.cpp" />
-        <ClCompile Include="src\editor\StageDefine.cpp" />
-        <ClCompile Include="src\editor\StageFileManager.cpp" />
-        <ClCompile Include="src\Game.cpp" />
-        <ClCompile Include="src\game\SaveManager.cpp" />
-        <ClCompile Include="src\game\StageManager.cpp" />
-        <ClCompile Include="src\graph\Graph.cpp" />
-        <ClCompile Include="src\ImEx.cpp" />
-        <ClCompile Include="src\math\collider\BoxCollider.cpp" />
-        <ClCompile Include="src\math\collider\CircleCollider.cpp" />
-        <ClCompile Include="src\math\collider\Collider.cpp" />
-        <ClCompile Include="src\math\collider\HoleCollider.cpp" />
-        <ClCompile Include="src\math\collider\NullCollider.cpp" />
-        <ClCompile Include="src\math\collider\RotatableBoxCollider.cpp" />
-        <ClCompile Include="src\math\DrawStack.cpp" />
-        <ClCompile Include="src\math\Math.cpp" />
-        <ClCompile Include="src\math\Transform.cpp" />
-        <ClCompile Include="src\math\Vec2.cpp" />
-        <ClCompile Include="src\random\Random.cpp" />
-        <ClCompile Include="src\sound\Sound.cpp" />
-        <ClCompile Include="src\world\DemoWorld.cpp" />
-        <ClCompile Include="src\world\EditorWorld.cpp" />
-        <ClCompile Include="src\world\PlayWorld.cpp" />
-        <ClCompile Include="src\world\SplashScreenWorld.cpp" />
-        <ClCompile Include="src\world\StageSelectWorld.cpp" />
-        <ClCompile Include="src\world\StageWorld.cpp" />
-        <ClCompile Include="src\world\TitleWorld.cpp" />
-        <ClCompile Include="src\world\World.cpp" />
+        <ClCompile Include="src\device\Device.cpp"/>
+        <ClCompile Include="src\device\KeyInstance.cpp"/>
+        <ClCompile Include="src\editor\PlanetGraphs.cpp"/>
+        <ClCompile Include="src\editor\StageDefine.cpp"/>
+        <ClCompile Include="src\editor\StageFileManager.cpp"/>
+        <ClCompile Include="src\Game.cpp"/>
+        <ClCompile Include="src\game\SaveManager.cpp"/>
+        <ClCompile Include="src\game\StageManager.cpp"/>
+        <ClCompile Include="src\graph\Graph.cpp"/>
+        <ClCompile Include="src\ImEx.cpp"/>
+        <ClCompile Include="src\math\collider\BoxCollider.cpp"/>
+        <ClCompile Include="src\math\collider\CircleCollider.cpp"/>
+        <ClCompile Include="src\math\collider\Collider.cpp"/>
+        <ClCompile Include="src\math\collider\HoleCollider.cpp"/>
+        <ClCompile Include="src\math\collider\NullCollider.cpp"/>
+        <ClCompile Include="src\math\collider\RotatableBoxCollider.cpp"/>
+        <ClCompile Include="src\math\DrawStack.cpp"/>
+        <ClCompile Include="src\math\Math.cpp"/>
+        <ClCompile Include="src\math\Transform.cpp"/>
+        <ClCompile Include="src\math\Vec2.cpp"/>
+        <ClCompile Include="src\random\Random.cpp"/>
+        <ClCompile Include="src\sound\Sound.cpp"/>
+        <ClCompile Include="src\world\DemoWorld.cpp"/>
+        <ClCompile Include="src\world\EditorWorld.cpp"/>
+        <ClCompile Include="src\world\PlayWorld.cpp"/>
+        <ClCompile Include="src\world\SplashScreenWorld.cpp"/>
+        <ClCompile Include="src\world\StageSelectWorld.cpp"/>
+        <ClCompile Include="src\world\StageWorld.cpp"/>
+        <ClCompile Include="src\world\TitleWorld.cpp"/>
+        <ClCompile Include="src\world\World.cpp"/>
     </ItemGroup>
     <ItemGroup>
-        <ClInclude Include="src\component\BoxComponent.h" />
-        <ClInclude Include="src\component\CameraComponent.h" />
-        <ClInclude Include="src\component\CircleComponent.h" />
-        <ClInclude Include="src\component\ColliderComponent.h" />
-        <ClInclude Include="src\component\Component.h" />
-        <ClInclude Include="src\component\editor\PlayerStartAnchorComponent.h" />
-        <ClInclude Include="src\component\GoalHoleComponent.h" />
-        <ClInclude Include="src\component\misc\BallisticComponent.h" />
-        <ClInclude Include="src\component\misc\GoalCompassComponent.h" />
-        <ClInclude Include="src\component\misc\GoalScoreDisplayComponent.h" />
-        <ClInclude Include="src\component\misc\GroundParticleComponent.h" />
-        <ClInclude Include="src\component\misc\MenuComponent.h" />
-        <ClInclude Include="src\component\object\SatelliteParentComponent.h" />
-        <ClInclude Include="src\component\PhysicsComponent.h" />
-        <ClInclude Include="src\component\PlanetComponent.h" />
-        <ClInclude Include="src\component\planet\CommonPlanetComponent.h" />
-        <ClInclude Include="src\component\planet\DemoPlanet2Component.h" />
-        <ClInclude Include="src\component\planet\DemoPlanetComponent.h" />
-        <ClInclude Include="src\component\PlayerComponent.h" />
-        <ClInclude Include="src\component\RotatableBoxComponent.h" />
-        <ClInclude Include="src\component\select\StagePreviewComponent.h" />
-        <ClInclude Include="src\component\select\StageSelectComponent.h" />
-        <ClInclude Include="src\component\SimpleSquareComponent.h" />
-        <ClInclude Include="src\component\TestSquareComponent.h" />
-        <ClInclude Include="src\component\title\StartTextComponent.h" />
-        <ClInclude Include="src\component\title\TitleSlopeComponent.h" />
-        <ClInclude Include="src\component\title\TitleWorldGroundComponent.h" />
-        <ClInclude Include="src\debug\Debug.h" />
-        <ClInclude Include="src\device\Device.h" />
-        <ClInclude Include="src\device\KeyInstance.h" />
-        <ClInclude Include="src\editor\PlanetGraphs.h" />
-        <ClInclude Include="src\editor\StageDefine.h" />
-        <ClInclude Include="src\editor\StageFileManager.h" />
-        <ClInclude Include="src\Game.h" />
-        <ClInclude Include="src\game\SaveManager.h" />
-        <ClInclude Include="src\game\StageManager.h" />
-        <ClInclude Include="src\graph\Graph.h" />
-        <ClInclude Include="src\graph\Graphs.h" />
-        <ClInclude Include="src\ImEx.h" />
-        <ClInclude Include="src\math\collider\BoxCollider.h" />
-        <ClInclude Include="src\math\collider\CircleCollider.h" />
-        <ClInclude Include="src\math\collider\Collider.h" />
-        <ClInclude Include="src\math\collider\HoleCollider.h" />
-        <ClInclude Include="src\math\collider\NullCollider.h" />
-        <ClInclude Include="src\math\collider\RotatableBoxCollider.h" />
-        <ClInclude Include="src\math\CrossPointResult.h" />
-        <ClInclude Include="src\math\DrawStack.h" />
-        <ClInclude Include="src\math\Math.h" />
-        <ClInclude Include="src\math\Transform.h" />
-        <ClInclude Include="src\math\Vec2.h" />
-        <ClInclude Include="src\random\Random.h" />
-        <ClInclude Include="src\sound\Sound.h" />
-        <ClInclude Include="src\sound\Sounds.h" />
-        <ClInclude Include="src\world\DemoWorld.h" />
-        <ClInclude Include="src\world\EditorWorld.h" />
-        <ClInclude Include="src\world\PlayWorld.h" />
-        <ClInclude Include="src\world\SplashScreenWorld.h" />
-        <ClInclude Include="src\world\StageSelectWorld.h" />
-        <ClInclude Include="src\world\StageWorld.h" />
-        <ClInclude Include="src\world\TitleWorld.h" />
-        <ClInclude Include="src\world\World.h" />
+        <ClInclude Include="include\imgui\imconfig.h" />
+        <ClInclude Include="include\imgui\imgui.h" />
+        <ClInclude Include="include\imgui\imgui_impl_dx11.h" />
+        <ClInclude Include="include\imgui\imgui_impl_win32.h" />
+        <ClInclude Include="include\imgui\imgui_internal.h" />
+        <ClInclude Include="include\imgui\imstb_rectpack.h" />
+        <ClInclude Include="include\imgui\imstb_textedit.h" />
+        <ClInclude Include="include\imgui\imstb_truetype.h" />
+        <ClInclude Include="src\component\BoxComponent.h"/>
+        <ClInclude Include="src\component\CameraComponent.h"/>
+        <ClInclude Include="src\component\CircleComponent.h"/>
+        <ClInclude Include="src\component\ColliderComponent.h"/>
+        <ClInclude Include="src\component\Component.h"/>
+        <ClInclude Include="src\component\editor\PlayerStartAnchorComponent.h"/>
+        <ClInclude Include="src\component\GoalHoleComponent.h"/>
+        <ClInclude Include="src\component\misc\BallisticComponent.h"/>
+        <ClInclude Include="src\component\misc\GoalCompassComponent.h"/>
+        <ClInclude Include="src\component\misc\GoalScoreDisplayComponent.h"/>
+        <ClInclude Include="src\component\misc\GroundParticleComponent.h"/>
+        <ClInclude Include="src\component\misc\MenuComponent.h"/>
+        <ClInclude Include="src\component\object\SatelliteParentComponent.h"/>
+        <ClInclude Include="src\component\PhysicsComponent.h"/>
+        <ClInclude Include="src\component\PlanetComponent.h"/>
+        <ClInclude Include="src\component\planet\CommonPlanetComponent.h"/>
+        <ClInclude Include="src\component\planet\DemoPlanet2Component.h"/>
+        <ClInclude Include="src\component\planet\DemoPlanetComponent.h"/>
+        <ClInclude Include="src\component\PlayerComponent.h"/>
+        <ClInclude Include="src\component\RotatableBoxComponent.h"/>
+        <ClInclude Include="src\component\select\StagePreviewComponent.h"/>
+        <ClInclude Include="src\component\select\StageSelectComponent.h"/>
+        <ClInclude Include="src\component\SimpleSquareComponent.h"/>
+        <ClInclude Include="src\component\TestSquareComponent.h"/>
+        <ClInclude Include="src\component\title\StartTextComponent.h"/>
+        <ClInclude Include="src\component\title\TitleSlopeComponent.h"/>
+        <ClInclude Include="src\component\title\TitleWorldGroundComponent.h"/>
+        <ClInclude Include="src\debug\Debug.h"/>
+        <ClInclude Include="src\device\Device.h"/>
+        <ClInclude Include="src\device\KeyInstance.h"/>
+        <ClInclude Include="src\editor\PlanetGraphs.h"/>
+        <ClInclude Include="src\editor\StageDefine.h"/>
+        <ClInclude Include="src\editor\StageFileManager.h"/>
+        <ClInclude Include="src\Game.h"/>
+        <ClInclude Include="src\game\SaveManager.h"/>
+        <ClInclude Include="src\game\StageManager.h"/>
+        <ClInclude Include="src\graph\Graph.h"/>
+        <ClInclude Include="src\graph\Graphs.h"/>
+        <ClInclude Include="src\ImEx.h"/>
+        <ClInclude Include="src\math\collider\BoxCollider.h"/>
+        <ClInclude Include="src\math\collider\CircleCollider.h"/>
+        <ClInclude Include="src\math\collider\Collider.h"/>
+        <ClInclude Include="src\math\collider\HoleCollider.h"/>
+        <ClInclude Include="src\math\collider\NullCollider.h"/>
+        <ClInclude Include="src\math\collider\RotatableBoxCollider.h"/>
+        <ClInclude Include="src\math\CrossPointResult.h"/>
+        <ClInclude Include="src\math\DrawStack.h"/>
+        <ClInclude Include="src\math\Math.h"/>
+        <ClInclude Include="src\math\Transform.h"/>
+        <ClInclude Include="src\math\Vec2.h"/>
+        <ClInclude Include="src\random\Random.h"/>
+        <ClInclude Include="src\sound\Sound.h"/>
+        <ClInclude Include="src\sound\Sounds.h"/>
+        <ClInclude Include="src\world\DemoWorld.h"/>
+        <ClInclude Include="src\world\EditorWorld.h"/>
+        <ClInclude Include="src\world\PlayWorld.h"/>
+        <ClInclude Include="src\world\SplashScreenWorld.h"/>
+        <ClInclude Include="src\world\StageSelectWorld.h"/>
+        <ClInclude Include="src\world\StageWorld.h"/>
+        <ClInclude Include="src\world\TitleWorld.h"/>
+        <ClInclude Include="src\world\World.h"/>
     </ItemGroup>
     <ItemGroup>
-        <Content Include="assets\data\graphs.json" />
-        <Content Include="assets\data\stages.json" />
-        <Content Include="assets\data\stage\demo.json" />
-        <Content Include="assets\data\stage\stage01.json" />
-        <Content Include="assets\data\stage\stage02.json" />
-        <Content Include="assets\data\stage\stage00.json" />
-        <Content Include="assets\fonts\MPLUS1p-Bold.ttf" />
-        <Content Include="assets\fonts\MPLUS1p-Medium.ttf" />
-        <Content Include="assets\fonts\Outfit-Bold.ttf" />
-        <Content Include="assets\movie\confetti.mp4" />
-        <Content Include="assets\sound\dropping_in_hole.mp3" />
-        <Content Include="assets\sound\hit.mp3" />
-        <Content Include="assets\sound\shot_1.mp3" />
-        <Content Include="assets\sound\shot_2.mp3" />
-        <Content Include="assets\sprite\background.psd" />
-        <Content Include="assets\sprite\background_old.png" />
-        <Content Include="assets\sprite\background_old.psd" />
-        <Content Include="assets\sprite\editor\player_start_anchor.png" />
-        <Content Include="assets\sprite\editor\player_start_anchor.psd" />
-        <Content Include="assets\sprite\goal_flag.png" />
-        <Content Include="assets\sprite\grasses.png" />
-        <Content Include="assets\sprite\grasses.psd" />
-        <Content Include="assets\sprite\hole.png" />
-        <Content Include="assets\sprite\landing_particle.png" />
-        <Content Include="assets\sprite\logo.png" />
-        <Content Include="assets\sprite\menu\buttons.png" />
-        <Content Include="assets\sprite\menu\buttons.psd" />
-        <Content Include="assets\sprite\menu\menu_background.png" />
-        <Content Include="assets\sprite\menu\menu_background.psd" />
-        <Content Include="assets\sprite\menu_button.png" />
-        <Content Include="assets\sprite\menu_button.psd" />
-        <Content Include="assets\sprite\planet\black_hole.png" />
-        <Content Include="assets\sprite\planet\blue.png" />
-        <Content Include="assets\sprite\planet\gray.png" />
-        <Content Include="assets\sprite\planet\gray_small.png" />
-        <Content Include="assets\sprite\planet\orange2.png" />
-        <Content Include="assets\sprite\planet\orange_big.png" />
-        <Content Include="assets\sprite\planet\purple.png" />
-        <Content Include="assets\sprite\planet_2.png" />
-        <Content Include="assets\sprite\power_indicator.png" />
-        <Content Include="assets\sprite\preview\placeholder.png" />
-        <Content Include="assets\sprite\preview\stage00.png" />
-        <Content Include="assets\sprite\preview\stage01.png" />
-        <Content Include="assets\sprite\preview\stage1.png" />
-        <Content Include="assets\sprite\preview\stage2.png" />
-        <Content Include="assets\sprite\preview_base.png" />
-        <Content Include="assets\sprite\stage\challenge_star.png" />
-        <Content Include="assets\sprite\stage\challenge_star.psd" />
-        <Content Include="assets\sprite\stage\goal_compass.png" />
-        <Content Include="assets\sprite\stage\goal_flag.png" />
-        <Content Include="assets\sprite\stage\result_buttons.png" />
-        <Content Include="assets\sprite\stage\result_buttons.psd" />
-        <Content Include="assets\sprite\stage_select\buttons.png" />
-        <Content Include="assets\sprite\stage_select\buttons.psd" />
-        <Content Include="assets\sprite\stage_select\challenges.png" />
-        <Content Include="assets\sprite\stage_select\challenges.psd" />
-        <Content Include="assets\sprite\stage_select\mission.png" />
-        <Content Include="assets\sprite\stage_select\mission.psd" />
-        <Content Include="assets\sprite\stage_select\title.png" />
-        <Content Include="assets\sprite\stage_select\title.psd" />
-        <Content Include="assets\sprite\star.psd" />
-        <Content Include="assets\sprite\stars.png" />
-        <Content Include="assets\sprite\stars.psd" />
-        <Content Include="assets\sprite\test_square.png" />
-        <Content Include="assets\sprite\title.png" />
-        <Content Include="assets\sprite\title.psd" />
-        <Content Include="assets\sprite\title\cursor.png" />
-        <Content Include="assets\sprite\title\cursor.psd" />
-        <Content Include="assets\sprite\title\start.png" />
-        <Content Include="assets\sprite\title\start.psd" />
-        <Content Include="assets\sprite\title_ground.png" />
+        <Content Include="assets\data\graphs.json"/>
+        <Content Include="assets\data\stages.json"/>
+        <Content Include="assets\data\stage\demo.json"/>
+        <Content Include="assets\data\stage\stage01.json"/>
+        <Content Include="assets\data\stage\stage02.json"/>
+        <Content Include="assets\data\stage\stage00.json"/>
+        <Content Include="assets\fonts\MPLUS1p-Bold.ttf"/>
+        <Content Include="assets\fonts\MPLUS1p-Medium.ttf"/>
+        <Content Include="assets\fonts\Outfit-Bold.ttf"/>
+        <Content Include="assets\movie\confetti.mp4"/>
+        <Content Include="assets\sound\dropping_in_hole.mp3"/>
+        <Content Include="assets\sound\hit.mp3"/>
+        <Content Include="assets\sound\shot_1.mp3"/>
+        <Content Include="assets\sound\shot_2.mp3"/>
+        <Content Include="assets\sprite\background.psd"/>
+        <Content Include="assets\sprite\background_old.png"/>
+        <Content Include="assets\sprite\background_old.psd"/>
+        <Content Include="assets\sprite\editor\player_start_anchor.png"/>
+        <Content Include="assets\sprite\editor\player_start_anchor.psd"/>
+        <Content Include="assets\sprite\goal_flag.png"/>
+        <Content Include="assets\sprite\grasses.png"/>
+        <Content Include="assets\sprite\grasses.psd"/>
+        <Content Include="assets\sprite\hole.png"/>
+        <Content Include="assets\sprite\landing_particle.png"/>
+        <Content Include="assets\sprite\logo.png"/>
+        <Content Include="assets\sprite\menu\buttons.png"/>
+        <Content Include="assets\sprite\menu\buttons.psd"/>
+        <Content Include="assets\sprite\menu\menu_background.png"/>
+        <Content Include="assets\sprite\menu\menu_background.psd"/>
+        <Content Include="assets\sprite\menu_button.png"/>
+        <Content Include="assets\sprite\menu_button.psd"/>
+        <Content Include="assets\sprite\planet\black_hole.png"/>
+        <Content Include="assets\sprite\planet\blue.png"/>
+        <Content Include="assets\sprite\planet\gray.png"/>
+        <Content Include="assets\sprite\planet\gray_small.png"/>
+        <Content Include="assets\sprite\planet\orange2.png"/>
+        <Content Include="assets\sprite\planet\orange_big.png"/>
+        <Content Include="assets\sprite\planet\purple.png"/>
+        <Content Include="assets\sprite\planet_2.png"/>
+        <Content Include="assets\sprite\power_indicator.png"/>
+        <Content Include="assets\sprite\preview\placeholder.png"/>
+        <Content Include="assets\sprite\preview\stage00.png"/>
+        <Content Include="assets\sprite\preview\stage01.png"/>
+        <Content Include="assets\sprite\preview\stage1.png"/>
+        <Content Include="assets\sprite\preview\stage2.png"/>
+        <Content Include="assets\sprite\preview_base.png"/>
+        <Content Include="assets\sprite\stage\challenge_star.png"/>
+        <Content Include="assets\sprite\stage\challenge_star.psd"/>
+        <Content Include="assets\sprite\stage\goal_compass.png"/>
+        <Content Include="assets\sprite\stage\goal_flag.png"/>
+        <Content Include="assets\sprite\stage\result_buttons.png"/>
+        <Content Include="assets\sprite\stage\result_buttons.psd"/>
+        <Content Include="assets\sprite\stage_select\buttons.png"/>
+        <Content Include="assets\sprite\stage_select\buttons.psd"/>
+        <Content Include="assets\sprite\stage_select\challenges.png"/>
+        <Content Include="assets\sprite\stage_select\challenges.psd"/>
+        <Content Include="assets\sprite\stage_select\mission.png"/>
+        <Content Include="assets\sprite\stage_select\mission.psd"/>
+        <Content Include="assets\sprite\stage_select\title.png"/>
+        <Content Include="assets\sprite\stage_select\title.psd"/>
+        <Content Include="assets\sprite\star.psd"/>
+        <Content Include="assets\sprite\stars.png"/>
+        <Content Include="assets\sprite\stars.psd"/>
+        <Content Include="assets\sprite\test_square.png"/>
+        <Content Include="assets\sprite\title.png"/>
+        <Content Include="assets\sprite\title.psd"/>
+        <Content Include="assets\sprite\title\cursor.png"/>
+        <Content Include="assets\sprite\title\cursor.psd"/>
+        <Content Include="assets\sprite\title\start.png"/>
+        <Content Include="assets\sprite\title\start.psd"/>
+        <Content Include="assets\sprite\title_ground.png"/>
     </ItemGroup>
     <PropertyGroup Label="Globals">
         <VCProjectVersion>17.0</VCProjectVersion>
@@ -279,9 +294,6 @@
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
         <CopyLocalDebugSymbols>true</CopyLocalDebugSymbols>
     </PropertyGroup>
-    <PropertyGroup Label="Vcpkg">
-        <VcpkgEnableManifest>true</VcpkgEnableManifest>
-    </PropertyGroup>
     <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
         <ClCompile>
             <WarningLevel>Level3</WarningLevel>
@@ -290,13 +302,13 @@
             <ConformanceMode>true</ConformanceMode>
             <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
             <LanguageStandard>stdcpp20</LanguageStandard>
-            <AdditionalIncludeDirectories>;$(projectDir)\lib\dxlib</AdditionalIncludeDirectories>
+            <AdditionalIncludeDirectories>$(ProjectDir)include\dxlib;$(ProjectDir)include\imgui;$(ProjectDir)include</AdditionalIncludeDirectories>
         </ClCompile>
         <Link>
             <SubSystem>Windows</SubSystem>
             <GenerateDebugInformation>true</GenerateDebugInformation>
-            <AdditionalLibraryDirectories>;$(projectDir)\lib\dxlib</AdditionalLibraryDirectories>
-            <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);msvcrtd.lib</AdditionalDependencies>
+            <AdditionalLibraryDirectories>;$(projectDir)\include\dxlib;$(projectDir)\include\imgui</AdditionalLibraryDirectories>
+            <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);$(ProjectDir)lib;msvcrtd.lib</AdditionalDependencies>
         </Link>
     </ItemDefinitionGroup>
     <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -309,6 +321,7 @@
             <ConformanceMode>true</ConformanceMode>
             <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
             <LanguageStandard>stdcpp20</LanguageStandard>
+            <AdditionalIncludeDirectories>$(projectDir)include\dxlib;$(projectDir)include\imgui;$(ProjectDir)include</AdditionalIncludeDirectories>
         </ClCompile>
         <Link>
             <SubSystem>Windows</SubSystem>
@@ -321,18 +334,18 @@
         <ClCompile>
             <WarningLevel>Level3</WarningLevel>
             <SDLCheck>false</SDLCheck>
-            <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+            <PreprocessorDefinitions>_DEBUG;_WINDOWS;FMT_HEADER_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
             <ConformanceMode>true</ConformanceMode>
             <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-            <AdditionalIncludeDirectories>$(projectDir)lib\;$(projectDir)lib\dxlib\;%(AdditionalIncludeDirectories);$(projectDir)\lib\dxlib</AdditionalIncludeDirectories>
+            <AdditionalIncludeDirectories>$(projectDir)include\;$(projectDir)include\dxlib\;$(projectDir)include\imgui\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
             <LanguageStandard>stdcpp20</LanguageStandard>
             <AdditionalOptions>/utf-8 /wd4010 %(AdditionalOptions)</AdditionalOptions>
         </ClCompile>
         <Link>
             <SubSystem>Windows</SubSystem>
             <GenerateDebugInformation>true</GenerateDebugInformation>
-            <AdditionalLibraryDirectories>$(projectDir)lib\;$(projectDir)lib\dxlib\;$(projectDir)\lib\dxlib</AdditionalLibraryDirectories>
-            <AdditionalDependencies>msvcrtd.lib;%(AdditionalDependencies);msvcrtd.lib</AdditionalDependencies>
+            <AdditionalLibraryDirectories>$(projectDir)lib\;$(projectDir)include\dxlib\;$(projectDir)include\imgui\</AdditionalLibraryDirectories>
+            <AdditionalDependencies>msvcrtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
         </Link>
     </ItemDefinitionGroup>
     <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -341,10 +354,10 @@
             <FunctionLevelLinking>true</FunctionLevelLinking>
             <IntrinsicFunctions>true</IntrinsicFunctions>
             <SDLCheck>false</SDLCheck>
-            <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+            <PreprocessorDefinitions>NDEBUG;_WINDOWS;FMT_HEADER_ONLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
             <ConformanceMode>true</ConformanceMode>
             <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-            <AdditionalIncludeDirectories>$(projectDir)lib\;$(projectDir)lib\dxlib\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+            <AdditionalIncludeDirectories>$(projectDir)include\;$(projectDir)include\dxlib\;$(projectDir)include\imgui\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
             <LanguageStandard>stdcpp20</LanguageStandard>
             <AdditionalOptions>/utf-8 /wd4010 %(AdditionalOptions)</AdditionalOptions>
         </ClCompile>
@@ -353,7 +366,7 @@
             <EnableCOMDATFolding>true</EnableCOMDATFolding>
             <OptimizeReferences>true</OptimizeReferences>
             <GenerateDebugInformation>true</GenerateDebugInformation>
-            <AdditionalLibraryDirectories>$(projectDir)lib\;$(projectDir)lib\dxlib\</AdditionalLibraryDirectories>
+            <AdditionalLibraryDirectories>$(projectDir)lib\;$(projectDir)include\dxlib\;$(projectDir)include\imgui\</AdditionalLibraryDirectories>
             <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
         </Link>
     </ItemDefinitionGroup>

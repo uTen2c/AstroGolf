@@ -1,10 +1,8 @@
 #include "Sound.h"
 
 #include <spdlog/spdlog.h>
-#include <spdlog/fmt/fmt.h>
 
 #include "../Game.h"
-#include "../../lib/dxlib/DxLib.h"
 
 Sound::Sound(const std::string& path)
 {

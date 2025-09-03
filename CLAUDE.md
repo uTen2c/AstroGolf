@@ -18,7 +18,6 @@ AstroGolf is a C++ physics-based golf game where players navigate a golf ball th
 **Build Tool**: Visual Studio 2022 with MSBuild (.vcxproj project file)
 **Language**: C++20 with UTF-8 encoding support
 **Platforms**: Win32 and x64 (Debug/Release configurations)
-**Dependencies**: Managed via vcpkg with manifest mode
 
 ### Build Commands
 ```bash
@@ -31,7 +30,7 @@ msbuild AstroGolf.sln /p:Configuration=Release /p:Platform=x64
 # Build -> Build Solution (Ctrl+Shift+B)
 ```
 
-### Dependencies (vcpkg.json)
+### Dependencies
 - **fmt**: String formatting library
 - **imgui**: Immediate mode GUI (with DirectX 11 and Win32 bindings)
 - **spdlog**: High-performance logging

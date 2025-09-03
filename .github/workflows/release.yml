@@ -22,15 +22,10 @@ jobs:
 
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v2
-      - name: Install dependencies with vcpkg
-        run: |
-          cd AstroGolf
-          vcpkg integrate install
-          vcpkg install
 
       - name: Build
         run: |
-          msbuild AstroGolf.sln /t:build /p:Configuration=Release /p:Platform=x64 /p:VcpkgEnabled=true
+          msbuild AstroGolf.sln /t:build /p:Configuration=Release /p:Platform=x64
       - name: Remove debug file
         run: |
           Remove-Item -Path "x64/Release/AstroGolf.pdb"
